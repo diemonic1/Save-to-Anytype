@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "Save to Anytype",
+  "version": "0.0.1",
+  "description": "Save important web pages with your selected text in Markdown format to Anytype.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabs",
+    "contextMenus",
+    "alarms"
+  ],
+  "host_permissions": [
+    "http://localhost:31009/*"
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "icons": {
+    "16": "assets/icon16.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png",
+    "256": "assets/icon128.png",
+    "512": "assets/icon128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "assets/icon16.png",
+      "48": "assets/icon48.png",
+      "128": "assets/icon128.png",
+      "256": "assets/icon128.png",
+      "512": "assets/icon128.png"
+    },
+    "default_title": "Save to Anytype"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "erdinchosver@gmail.com",
+      "strict_min_version": "109.0"
+    }
+  }
+}
