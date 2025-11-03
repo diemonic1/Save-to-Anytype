@@ -1,3 +1,5 @@
+const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
+
 // Anytype API Base URL
 const API_BASE_URL = 'http://localhost:31009/v1';
 const API_VERSION = '2025-05-20';
@@ -10,6 +12,8 @@ let state = {
     selectedSpaceId: null,
     selectedCollectionId: null,
     collections: [],
+    types: [],
+    selectedTypeKey: 'page',
     currentTab: null
 };
 
@@ -27,6 +31,7 @@ const elements = {
     pageTitle: document.getElementById('pageTitle'),
     pageUrl: document.getElementById('pageUrl'),
     pageDescription: document.getElementById('pageDescription'),
+    typeSelect: document.getElementById('typeSelect'),
     saveBtn: document.getElementById('saveBtn'),
     saveBtnText: document.getElementById('saveBtnText'),
     appNameInput: document.getElementById('appNameInput'),
@@ -40,19 +45,26 @@ const elements = {
 document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', () => {
         const tabName = tab.dataset.tab;
-
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
-
         document.querySelectorAll('.tab-content').forEach(content => {
             content.classList.remove('active');
         });
-        document.getElementById(`${tabName}Tab`).classList.add('active');
+        document.getElementById(tabName + 'Tab').classList.add('active');
     });
 });
 
 // Initialize
 document.addEventListener('DOMContentLoaded', async () => {
+    console.log('Popup loaded (Firefox compatible)');
+
+    // Clear badge when popup opens
+    try {
+        await browserAPI.runtime.sendMessage({ action: "popupOpened" });
+    } catch (error) {
+        console.log('Could not clear badge:', error);
+    }
+
     await loadState();
 
     if (state.apiKey) {
@@ -60,34 +72,35 @@ document.addEventListener('DOMContentLoaded', async () => {
         await loadSpaces();
     }
 
-    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    if (tab) {
-        elements.pageTitle.value = tab.title || '';
-        elements.pageUrl.value = tab.url || '';
+    // Get current tab info
+    const tabs = await browserAPI.tabs.query({ active: true, currentWindow: true });
+    if (tabs[0]) {
+        elements.pageTitle.value = tabs[0].title || '';
+        elements.pageUrl.value = tabs[0].url || '';
     }
 
+    // Check for selected text from context menu
     await loadSelectedText();
 });
 
 // Load selected text from storage
 async function loadSelectedText() {
     try {
-        const result = await chrome.storage.local.get(['selectedText', 'selectedTextTimestamp']);
+        const result = await browserAPI.storage.local.get(['selectedText', 'selectedTextTimestamp']);
 
         if (result.selectedText) {
-            // Check if the selection is recent (within last 5 seconds)
             const now = Date.now();
             const timestamp = result.selectedTextTimestamp || 0;
 
             if (now - timestamp < 5000) {
                 const formattedText = result.selectedText
                     .split('\n')
-                    .map(line => `> ${line}`)
+                    .map(line => '> ' + line)
                     .join('\n');
 
                 elements.pageDescription.value = formattedText;
 
-                await chrome.storage.local.remove(['selectedText', 'selectedTextTimestamp']);
+                await browserAPI.storage.local.remove(['selectedText', 'selectedTextTimestamp']);
 
                 showStatus('Selected text has been added', 'success');
             }
@@ -97,9 +110,94 @@ async function loadSelectedText() {
     }
 }
 
+// Load types for a space
+async function loadTypes(spaceId) {
+    try {
+        console.log('Loading types for space:', spaceId);
+
+        const typesResponse = await fetch(API_BASE_URL + '/spaces/' + spaceId + '/types', {
+            headers: {
+                'Authorization': 'Bearer ' + state.apiKey,
+                'Anytype-Version': API_VERSION
+            }
+        });
+
+        if (typesResponse.ok) {
+            const data = await typesResponse.json();
+            console.log('Types API response:', data);
+
+            let types = data.data || data.types || (Array.isArray(data) ? data : []);
+
+            if (!Array.isArray(types)) {
+                console.error('Unexpected types format:', data);
+                types = [];
+            }
+
+            state.types = types;
+
+            // Update type select dropdown
+            elements.typeSelect.innerHTML = '';
+
+            if (types.length === 0) {
+                // Fallback to default types
+                elements.typeSelect.innerHTML = '<option value="page" selected>Page</option><option value="note">Note</option><option value="task">Task</option><option value="bookmark">Bookmark</option>';
+                console.log('No types found, using defaults');
+            } else {
+                console.log('Found types:', types.length);
+
+                // Sort types: put common ones first
+                const commonTypes = ['page', 'note', 'task', 'bookmark'];
+                const sortedTypes = types.sort(function (a, b) {
+                    const aKey = a.key || a.type_key || '';
+                    const bKey = b.key || b.type_key || '';
+                    const aIndex = commonTypes.indexOf(aKey);
+                    const bIndex = commonTypes.indexOf(bKey);
+
+                    if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+                    if (aIndex !== -1) return -1;
+                    if (bIndex !== -1) return 1;
+                    return (a.name || '').localeCompare(b.name || '');
+                });
+
+                sortedTypes.forEach(function (type) {
+                    const option = document.createElement('option');
+                    const typeKey = type.key || type.type_key || type.id;
+                    const typeName = type.name || type.title || typeKey;
+
+                    option.value = typeKey;
+                    option.textContent = typeName;
+
+                    // Select 'page' as default
+                    if (typeKey === 'page') {
+                        option.selected = true;
+                        state.selectedTypeKey = 'page';
+                    }
+
+                    elements.typeSelect.appendChild(option);
+                });
+            }
+
+            // Set default to page
+            if (!state.selectedTypeKey || state.selectedTypeKey === '') {
+                state.selectedTypeKey = 'page';
+                elements.typeSelect.value = 'page';
+            }
+
+        } else {
+            console.error('Types load error:', typesResponse.status);
+            // Use default types on error
+            elements.typeSelect.innerHTML = '<option value="page" selected>Page</option><option value="note">Note</option><option value="task">Task</option><option value="bookmark">Bookmark</option>';
+        }
+    } catch (error) {
+        console.error('Types could not be loaded:', error);
+        // Use default types on error
+        elements.typeSelect.innerHTML = '<option value="page" selected>Page</option><option value="note">Note</option><option value="task">Task</option><option value="bookmark">Bookmark</option>';
+    }
+}
+
 // Load saved state
 async function loadState() {
-    const saved = await chrome.storage.local.get(['apiKey', 'selectedSpaceId']);
+    const saved = await browserAPI.storage.local.get(['apiKey', 'selectedSpaceId']);
     if (saved.apiKey) {
         state.apiKey = saved.apiKey;
     }
@@ -110,20 +208,21 @@ async function loadState() {
 
 // Save state
 async function saveState() {
-    await chrome.storage.local.set({
+    await browserAPI.storage.local.set({
         apiKey: state.apiKey,
         selectedSpaceId: state.selectedSpaceId
     });
 }
 
 // Show status message
-function showStatus(message, type = 'info') {
+function showStatus(message, type) {
+    type = type || 'info';
     elements.status.textContent = message;
-    elements.status.className = `status ${type}`;
+    elements.status.className = 'status ' + type;
     elements.status.classList.remove('hidden');
 
     if (type !== 'error') {
-        setTimeout(() => {
+        setTimeout(function () {
             elements.status.classList.add('hidden');
         }, 3000);
     }
@@ -142,10 +241,9 @@ elements.connectBtn.addEventListener('click', async () => {
     elements.connectBtn.disabled = true;
 
     try {
-        // Test the API key
-        const response = await fetch(`${API_BASE_URL}/spaces`, {
+        const response = await fetch(API_BASE_URL + '/spaces', {
             headers: {
-                'Authorization': `Bearer ${apiKey}`,
+                'Authorization': 'Bearer ' + apiKey,
                 'Anytype-Version': API_VERSION
             }
         });
@@ -154,7 +252,6 @@ elements.connectBtn.addEventListener('click', async () => {
             const responseData = await response.json();
             console.log('Initial API test response:', responseData);
 
-            // Check if we got valid data
             if (responseData && (responseData.data || Array.isArray(responseData))) {
                 state.apiKey = apiKey;
                 await saveState();
@@ -167,11 +264,11 @@ elements.connectBtn.addEventListener('click', async () => {
         } else {
             const errorText = await response.text();
             console.error('API Key test failed:', response.status, errorText);
-            showStatus(`Invalid API Key or connection error: ${response.status}`, 'error');
+            showStatus('Invalid API Key or connection error: ' + response.status, 'error');
         }
     } catch (error) {
         console.error('Connection error:', error);
-        showStatus('Connection errorı: ' + error.message, 'error');
+        showStatus('Connection error: ' + error.message, 'error');
     } finally {
         elements.connectBtn.innerHTML = 'Connect';
         elements.connectBtn.disabled = false;
@@ -186,7 +283,7 @@ elements.startChallengeBtn.addEventListener('click', async () => {
     elements.startChallengeBtn.disabled = true;
 
     try {
-        const response = await fetch(`${API_BASE_URL}/auth/challenges`, {
+        const response = await fetch(API_BASE_URL + '/auth/challenges', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -225,7 +322,7 @@ elements.verifyCodeBtn.addEventListener('click', async () => {
     elements.verifyCodeBtn.disabled = true;
 
     try {
-        const response = await fetch(`${API_BASE_URL}/auth/api_keys`, {
+        const response = await fetch(API_BASE_URL + '/auth/api_keys', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -250,7 +347,7 @@ elements.verifyCodeBtn.addEventListener('click', async () => {
     } catch (error) {
         showStatus('Connection error: ' + error.message, 'error');
     } finally {
-        elements.verifyCodeBtn.innerHTML = 'Doğrula';
+        elements.verifyCodeBtn.innerHTML = 'Verify';
         elements.verifyCodeBtn.disabled = false;
     }
 });
@@ -260,7 +357,7 @@ elements.disconnectBtn.addEventListener('click', async () => {
     state.apiKey = null;
     state.selectedSpaceId = null;
     state.selectedCollectionId = null;
-    await chrome.storage.local.remove(['apiKey', 'selectedSpaceId']);
+    await browserAPI.storage.local.remove(['apiKey', 'selectedSpaceId']);
 
     elements.authSection.classList.remove('hidden');
     elements.mainSection.classList.add('hidden');
@@ -280,9 +377,9 @@ function showMainSection() {
 // Load spaces
 async function loadSpaces() {
     try {
-        const response = await fetch(`${API_BASE_URL}/spaces`, {
+        const response = await fetch(API_BASE_URL + '/spaces', {
             headers: {
-                'Authorization': `Bearer ${state.apiKey}`,
+                'Authorization': 'Bearer ' + state.apiKey,
                 'Anytype-Version': API_VERSION
             }
         });
@@ -308,7 +405,7 @@ async function loadSpaces() {
             elements.spaceSelect.innerHTML = '<option value="">Select Space</option>';
 
             if (spaces.length === 0) {
-                showStatus('No space found. Create space in Anytype.', 'error');
+                showStatus('No space found. Create a Space in Anytype.', 'error');
                 return;
             }
 
@@ -324,11 +421,12 @@ async function loadSpaces() {
 
             if (state.selectedSpaceId) {
                 await loadCollections(state.selectedSpaceId);
+                await loadTypes(state.selectedSpaceId);
             }
         } else {
             const errorText = await response.text();
             console.error('Space load error:', response.status, errorText);
-            showStatus(`Space list couldn\'t be loaded: ${response.status}`, 'error');
+            showStatus('Space list couldn\'t be loaded: ' + response.status, 'error');
         }
     } catch (error) {
         console.error('Space load exception:', error);
@@ -344,6 +442,7 @@ elements.spaceSelect.addEventListener('change', async (e) => {
         state.selectedSpaceId = spaceId;
         await saveState();
         await loadCollections(spaceId);
+        await loadTypes(spaceId);
     } else {
         state.selectedSpaceId = null;
         state.selectedCollectionId = null;
@@ -351,16 +450,21 @@ elements.spaceSelect.addEventListener('change', async (e) => {
     }
 });
 
+// Type selection change
+elements.typeSelect.addEventListener('change', (e) => {
+    state.selectedTypeKey = e.target.value;
+    console.log('Selected type:', state.selectedTypeKey);
+});
+
 // Load collections for a space
 async function loadCollections(spaceId) {
     try {
         let collections = [];
 
-        // Primary method: Try lists endpoint
         try {
-            const response = await fetch(`${API_BASE_URL}/spaces/${spaceId}/lists`, {
+            const response = await fetch(API_BASE_URL + '/spaces/' + spaceId + '/lists', {
                 headers: {
-                    'Authorization': `Bearer ${state.apiKey}`,
+                    'Authorization': 'Bearer ' + state.apiKey,
                     'Anytype-Version': API_VERSION
                 }
             });
@@ -378,12 +482,11 @@ async function loadCollections(spaceId) {
             console.log('Lists endpoint error:', e);
         }
 
-        // If no lists found, try getting all objects and filter for sets
         if (collections.length === 0) {
             try {
-                const response = await fetch(`${API_BASE_URL}/spaces/${spaceId}/objects`, {
+                const response = await fetch(API_BASE_URL + '/spaces/' + spaceId + '/objects', {
                     headers: {
-                        'Authorization': `Bearer ${state.apiKey}`,
+                        'Authorization': 'Bearer ' + state.apiKey,
                         'Anytype-Version': API_VERSION
                     }
                 });
@@ -411,7 +514,7 @@ async function loadCollections(spaceId) {
                             (obj.name && obj.name.toLowerCase().includes('set'));
 
                         if (isSet) {
-                            console.log('Identified as collection:', obj.name, {
+                            console.log('Identified as set/collection:', obj.name, {
                                 id: obj.id,
                                 type: obj.type,
                                 type_key: obj.type_key,
@@ -428,15 +531,10 @@ async function loadCollections(spaceId) {
         }
 
         state.collections = collections;
-
         elements.collectionsList.innerHTML = '';
 
         if (!collections || collections.length === 0) {
-            elements.collectionsList.innerHTML = `
-                <div class="collection-item" style="font-size: 12px; color: #666;">
-                    Collection not found<br>
-                    <small style="color: #999;">You can also save directly to Space</small>
-                </div>`;
+            elements.collectionsList.innerHTML = '<div class="collection-item" style="font-size: 12px; color: #666;">Collection not found<br><small style="color: #999;">You can also save directly to Space</small></div>';
         } else {
             console.log('Displaying collections:', collections.length);
             collections.forEach(collection => {
@@ -468,11 +566,7 @@ async function loadCollections(spaceId) {
     } catch (error) {
         console.log('Collections could not be loaded:', error);
         elements.collectionSection.classList.remove('hidden');
-        elements.collectionsList.innerHTML = `
-            <div class="collection-item" style="font-size: 12px; color: #666;">
-                Collections couldn't be loaded<br>
-                <small style="color: #999;">You can also save directly to Space</small>
-            </div>`;
+        elements.collectionsList.innerHTML = '<div class="collection-item" style="font-size: 12px; color: #666;">Collections couldn\'t be loaded <br><small style="color: #999;">You can also save directly to Space</small></div>';
     }
 }
 
@@ -496,23 +590,23 @@ elements.saveBtn.addEventListener('click', async () => {
     elements.saveBtn.disabled = true;
 
     try {
-        // Create object in Anytype
         const objectData = {
             name: title,
             icon: {
                 emoji: "🔗",
                 format: "emoji"
             },
-            body: `# ${title}\n\n**URL:** [${url}](${url})\n\n${description ? `**Description:**\n\n${description}` : ''}`,
-            type_key: "page"
+            body: '**URL:** [' + url + '](' + url + ')\n\n' + (description ? '**Description:**\n\n' + description : ''),
+            type_key: state.selectedTypeKey || 'page'  // Use selected type, default to 'page'
         };
 
         console.log('Sending object data:', objectData);
+        console.log('Using type_key:', state.selectedTypeKey);
 
-        const response = await fetch(`${API_BASE_URL}/spaces/${state.selectedSpaceId}/objects`, {
+        const response = await fetch(API_BASE_URL + '/spaces/' + state.selectedSpaceId + '/objects', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${state.apiKey}`,
+                'Authorization': 'Bearer ' + state.apiKey,
                 'Content-Type': 'application/json',
                 'Anytype-Version': API_VERSION
             },
@@ -526,24 +620,23 @@ elements.saveBtn.addEventListener('click', async () => {
             let createdObjectId = null;
             try {
                 const data = JSON.parse(responseText);
-                createdObjectId = data?.object?.id || null;
+                createdObjectId = data && data.object && data.object.id ? data.object.id : null;
             } catch (e) {
                 console.log('Response is not JSON:', responseText);
             }
 
             console.log('Object created:', createdObjectId);
 
-            // If a collection is selected, try to add the object to it
             if (state.selectedCollectionId && createdObjectId) {
                 try {
                     console.log('Adding to collection:', state.selectedCollectionId, 'Object ID:', createdObjectId);
 
                     const collectionResponse = await fetch(
-                        `${API_BASE_URL}/spaces/${state.selectedSpaceId}/lists/${state.selectedCollectionId}/objects`,
+                        API_BASE_URL + '/spaces/' + state.selectedSpaceId + '/lists/' + state.selectedCollectionId + '/objects',
                         {
                             method: 'POST',
                             headers: {
-                                'Authorization': `Bearer ${state.apiKey}`,
+                                'Authorization': 'Bearer ' + state.apiKey,
                                 'Content-Type': 'application/json',
                                 'Anytype-Version': API_VERSION
                             },
@@ -566,15 +659,13 @@ elements.saveBtn.addEventListener('click', async () => {
 
             showStatus('Saved!', 'success');
 
-            // Clear form
             elements.pageDescription.value = '';
 
-            // Get next tab info
             setTimeout(async () => {
-                const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-                if (tab) {
-                    elements.pageTitle.value = tab.title || '';
-                    elements.pageUrl.value = tab.url || '';
+                const tabs = await browserAPI.tabs.query({ active: true, currentWindow: true });
+                if (tabs[0]) {
+                    elements.pageTitle.value = tabs[0].title || '';
+                    elements.pageUrl.value = tabs[0].url || '';
                 }
             }, 1000);
         } else {
@@ -586,7 +677,7 @@ elements.saveBtn.addEventListener('click', async () => {
                 errorMessage = responseText;
             }
 
-            showStatus(`Save error: ${errorMessage}`, 'error');
+            showStatus('Save error: ' + errorMessage, 'error');
         }
     } catch (error) {
         console.error('Save error:', error);

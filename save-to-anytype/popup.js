@@ -10,6 +10,8 @@ let state = {
     selectedSpaceId: null,
     selectedCollectionId: null,
     collections: [],
+    types: [],
+    selectedTypeKey: 'page',
     currentTab: null
 };
 
@@ -27,6 +29,7 @@ const elements = {
     pageTitle: document.getElementById('pageTitle'),
     pageUrl: document.getElementById('pageUrl'),
     pageDescription: document.getElementById('pageDescription'),
+    typeSelect: document.getElementById('typeSelect'),
     saveBtn: document.getElementById('saveBtn'),
     saveBtnText: document.getElementById('saveBtnText'),
     appNameInput: document.getElementById('appNameInput'),
@@ -104,6 +107,108 @@ async function loadSelectedText() {
     }
 }
 
+// Load types for a space
+async function loadTypes(spaceId) {
+    try {
+        console.log('Loading types for space:', spaceId);
+
+        const response = await chrome.tabs.query({ active: true, currentWindow: true });
+
+        const typesResponse = await fetch(`${API_BASE_URL}/spaces/${spaceId}/types`, {
+            headers: {
+                'Authorization': `Bearer ${state.apiKey}`,
+                'Anytype-Version': API_VERSION
+            }
+        });
+
+        if (typesResponse.ok) {
+            const data = await typesResponse.json();
+            console.log('Types API response:', data);
+
+            let types = data.data || data.types || (Array.isArray(data) ? data : []);
+
+            if (!Array.isArray(types)) {
+                console.error('Unexpected types format:', data);
+                types = [];
+            }
+
+            state.types = types;
+
+            // Update type select dropdown
+            elements.typeSelect.innerHTML = '';
+
+            if (types.length === 0) {
+                // Fallback to default types
+                elements.typeSelect.innerHTML = `
+                    <option value="page" selected>Page</option>
+                    <option value="note">Note</option>
+                    <option value="task">Task</option>
+                    <option value="bookmark">Bookmark</option>
+                `;
+                console.log('No types found, using defaults');
+            } else {
+                console.log('Found types:', types.length);
+
+                // Sort types: put common ones first
+                const commonTypes = ['page', 'note', 'task', 'bookmark'];
+                const sortedTypes = types.sort((a, b) => {
+                    const aKey = a.key || a.type_key || '';
+                    const bKey = b.key || b.type_key || '';
+                    const aIndex = commonTypes.indexOf(aKey);
+                    const bIndex = commonTypes.indexOf(bKey);
+
+                    if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+                    if (aIndex !== -1) return -1;
+                    if (bIndex !== -1) return 1;
+                    return (a.name || '').localeCompare(b.name || '');
+                });
+
+                sortedTypes.forEach(type => {
+                    const option = document.createElement('option');
+                    const typeKey = type.key || type.type_key || type.id;
+                    const typeName = type.name || type.title || typeKey;
+
+                    option.value = typeKey;
+                    option.textContent = typeName;
+
+                    // Select 'page' as default
+                    if (typeKey === 'page') {
+                        option.selected = true;
+                        state.selectedTypeKey = 'page';
+                    }
+
+                    elements.typeSelect.appendChild(option);
+                });
+            }
+
+            // Set default to page
+            if (!state.selectedTypeKey || state.selectedTypeKey === '') {
+                state.selectedTypeKey = 'page';
+                elements.typeSelect.value = 'page';
+            }
+
+        } else {
+            console.error('Types load error:', typesResponse.status);
+            // Use default types on error
+            elements.typeSelect.innerHTML = `
+                <option value="page" selected>Page</option>
+                <option value="note">Note</option>
+                <option value="task">Task</option>
+                <option value="bookmark">Bookmark</option>
+            `;
+        }
+    } catch (error) {
+        console.error('Types could not be loaded:', error);
+        // Use default types on error
+        elements.typeSelect.innerHTML = `
+            <option value="page" selected>Page</option>
+            <option value="note">Note</option>
+            <option value="task">Task</option>
+            <option value="bookmark">Bookmark</option>
+        `;
+    }
+}
+
 // Load saved state
 async function loadState() {
     const saved = await chrome.storage.local.get(['apiKey', 'selectedSpaceId']);
@@ -178,7 +283,7 @@ elements.connectBtn.addEventListener('click', async () => {
         }
     } catch (error) {
         console.error('Connection error:', error);
-        showStatus('Connection errorı: ' + error.message, 'error');
+        showStatus('Connection error: ' + error.message, 'error');
     } finally {
         elements.connectBtn.innerHTML = 'Connect';
         elements.connectBtn.disabled = false;
@@ -257,7 +362,7 @@ elements.verifyCodeBtn.addEventListener('click', async () => {
     } catch (error) {
         showStatus('Connection error: ' + error.message, 'error');
     } finally {
-        elements.verifyCodeBtn.innerHTML = 'Doğrula';
+        elements.verifyCodeBtn.innerHTML = 'Verify';
         elements.verifyCodeBtn.disabled = false;
     }
 });
@@ -331,6 +436,7 @@ async function loadSpaces() {
 
             if (state.selectedSpaceId) {
                 await loadCollections(state.selectedSpaceId);
+                await loadTypes(state.selectedSpaceId);
             }
         } else {
             const errorText = await response.text();
@@ -351,11 +457,18 @@ elements.spaceSelect.addEventListener('change', async (e) => {
         state.selectedSpaceId = spaceId;
         await saveState();
         await loadCollections(spaceId);
+        await loadTypes(spaceId);
     } else {
         state.selectedSpaceId = null;
         state.selectedCollectionId = null;
         elements.collectionSection.classList.add('hidden');
     }
+});
+
+// Type selection change
+elements.typeSelect.addEventListener('change', (e) => {
+    state.selectedTypeKey = e.target.value;
+    console.log('Selected type:', state.selectedTypeKey);
 });
 
 // Load collections for a space
@@ -418,7 +531,7 @@ async function loadCollections(spaceId) {
                             (obj.name && obj.name.toLowerCase().includes('set'));
 
                         if (isSet) {
-                            console.log('Identified as collection:', obj.name, {
+                            console.log('Identified as set/collection:', obj.name, {
                                 id: obj.id,
                                 type: obj.type,
                                 type_key: obj.type_key,
@@ -441,7 +554,7 @@ async function loadCollections(spaceId) {
         if (!collections || collections.length === 0) {
             elements.collectionsList.innerHTML = `
                 <div class="collection-item" style="font-size: 12px; color: #666;">
-                    Collection not found<br>
+                    Set/Collection bulunamadı<br>
                     <small style="color: #999;">You can also save directly to Space</small>
                 </div>`;
         } else {
@@ -477,7 +590,7 @@ async function loadCollections(spaceId) {
         elements.collectionSection.classList.remove('hidden');
         elements.collectionsList.innerHTML = `
             <div class="collection-item" style="font-size: 12px; color: #666;">
-                Collections couldn't be loaded<br>
+                Set/Collection yüklenemedi<br>
                 <small style="color: #999;">You can also save directly to Space</small>
             </div>`;
     }
@@ -510,11 +623,12 @@ elements.saveBtn.addEventListener('click', async () => {
                 emoji: "🔗",
                 format: "emoji"
             },
-            body: `# ${title}\n\n**URL:** [${url}](${url})\n\n${description ? `**Description:**\n\n${description}` : ''}`,
-            type_key: "page"
+            body: `**URL:** [${url}](${url})\n\n${description ? `**Description:**\n\n${description}` : ''}`,
+            type_key: state.selectedTypeKey || 'page'  // Use selected type, default to 'page'
         };
 
         console.log('Sending object data:', objectData);
+        console.log('Using type_key:', state.selectedTypeKey);
 
         const response = await fetch(`${API_BASE_URL}/spaces/${state.selectedSpaceId}/objects`, {
             method: 'POST',
