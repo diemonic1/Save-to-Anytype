@@ -1457,6 +1457,7 @@ async function loadObjectTemplates(selectedTypeId) {
 
 async function loadAllObjects() {
     try {
+        consoleLog("loading all objects");
         const response = await fetch(`${API_BASE_URL}/spaces/${selectedSpaceId}/objects?limit=300' `, {
             headers: {
                 'Authorization': `Bearer ${state.apiKey}`,
@@ -1467,6 +1468,7 @@ async function loadAllObjects() {
         if (response.ok) {
             allObjects = await response.json();
             allObjects = allObjects.data;
+            consoleLog("all objects response ", allObjects);
         }
         else {
             allObjects = [];
