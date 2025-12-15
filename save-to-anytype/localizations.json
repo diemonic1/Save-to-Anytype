@@ -168,7 +168,7 @@
       "Nothing": "Ничего",
       "OpenFirstForm": "Открывать первую форму",
       "OpenLastUsedForm": "Открыть последнюю использованную форму",
-      "FormWelcomeText": "You need create a form before saving an object to Anytype. You can think of forms as templates. Forms reflect the way objects are saved."
+      "FormWelcomeText": "Перед сохранением объекта в Anytype необходимо создать форму. Формы можно рассматривать как шаблоны. Формы отражают способ сохранения объектов."
     },
     {
       "languageName": "Türkçe",
@@ -338,7 +338,7 @@
       "Nothing": "Nichts",
       "OpenFirstForm": "Erstes Formular öffnen",
       "OpenLastUsedForm": "Zuletzt verwendetes Formular öffnen",
-      "FormWelcomeText": "You need create a form before saving an object to Anytype. You can think of forms as templates. Forms reflect the way objects are saved."
+      "FormWelcomeText": "Bevor Sie ein Objekt in Anytype speichern, müssen Sie ein Formular erstellen. Formulare können Sie sich wie Vorlagen vorstellen. Formulare spiegeln die Art und Weise wider, wie Objekte gespeichert werden."
     },
     {
       "languageName": "Français",
@@ -423,7 +423,7 @@
       "Nothing": "Rien",
       "OpenFirstForm": "Ouvrir le premier formulaire",
       "OpenLastUsedForm": "Ouvrir le dernier formulaire utilisé",
-      "FormWelcomeText": "You need create a form before saving an object to Anytype. You can think of forms as templates. Forms reflect the way objects are saved."
+      "FormWelcomeText": "Vous devez créer un formulaire avant d'enregistrer un objet dans Anytype. Vous pouvez considérer les formulaires comme des modèles. Les formulaires reflètent la manière dont les objets sont enregistrés."
     },
     {
       "languageName": "Español",
@@ -508,7 +508,7 @@
       "Nothing": "Nada",
       "OpenFirstForm": "Abrir el primer formulario",
       "OpenLastUsedForm": "Abrir el último formulario utilizado",
-      "FormWelcomeText": "You need create a form before saving an object to Anytype. You can think of forms as templates. Forms reflect the way objects are saved."
+      "FormWelcomeText": "Es necesario crear un formulario antes de guardar un objeto en Anytype. Los formularios pueden considerarse como plantillas. Los formularios reflejan la forma en que se guardan los objetos."
     },
     {
       "languageName": "Italiano",
@@ -593,7 +593,7 @@
       "Nothing": "Niente",
       "OpenFirstForm": "Apri il primo modulo",
       "OpenLastUsedForm": "Apri l'ultimo modulo utilizzato",
-      "FormWelcomeText": "You need create a form before saving an object to Anytype. You can think of forms as templates. Forms reflect the way objects are saved."
+      "FormWelcomeText": "È necessario creare un modulo prima di salvare un oggetto su Anytype. I moduli possono essere considerati come modelli. I moduli riflettono il modo in cui vengono salvati gli oggetti."
     },
     {
       "languageName": "Polski",
@@ -678,7 +678,7 @@
       "Nothing": "Nic",
       "OpenFirstForm": "Otwórz pierwszy formularz",
       "OpenLastUsedForm": "Otwórz ostatnio używany formularz",
-      "FormWelcomeText": "You need create a form before saving an object to Anytype. You can think of forms as templates. Forms reflect the way objects are saved."
+      "FormWelcomeText": "Przed zapisaniem obiektu w Anytype należy utworzyć formularz. Formularze można traktować jako szablony. Formularze odzwierciedlają sposób zapisywania obiektów."
     },
     {
       "languageName": "러시아어",
@@ -763,7 +763,7 @@
       "Nothing": "없음",
       "OpenFirstForm": "첫 번째 폼 열기",
       "OpenLastUsedForm": "마지막으로 사용한 폼 열기",
-      "FormWelcomeText": "You need create a form before saving an object to Anytype. You can think of forms as templates. Forms reflect the way objects are saved."
+      "FormWelcomeText": "Anytype에 객체를 저장하기 전에 양식을 생성해야 합니다. 양식은 템플릿으로 생각할 수 있습니다. 양식은 객체가 저장되는 방식을 반영합니다."
     },
     {
       "languageName": "俄语",
@@ -848,7 +848,7 @@
       "Nothing": "无",
       "OpenFirstForm": "打开第一个表单",
       "OpenLastUsedForm": "打开最后使用的表单",
-      "FormWelcomeText": "You need create a form before saving an object to Anytype. You can think of forms as templates. Forms reflect the way objects are saved."
+      "FormWelcomeText": "在将对象保存至Anytype之前，您需要创建一个表单。表单可视为模板，它们决定了对象的保存方式。"
     },
     {
       "languageName": "ロシア語",
@@ -933,7 +933,7 @@
       "Nothing": "なし",
       "OpenFirstForm": "最初のフォームを開く",
       "OpenLastUsedForm": "最後に使用したフォームを開く",
-      "FormWelcomeText": "You need create a form before saving an object to Anytype. You can think of forms as templates. Forms reflect the way objects are saved."
+      "FormWelcomeText": "Anytypeにオブジェクトを保存する前に、フォームを作成する必要があります。フォームはテンプレートと考えてください。フォームはオブジェクトの保存方法を反映します。"
     },
     {
       "languageName": "रूसी",
@@ -1018,7 +1018,7 @@
       "Nothing": "कुछ नहीं",
       "OpenFirstForm": "पहला फ़ॉर्म खोलें",
       "OpenLastUsedForm": "अंतिम इस्तेमाल किया गया फ़ॉर्म खोलें",
-      "FormWelcomeText": "You need create a form before saving an object to Anytype. You can think of forms as templates. Forms reflect the way objects are saved."
+      "FormWelcomeText": "किसी ऑब्जेक्ट को Anytype में सेव करने से पहले आपको एक फ़ॉर्म बनाना होगा। आप फ़ॉर्म को टेम्पलेट की तरह समझ सकते हैं। फ़ॉर्म ऑब्जेक्ट को सेव करने के तरीके को दिखाते हैं।"
     }
   ]
 }
