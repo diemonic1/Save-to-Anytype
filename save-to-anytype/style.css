@@ -9,7 +9,11 @@
     --color5: #f2f2f2;
     --card-color: #ffffff;
     --icon-brightness: 0;
-    --accent-color: #FF9ED2;
+    --accent-color: #ff2929;
+    --background: #1a1a1a;
+    --background-focus: #1a1a1a;
+    --input-text-color: #e0e0e0;
+    --section-title-color: #888888;
 }
 
 .jscolor-border {
@@ -20,6 +24,14 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+#handlerForLoadedForms:empty {
+  display: none;
+}
+
+#handlerForLoadedForms:not(:empty)~.form-card {
+  display: none;
 }
 
 body {
@@ -106,11 +118,26 @@ input[type="checkbox"] {
   accent-color: var(--accent-color);
 }
 
-h1 {
+h2 {
     font-size: 24px;
     margin-bottom: 20px;
     text-align: center;
     font-weight: 600;
+    align-items: center;
+}
+
+h3 {
+    font-size: 18px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.new-form-icon {
+  height: 200px;
+  width: 200px;
+  background-color: var(--color4);
+  -webkit-mask: url(assets/new-form.svg) center / contain no-repeat;
+  mask: url(assets/new-form.svg) center / contain no-repeat;
 }
 
 .card {
@@ -119,6 +146,16 @@ h1 {
     padding: 20px;
     margin-bottom: 15px;
     border: 1px solid #2a2a2a;
+}
+
+.form-card {
+  background: var(--card-color);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 15px;
+  border: 1px solid #2a2a2a;
+  text-align: center;
+  font-size: 16px;
 }
 
 .card-smaller-padding {
@@ -138,7 +175,7 @@ h1 {
 .section-title {
     font-size: 12px;
     font-weight: 600;
-    color: #888888;
+    color: var(--section-title-color);
     margin-bottom: 10px;
     letter-spacing: 1px;
 }
@@ -152,8 +189,8 @@ textarea {
     border-radius: 8px;
     font-size: 14px;
     transition: all 0.3s ease;
-    background: #1a1a1a;
-    color: #e0e0e0;
+    color: var(--input-text-color);
+    background: var(--background);
 }
 
 input::placeholder,
@@ -166,7 +203,7 @@ select:focus,
 textarea:focus {
     outline: none;
     border-color: #404040;
-    background: #222222;
+    background: var(--background-focus);
 }
 
 select {
@@ -476,19 +513,6 @@ button {
 .collections-list::-webkit-scrollbar-thumb:hover {
     background: #353535;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .choices__item[data-value]::after,
 .choices__list .choices__item--choice[data-value]::after {

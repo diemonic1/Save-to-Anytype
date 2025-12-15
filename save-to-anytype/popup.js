@@ -1,6 +1,6 @@
 // Anytype API Base URL
 const API_BASE_URL = 'http://localhost:31009/v1';
-const API_VERSION = '2025-05-20';
+const API_VERSION = '2025-11-08';
 
 // constants
 const DEFAULT_ACCENT_COLOR = '#FF9ED2';
@@ -92,9 +92,9 @@ const elements = {
     propertiesSaveObjectListWithDefaultValueHandler: document.getElementById('propertiesSaveObjectListWithDefaultValueHandler'),
     propertiesSaveObjectListWithoutDefaultValueHandler: document.getElementById('propertiesSaveObjectListWithoutDefaultValueHandler'),
     objectSavedSection: document.getElementById('objectSavedSection'),
-    OpenInAnyTypeBtn: document.getElementById('OpenInAnyTypeBtn'),
-    OpenAnyTypeBtn: document.getElementById('OpenAnyTypeBtn'),
-    SaveToAnyTypeVersion: document.getElementById('SaveToAnyTypeVersion'),
+    OpenInAnytypeBtn: document.getElementById('OpenInAnytypeBtn'),
+    OpenAnytypeBtn: document.getElementById('OpenAnytypeBtn'),
+    SaveToAnytypeVersion: document.getElementById('SaveToAnytypeVersion'),
     FormNameInput: document.getElementById('FormNameInput'),
     FormNameInputSection: document.getElementById('FormNameInputSection'),
     createFormTipButton: document.getElementById('createFormTipButton'),
@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             WebPagePropierties.find(p => p.id == "page_content").value = resultExtractPageText[0].result || '';
         }
 
-        elements.SaveToAnyTypeVersion.innerText = chrome.runtime.getManifest().version;
+        elements.SaveToAnytypeVersion.innerText = chrome.runtime.getManifest().version;
 
         // Check for selected text from context menu
         await loadSelectedText();
@@ -497,7 +497,11 @@ ChangeTheme = function () {
         document.documentElement.style.setProperty('--card-color', '#000000');
         document.documentElement.style.setProperty('--icon-brightness', '255');
     }
-    else { // white mode
+    else { // light mode
+        document.documentElement.style.setProperty('--background', '#ffffff');
+        document.documentElement.style.setProperty('--background-focus', '#ecececff');
+        document.documentElement.style.setProperty('--input-text-color', '#080808');
+        document.documentElement.style.setProperty('--section-title-color', '#080808');
         document.documentElement.style.setProperty('--text-color', '#080808');
         document.documentElement.style.setProperty('--text-color-inverted', '#e0e0e0');
         document.documentElement.style.setProperty('--back-color', '#ebebeb');
@@ -564,7 +568,7 @@ elements.whatDoOnStartSelect.addEventListener('change', async (e) => {
 
 //#endregion
 
-//#region connect and disconnect AnyType
+//#region connect and disconnect Anytype
 
 // API Key Connection
 elements.connectBtn.addEventListener('click', async () => {
@@ -621,7 +625,7 @@ elements.connectBtn.addEventListener('click', async () => {
 
 // Challenge Authentication
 elements.startChallengeBtn.addEventListener('click', async () => {
-    const appName = elements.appNameInput.value.trim() || 'Save To AnyType';
+    const appName = elements.appNameInput.value.trim() || 'Save To Anytype';
 
     elements.startChallengeBtn.innerHTML = ('<span class="loading"></span> ' + Localize('ChallengeIsStarting', state.language));
     elements.startChallengeBtn.disabled = true;
@@ -728,11 +732,11 @@ function showBlockSection(URLRejected) {
 
     if (URLRejected) {
         elements.blockedSectionText.innerText = Localize("blockedSectionURLRejected", state.language);
-        elements.OpenAnyTypeBtn.classList.add('hidden');
+        elements.OpenAnytypeBtn.classList.add('hidden');
     }
     else {
-        elements.blockedSectionText.innerText = Localize("blockedSectionAnyTypeNotRunning", state.language);
-        elements.OpenAnyTypeBtn.classList.remove('hidden');
+        elements.blockedSectionText.innerText = Localize("blockedSectionAnytypeNotRunning", state.language);
+        elements.OpenAnytypeBtn.classList.remove('hidden');
     }
 }
 
@@ -926,8 +930,8 @@ elements.openGitHubBtn.addEventListener('click', async () => {
     open("https://github.com/lazjedi/Save-to-Anytype", "_blank");
 });
 
-elements.OpenAnyTypeBtn.addEventListener('click', async () => {
-    open("anytype://", "_blank");
+elements.OpenAnytypeBtn.addEventListener('click', async () => {
+    open("Anytype://", "_blank");
 });
 
 //#endregion
@@ -949,7 +953,7 @@ elements.saveFormBtn.addEventListener('click', async () => {
 
             propertiesList.push(
                 {
-                    AnyTypeProperty: obj?.AnyTypeProperty,
+                    AnytypeProperty: obj?.AnytypeProperty,
                     SelectedValueByUser: obj?.choice?.getValue(true)
                 }
             );
@@ -1518,8 +1522,8 @@ async function loadObjectProperties() {
         propertiesListSpawned = [];
 
         let properties = [
-            { object: "property", id: "nameId", key: "nameKeySaveToAnyType", name: Localize("NameOfObject", state.language), format: "text" },
-            { object: "property", id: "objectBodyId", key: "objectBodyKeySaveToAnyType", name: Localize("objectBodyName", state.language), format: "text" }
+            { object: "property", id: "nameId", key: "nameKeySaveToAnytype", name: Localize("NameOfObject", state.language), format: "text" },
+            { object: "property", id: "objectBodyId", key: "objectBodyKeySaveToAnytype", name: Localize("objectBodyName", state.language), format: "text" }
         ];
 
         if (selectedType !== null && selectedType.properties !== null) {
@@ -1606,7 +1610,7 @@ async function loadObjectProperties() {
             });
 
             propertiesListForSaving.push(
-                { AnyTypeProperty: property, choice: choice }
+                { AnytypeProperty: property, choice: choice }
             );
 
             if (property.id === "nameId") {
@@ -1753,11 +1757,11 @@ async function loadObjectTypeToSave(form) {
             consoleLog('Form to save this object: ', form);
 
             let properties = [
-                { format: 'text', id: 'nameId', key: 'nameKeySaveToAnyType', name: Localize("NameOfObject", state.language), object: 'property' }
+                { format: 'text', id: 'nameId', key: 'nameKeySaveToAnytype', name: Localize("NameOfObject", state.language), object: 'property' }
             ];
 
             properties.push(
-                { format: "text", id: "objectBodyId", key: "objectBodyKeySaveToAnyType", name: Localize("objectBodyName", state.language), object: "property" }
+                { format: "text", id: "objectBodyId", key: "objectBodyKeySaveToAnytype", name: Localize("objectBodyName", state.language), object: "property" }
             );
 
             properties = properties.concat(data.type.properties);
@@ -1781,7 +1785,7 @@ async function loadObjectTypeToSave(form) {
             selectedSpaceId = form.spaceId;
 
             const name = (form.formName) || ((form.type.icon.format === "emoji" ? (form.type.icon.emoji + " ") : "") + form.type.name);
-            elements.objectNameToSave.innerText = Localize("SavingWithFormName", state.language) + "\n" + name;
+            elements.objectNameToSave.innerText = name;
 
             let propertiesForPrintWithoutDefaultValue = [];
             let propertiesForPrintWithDefaultValue = [];
@@ -1790,7 +1794,7 @@ async function loadObjectTypeToSave(form) {
 
                 let needToCreateChoices = false;
 
-                const savedProperty = form.properties.find(p => p.AnyTypeProperty.id === property.id);
+                const savedProperty = form.properties.find(p => p.AnytypeProperty.id === property.id);
                 const savedPropertyValueExist = savedProperty !== null && savedProperty !== undefined
                     && savedProperty.SelectedValueByUser !== null && savedProperty.SelectedValueByUser !== "null"
                     && savedProperty.SelectedValueByUser !== undefined && savedProperty.SelectedValueByUser.length > 0;
@@ -1811,7 +1815,7 @@ async function loadObjectTypeToSave(form) {
                     needToCreateChoices = false;
 
                     let value = null;
-                    const printTextarea = property.key === "description" || property.key === "objectBodyKeySaveToAnyType";
+                    const printTextarea = property.key === "description" || property.key === "objectBodyKeySaveToAnytype";
 
                     if (savedPropertyValueExist) {
                         value = GetPagePropiertie(savedProperty.SelectedValueByUser);
@@ -1887,7 +1891,7 @@ async function loadObjectTypeToSave(form) {
                 propertyHTML.innerHTML = `
                                 <div class="section-title">` + Localize("SelectCollection", state.language) + `</div>
                                 <div class="form-group">
-                                    <select id="CollectionPrintedSaveToAnyType_SO" >
+                                    <select id="CollectionPrintedSaveToAnytype_SO" >
                                         ${allCollections.map(o => `
                                             <option 
                                                 value="${o.id}" 
@@ -1900,7 +1904,7 @@ async function loadObjectTypeToSave(form) {
                                 </div>
                             `;
 
-                propertiesForPrintWithDefaultValue.push({ needToCreateChoices: true, needToDisableChoice: !savedCollectionExist, propertyHTML: propertyHTML, propertyId: "CollectionPrintedSaveToAnyType", propertyKey: "CollectionPrintedSaveToAnyType" });
+                propertiesForPrintWithDefaultValue.push({ needToCreateChoices: true, needToDisableChoice: !savedCollectionExist, propertyHTML: propertyHTML, propertyId: "CollectionPrintedSaveToAnytype", propertyKey: "CollectionPrintedSaveToAnytype" });
             }
 
             await loadObjectTemplates(form.type.id);
@@ -1913,7 +1917,7 @@ async function loadObjectTypeToSave(form) {
                 propertyHTML.innerHTML = `
                                 <div class="section-title">` + Localize("SelectObjectTemplate", state.language) + `</div>
                                 <div class="form-group">
-                                    <select id="TemplatePrintedSaveToAnyType_SO" >
+                                    <select id="TemplatePrintedSaveToAnytype_SO" >
                                         ${allTemplatesForObject.map(o => `
                                             <option 
                                                 value="${o.id}" 
@@ -1926,7 +1930,7 @@ async function loadObjectTypeToSave(form) {
                                 </div>
                             `;
 
-                propertiesForPrintWithDefaultValue.push({ needToCreateChoices: true, needToDisableChoice: !savedTemplateExist, propertyHTML: propertyHTML, propertyId: "TemplatePrintedSaveToAnyType", propertyKey: "TemplatePrintedSaveToAnyType" });
+                propertiesForPrintWithDefaultValue.push({ needToCreateChoices: true, needToDisableChoice: !savedTemplateExist, propertyHTML: propertyHTML, propertyId: "TemplatePrintedSaveToAnytype", propertyKey: "TemplatePrintedSaveToAnytype" });
             }
 
             if (propertiesForPrintWithoutDefaultValue.length > 0) {
@@ -1948,7 +1952,7 @@ async function loadObjectTypeToSave(form) {
 
                 elements.propertiesSaveObjectListWithoutDefaultValueHandler.appendChild(propertieForPrint.propertyHTML);
 
-                propertiesListForSaving.push({ KeyForAnyTypeAPI: propertieForPrint.propertyKey, IdInHTML: propertieForPrint.propertyId + "_SO", value_type: propertieForPrint.value_type });
+                propertiesListForSaving.push({ KeyForAnytypeAPI: propertieForPrint.propertyKey, IdInHTML: propertieForPrint.propertyId + "_SO", value_type: propertieForPrint.value_type });
 
                 if (propertieForPrint.needToCreateChoices) {
                     const choice = new Choices(document.getElementById(propertieForPrint.propertyId + "_SO"), {
@@ -1967,7 +1971,7 @@ async function loadObjectTypeToSave(form) {
 
                 elements.propertiesSaveObjectListWithDefaultValueHandler.appendChild(propertieForPrint.propertyHTML);
 
-                propertiesListForSaving.push({ KeyForAnyTypeAPI: propertieForPrint.propertyKey, IdInHTML: propertieForPrint.propertyId + "_SO", value_type: propertieForPrint.value_type });
+                propertiesListForSaving.push({ KeyForAnytypeAPI: propertieForPrint.propertyKey, IdInHTML: propertieForPrint.propertyId + "_SO", value_type: propertieForPrint.value_type });
 
                 if (propertieForPrint.needToCreateChoices) {
                     const choice = new Choices(document.getElementById(propertieForPrint.propertyId + "_SO"), {
@@ -2010,10 +2014,10 @@ elements.saveObjectBtn.addEventListener('click', async () => {
         for (let index = 0; index < propertiesListForSaving.length; index++) {
             const propiertyPrinted = propertiesListForSaving[index];
 
-            if (propiertyPrinted.KeyForAnyTypeAPI !== "nameKeySaveToAnyType"
-                && propiertyPrinted.KeyForAnyTypeAPI !== "CollectionPrintedSaveToAnyType"
-                && propiertyPrinted.KeyForAnyTypeAPI !== "TemplatePrintedSaveToAnyType"
-                && propiertyPrinted.KeyForAnyTypeAPI !== "objectBodyKeySaveToAnyType"
+            if (propiertyPrinted.KeyForAnytypeAPI !== "nameKeySaveToAnytype"
+                && propiertyPrinted.KeyForAnytypeAPI !== "CollectionPrintedSaveToAnytype"
+                && propiertyPrinted.KeyForAnytypeAPI !== "TemplatePrintedSaveToAnytype"
+                && propiertyPrinted.KeyForAnytypeAPI !== "objectBodyKeySaveToAnytype"
             ) {
                 let value = null;
 
@@ -2025,18 +2029,18 @@ elements.saveObjectBtn.addEventListener('click', async () => {
                     value = document.getElementById(propiertyPrinted.IdInHTML).value;
 
                 if (value !== null && value !== undefined && value !== "" && value.length > 0)
-                    properties_final_list.push({ key: propiertyPrinted.KeyForAnyTypeAPI, [propiertyPrinted.value_type]: value });
+                    properties_final_list.push({ key: propiertyPrinted.KeyForAnytypeAPI, [propiertyPrinted.value_type]: value });
             }
-            else if (propiertyPrinted.KeyForAnyTypeAPI === "nameKeySaveToAnyType") {
+            else if (propiertyPrinted.KeyForAnytypeAPI === "nameKeySaveToAnytype") {
                 objectName = document.getElementById(propiertyPrinted.IdInHTML).value;
             }
-            else if (propiertyPrinted.KeyForAnyTypeAPI === "CollectionPrintedSaveToAnyType") {
+            else if (propiertyPrinted.KeyForAnytypeAPI === "CollectionPrintedSaveToAnytype") {
                 ObjectCollectionId = document.getElementById(propiertyPrinted.IdInHTML).value;
             }
-            else if (propiertyPrinted.KeyForAnyTypeAPI === "TemplatePrintedSaveToAnyType") {
+            else if (propiertyPrinted.KeyForAnytypeAPI === "TemplatePrintedSaveToAnytype") {
                 ObjectTemplateId = document.getElementById(propiertyPrinted.IdInHTML).value;
             }
-            else if (propiertyPrinted.KeyForAnyTypeAPI === "objectBodyKeySaveToAnyType") {
+            else if (propiertyPrinted.KeyForAnytypeAPI === "objectBodyKeySaveToAnytype") {
                 objectBody = document.getElementById(propiertyPrinted.IdInHTML).value;
             }
         }
@@ -2119,8 +2123,8 @@ elements.saveObjectBtn.addEventListener('click', async () => {
                 }
             }
 
-            elements.OpenInAnyTypeBtn.addEventListener('click', async () => {
-                open("anytype://object?objectId=" + createdObjectId + "&spaceId=" + selectedSpaceId, "_blank");
+            elements.OpenInAnytypeBtn.addEventListener('click', async () => {
+                open("Anytype://object?objectId=" + createdObjectId + "&spaceId=" + selectedSpaceId, "_blank");
             });
 
             showobjectSavedSection();

@@ -17,17 +17,37 @@
 
 <body>
     <div class="container">
-        <h1 data-locale-key="SaveToAnyType">Save to Anytype</h1>
+        <h2><img src="assets/icon16.png" alt=""> Save to Anytype</h2>
 
         <!-- Auth -->
         <div id="authSection" class="card">
             <div class="tab-container">
-                <div class="tab active" data-tab="apikey" data-locale-key="APIKey">API Key</div>
-                <div class="tab" data-tab="challenge" data-locale-key="ChallengeAuth">Challenge Auth</div>
+                <div class="tab active" data-tab="challenge" data-locale-key="ChallengeAuth">Challenge Auth</div>
+                <div class="tab" data-tab="apikey" data-locale-key="APIKey">API Key</div>
             </div>
 
+            <!-- Challenge Auth Tab -->
+            <div id="challengeTab" class="tab-content active">
+                <div class="section-title" data-locale-key="AppNameHint">Challenge Auth</div>
+                <div class="form-group">
+                    <input type="text" id="appNameInput" data-locale-placeholder="AppName" placeholder="App name"
+                        value="Save to Anytype">
+                </div>
+                <button id="startChallengeBtn" class="btn-primary">
+                    <span data-locale-key="StartChallenge">Start Challenge</span>
+                </button>
+                <div id="codeSection" class="hidden">
+                    <div class="form-group" style="margin-top: 15px;">
+                        <div class="section-title" data-locale-key="Enter4digit">Enter the 4-digit code displayed in Anytype</div>
+                        <input type="text" id="codeInput" placeholder="1234" maxlength="4">
+                    </div>
+                    <button id="verifyCodeBtn" class="btn-primary">
+                        <span data-locale-key="Verify">Verify</span>
+                    </button>
+                </div>
+            </div>
             <!-- API Key Tab -->
-            <div id="apikeyTab" class="tab-content active">
+            <div id="apikeyTab" class="tab-content">
                 <div class="section-title" data-locale-key="ConnectWithAPIKey">Connect with API Key</div>
                 <div class="form-group">
                     <input type="password" id="apiKeyInput" data-locale-placeholder="EnterYourAPIKey" placeholder="Enter your API Key">
@@ -37,25 +57,6 @@
                 </button>
             </div>
 
-            <!-- Challenge Auth Tab -->
-            <div id="challengeTab" class="tab-content">
-                <div class="section-title" data-locale-key="AppNameHint">Challenge Auth</div>
-                <div class="form-group">
-                    <input type="text" id="appNameInput" data-locale-placeholder="AppName" placeholder="App name" value="Save to AnyType">
-                </div>
-                <button id="startChallengeBtn" class="btn-primary">
-                    <span data-locale-key="StartChallenge">Start Challenge</span>
-                </button>
-                <div id="codeSection" class="hidden">
-                    <div class="form-group" style="margin-top: 15px;">
-                        <div class="section-title" data-locale-key="Enter4digit">Enter the 4-digit code displayed in Anytype:</div>
-                        <input type="text" id="codeInput" placeholder="1234" maxlength="4">
-                    </div>
-                    <button id="verifyCodeBtn" class="btn-primary">
-                        <span data-locale-key="Verify">Verify</span>
-                    </button>
-                </div>
-            </div>
         </div>
 
         <div id="mainSection" class="hidden">
@@ -65,8 +66,11 @@
             <div id="mainSectionAnimation">
                 <div id="handlerForLoadedForms" class="card-smaller-padding column-flex-table">
                 </div>
-                
-                <button id="createFormButton" class="btn-primary">
+                <div class="form-card">
+                    <!--<img class="new-form-icon" src="assets/new-form.svg" alt="">-->
+                    <div data-locale-key="FormWelcomeText">You need create a form before saving an object to Anytype. You can think of forms as templates. Forms reflect the way objects are saved.</div>
+                </div>
+                    <button id="createFormButton" class="btn-primary">
                     <span id="createFormButtonText" data-locale-key="CreateForm">Create Form</span>
                 </button>
             </div>
@@ -172,20 +176,20 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="section-title" data-locale-key="BugNote">If you found a bug, write about this to github:</div>
+                        <div class="section-title" data-locale-key="BugNote">If you found a bug, write about this to GitHub:</div>
                         <button id="openGitHubBtn" class="btn-primary">
                             <span id="openGitHubBtnText" data-locale-key="OpenGitHub">Open GitHub</span>
                         </button>
                     </div>
 
                     <div class="form-group">
-                        <button id="disconnectBtn" class="btn-danger" data-locale-key="DisconnectAnyType">
-                            Disconnect AnyType
+                        <button id="disconnectBtn" class="btn-danger" data-locale-key="DisconnectAnytype">
+                            Disconnect Anytype
                         </button>
                     </div>
                 </div>
                 <div class="form-group">
-                    <div id="SaveToAnyTypeVersion" class="section-title" style="margin-top: -10px; text-align: center;">
+                    <div id="SaveToAnytypeVersion" class="section-title" style="margin-top: -10px; text-align: center;">
                         auto insert from manifest
                     </div>
                 </div>
@@ -216,7 +220,7 @@
 
             <div id="saveObjectSectionAnimation">
                 <div class="card">
-                    <div class="section-title" id="objectNameToSave">ObjectNameToSave</div>
+                    <h3 id="objectNameToSave">ObjectNameToSave</h3>
                 </div>
 
                 <div class="card" id="propertiesSaveObjectListWithoutDefaultValueHandler">
@@ -238,8 +242,8 @@
                     <div class="section-title" data-locale-key="objectSavedSection">objectSavedSection</div>
                 </div>
 
-                <button id="OpenInAnyTypeBtn" class="btn-primary">
-                    <span id="OpenInAnyTypeBtnText" data-locale-key="OpenInAnyType">OpenInAnyType</span>
+                <button id="OpenInAnytypeBtn" class="btn-primary">
+                    <span id="OpenInAnytypeBtnText" data-locale-key="OpenInAnytype">OpenInAnytype</span>
                 </button>
             </div>
         </div>
@@ -250,8 +254,8 @@
                     <div id="blockedSectionText" class="section-title">blockedSection</div>
                 </div>
 
-                <button id="OpenAnyTypeBtn" class="btn-primary">
-                    <span id="OpenAnyTypeBtnText" data-locale-key="OpenAnyType">OpenAnyType</span>
+                <button id="OpenAnytypeBtn" class="btn-primary">
+                    <span id="OpenAnytypeBtnText" data-locale-key="OpenAnytype">OpenAnytype</span>
                 </button>
             </div>
         </div>

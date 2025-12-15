@@ -2,16 +2,16 @@
 
 let consoleLog = function (messageText, ...argsL) {
     if (argsL !== undefined && argsL.length > 0)
-        console.log("[SaveToAnyType] %c[Back]%c " + messageText + " %c[Params]%c", "color: green; font-weight: bold;", "", "color: blue; font-weight: bold;", "", argsL);
+        console.log("[SaveToAnytype] %c[Back]%c " + messageText + " %c[Params]%c", "color: green; font-weight: bold;", "", "color: blue; font-weight: bold;", "", argsL);
     else
-        console.log("[SaveToAnyType] %c[Back]%c " + messageText, "color: green; font-weight: bold;", "");
+        console.log("[SaveToAnytype] %c[Back]%c " + messageText, "color: green; font-weight: bold;", "");
 }
 
 let consoleError = function (messageText, ...argsL) {
     if (argsL !== undefined && argsL.length > 0)
-        console.error("[SaveToAnyType] %c[Back]%c " + messageText + " %c[Params]%c", "color: green; font-weight: bold;", "", "color: blue; font-weight: bold;", "", argsL);
+        console.error("[SaveToAnytype] %c[Back]%c " + messageText + " %c[Params]%c", "color: green; font-weight: bold;", "", "color: blue; font-weight: bold;", "", argsL);
     else
-        console.error("[SaveToAnyType] %c[Back]%c " + messageText, "color: green; font-weight: bold;", "");
+        console.error("[SaveToAnytype] %c[Back]%c " + messageText, "color: green; font-weight: bold;", "");
 }
 
 consoleLog('Background script loading...');
@@ -45,27 +45,27 @@ function CreateContextMenusButtons(request) {
 
         // Create page context menu
         api.contextMenus.create({
-            id: "save-to-anytype",
+            id: "save-to-Anytype",
             title: request.menuOption1,
             contexts: ["page", "link"]
         }, function () {
             if (chrome.runtime.lastError) {
-                consoleError('Error creating save-to-anytype menu:', chrome.runtime.lastError.message);
+                consoleError('Error creating save-to-Anytype menu:', chrome.runtime.lastError.message);
             } else {
-                consoleLog('✓ Context menu "save-to-anytype" created');
+                consoleLog('✓ Context menu "save-to-Anytype" created');
             }
         });
 
         // Create selection context menu
         chrome.contextMenus.create({
-            id: "save-selection-to-anytype",
+            id: "save-selection-to-Anytype",
             title: request.menuOption2,
             contexts: ["selection"]
         }, function () {
             if (chrome.runtime.lastError) {
                 consoleError('Error creating save-selection menu:', chrome.runtime.lastError.message);
             } else {
-                consoleLog('✓ Context menu "save-selection-to-anytype" created');
+                consoleLog('✓ Context menu "save-selection-to-Anytype" created');
             }
         });
     });
@@ -76,7 +76,7 @@ if (chrome && chrome.contextMenus && chrome.contextMenus.onClicked) {
     chrome.contextMenus.onClicked.addListener(async function (info, tab) {
         consoleLog('Context menu clicked:', info.menuItemId);
 
-        if (info.menuItemId === "save-to-anytype") {
+        if (info.menuItemId === "save-to-Anytype") {
             // Normal page save - just open popup
             consoleLog('Opening popup for page save');
             try {
@@ -85,7 +85,7 @@ if (chrome && chrome.contextMenus && chrome.contextMenus.onClicked) {
                 consoleError('Could not open popup:', error);
             }
         }
-        else if (info.menuItemId === "save-selection-to-anytype") {
+        else if (info.menuItemId === "save-selection-to-Anytype") {
             // Save selected text
             consoleLog('Saving selected text');
             try {
@@ -127,15 +127,15 @@ if (chrome && chrome.contextMenus && chrome.contextMenus.onClicked) {
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.type === "log") {
         if (request.args !== undefined && request.args.length > 0)
-            console.log("[SaveToAnyType] %c[Popap]%c " + request.message + " %c[Params]%c", "color: yellow; font-weight: bold;", "", "color: blue; font-weight: bold;", "", request.args);
+            console.log("[SaveToAnytype] %c[Popap]%c " + request.message + " %c[Params]%c", "color: yellow; font-weight: bold;", "", "color: blue; font-weight: bold;", "", request.args);
         else
-            console.log("[SaveToAnyType] %c[Popap]%c " + request.message, "color: yellow; font-weight: bold;", "");
+            console.log("[SaveToAnytype] %c[Popap]%c " + request.message, "color: yellow; font-weight: bold;", "");
     }
     else if (request.type === "error") {
         if (request.args !== undefined && request.args.length > 0)
-            console.error("[SaveToAnyType] %c[Popap]%c " + request.message + " %c[Params]%c", "color: yellow; font-weight: bold;", "", "color: blue; font-weight: bold;", "", request.args);
+            console.error("[SaveToAnytype] %c[Popap]%c " + request.message + " %c[Params]%c", "color: yellow; font-weight: bold;", "", "color: blue; font-weight: bold;", "", request.args);
         else
-            console.error("[SaveToAnyType] %c[Popap]%c " + request.message, "color: yellow; font-weight: bold;", "");
+            console.error("[SaveToAnytype] %c[Popap]%c " + request.message, "color: yellow; font-weight: bold;", "");
     }
 
     if (request.action === "getTabInfo") {

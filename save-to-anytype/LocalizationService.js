@@ -6,7 +6,7 @@
 
 // To localize something from popap.js, use: Localize('HERE IS THE LOCALIZATION KEY', state.language)
 // If you need to use it from another script, use (make sure the language is already loaded and this method exists) before using: window.LocalizeGlobal("HERE IS THE LOCALIZATION KEY")
-// If you need to localize something in HTML: <span id="OpenAnyTypeBtnText" data-locale-key="OpenAnyType">OpenAnyType</span>
+// If you need to localize something in HTML: <span id="OpenAnytypeBtnText" data-locale-key="OpenAnytype">OpenAnytype</span>
 // If you need to localize a placeholder in HTML: <input type="password" id="apiKeyInput" data-locale-placeholder="EnterYourAPIKey" placeholder="Enter your API Key">
 
 let localizationLoaded = false;
