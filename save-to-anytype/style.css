@@ -919,8 +919,8 @@ strong {
   display: inline-block;
   margin: 0 -4px 0 8px;
   padding-left: 16px;
-  border-left: 1px solid #003642;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="6 6 12 12"><path d="M6 6L18 18M6 18L18 6" stroke="black" stroke-width="3"/></svg>');
+  border-left: 1px solid #bdbdbd;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23BDBDBD" viewBox="6 6 12 12"><path d="M6 6L18 18M6 18L18 6" stroke="%23BDBDBD" stroke-width="3"/></svg>');
   background-size: 10px;
   width: 8px;
   line-height: 1;
@@ -991,7 +991,7 @@ strong {
   margin-bottom: 3.75px;
   background-color: var(--accent-color);
   border: 1px solid var(--color1);
-  color: var(--text-color-inverted);
+  color: #ffffff;
   word-break: break-all;
   box-sizing: border-box;
   height: fit-content;

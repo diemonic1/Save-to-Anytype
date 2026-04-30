@@ -5,6 +5,26 @@ const API_VERSION = '2025-11-08';
 // constants
 const DEFAULT_ACCENT_COLOR = '#ff3030ff';
 
+// Color normalization
+function normalizeColor(colorValue) {
+    if (!colorValue) return "#181818";
+
+    const colorMap = {
+        'grey': '#414141',
+        'yellow': '#6c630f',
+        'orange': '#5c2a06',
+        'red': '#4a0a08',
+        'pink': '#4a0828',
+        'purple': '#3d0e68',
+        'blue': '#162060',
+        'ice': '#023a58',
+        'teal': '#0b4f4a',
+        'lime': '#1a3a0a'
+    };
+
+    return colorMap[colorValue.toLowerCase()] || colorValue;
+}
+
 // State
 let state = {
     apiKey: null,
@@ -2311,6 +2331,41 @@ ${captionText}
             currentForm = form;
             propertiesListForSaving = [];
 
+            const initializeChoicesWithColor = (selectElement, needToDisableChoice) => {
+                const choice = new Choices(selectElement, {
+                    removeItemButton: true,
+                    searchEnabled: true,
+                    shouldSort: false,
+                });
+
+                const applyColorToChoices = () => {
+                    const items = selectElement.parentElement.querySelectorAll('.choices__item');
+                    items.forEach(item => {
+                        const value = item.getAttribute('data-value');
+                        const option = selectElement.querySelector(`option[value="${value}"]`);
+                        if (option) {
+                            const color = normalizeColor(option.getAttribute('prefered-color'));
+                            if (color) {
+                                item.style.backgroundColor = color;
+                            }
+                        }
+                    });
+                };
+
+                applyColorToChoices();
+
+                const observer = new MutationObserver(applyColorToChoices);
+                observer.observe(selectElement.parentElement, {
+                    childList: true,
+                    subtree: true
+                });
+
+                if (needToDisableChoice)
+                    choice.removeActiveItems();
+
+                return choice;
+            };
+
             const typesResponse = await fetch(`${API_BASE_URL}/spaces/${form.spaceId}/types/${form.type.id}`, {
                 headers: {
                     'Authorization': `Bearer ${state.apiKey}`,
@@ -2433,6 +2488,7 @@ ${captionText}
                     else if (property.format === "select" || property.format === "multi_select") {
                         needToCreateChoices = true;
                         const tags = await loadPropertieTags(property.id);
+                        consoleLog(property.name + ' - variants: ', tags);
 
                         propertyHTML.innerHTML = `
                                     <div class="poperty-head">
@@ -2444,6 +2500,7 @@ ${captionText}
                                             ${tags.map(o => `
                                                 <option 
                                                     value="${o.id}" 
+                                                    prefered-color="${o.color || ''}"
                                                     ` + ((savedPropertyValueExist && savedProperty.SelectedValueByUser.includes(o.id)) ? "selected" : "") + `
                                                 >
                                                     ${o.name || o.id}
@@ -2545,14 +2602,7 @@ ${captionText}
                     propertiesListForSaving.push({ KeyForAnytypeAPI: propertieForPrint.propertyKey, IdInHTML: propertieForPrint.propertyId + "_SO", value_type: propertieForPrint.value_type });
 
                     if (propertieForPrint.needToCreateChoices) {
-                        const choice = new Choices(document.getElementById(propertieForPrint.propertyId + "_SO"), {
-                            removeItemButton: true,
-                            searchEnabled: true,
-                            shouldSort: false,
-                        });
-
-                        if (propertieForPrint.needToDisableChoice)
-                            choice.removeActiveItems();
+                        initializeChoicesWithColor(document.getElementById(propertieForPrint.propertyId + "_SO"), propertieForPrint.needToDisableChoice);
                     }
                 }
 
@@ -2564,14 +2614,7 @@ ${captionText}
                     propertiesListForSaving.push({ KeyForAnytypeAPI: propertieForPrint.propertyKey, IdInHTML: propertieForPrint.propertyId + "_SO", value_type: propertieForPrint.value_type });
 
                     if (propertieForPrint.needToCreateChoices) {
-                        const choice = new Choices(document.getElementById(propertieForPrint.propertyId + "_SO"), {
-                            removeItemButton: true,
-                            searchEnabled: true,
-                            shouldSort: false,
-                        });
-
-                        if (propertieForPrint.needToDisableChoice)
-                            choice.removeActiveItems();
+                        initializeChoicesWithColor(document.getElementById(propertieForPrint.propertyId + "_SO"), propertieForPrint.needToDisableChoice);
                     }
                 }
 
