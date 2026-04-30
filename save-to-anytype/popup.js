@@ -1077,10 +1077,10 @@ ${captionText}
             accentColor: state.accentColor,
             whatDoOnStart: state.whatDoOnStart,
             LastUsedForm: state.LastUsedForm,
-            zoom: elements.zoomRangeValue.value,
-            height: elements.heightRangeValue.value,
-            width: elements.widthRangeValue.value,
-            collapseOnOpenForm: elements.collapseInputSettings.checked.toString(),
+            zoom: state.zoom,
+            height: state.height,
+            width: state.width,
+            collapseOnOpenForm: state.collapseOnOpenForm,
             forms: state.forms
         });
 
