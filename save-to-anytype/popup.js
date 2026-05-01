@@ -904,44 +904,35 @@ ${captionText}
         return /^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{4}|[A-Fa-f0-9]{8})$/.test(str);
     }
 
+    function populateThemeSelectOptions() {
+        elements.themeSelect.innerHTML = '';
+
+        Object.entries(window.ThemeConfig.themes).forEach(([themeName, themeDefinition]) => {
+            const option = document.createElement('option');
+            option.value = themeName;
+
+            if (themeName === 'dark') {
+                option.textContent = Localize('Dark', state.language);
+            } else if (themeName === 'light') {
+                option.textContent = Localize('Light', state.language);
+            }
+            else {
+                option.textContent = themeDefinition.label;
+            }
+
+            elements.themeSelect.appendChild(option);
+        });
+    }
+
     function ChangeTheme() {
-        linkCSS = document.documentElement;
+        const linkCSS = document.documentElement;
+        const themeConfig = window.ThemeConfig.getThemeConfig(state.theme, state.accentColor);
 
-        if (state.theme === "dark") { // dark mode
-            linkCSS.style.setProperty('--background', '#1a1a1a');
-            linkCSS.style.setProperty('--background-focus', '#1a1a1a');
-            linkCSS.style.setProperty('--input-text-color', '#e0e0e0');
-            linkCSS.style.setProperty('--section-title-color', '#888888');
-            linkCSS.style.setProperty('--text-color', '#e0e0e0');
-            linkCSS.style.setProperty('--text-color-inverted', '#080808');
-            linkCSS.style.setProperty('--back-color', '#0f0f0f');
-            linkCSS.style.setProperty('--color1', '#101010');
-            linkCSS.style.setProperty('--color2', '#070707');
-            linkCSS.style.setProperty('--color3', '#1a1a1a');
-            linkCSS.style.setProperty('--color4', '#333333');
-            linkCSS.style.setProperty('--color5', '#363636');
-            linkCSS.style.setProperty('--card-color', '#000000');
-            linkCSS.style.setProperty('--icon-brightness', '255');
-        }
-        else { // light mode
-            linkCSS.style.setProperty('--background', '#ffffff');
-            linkCSS.style.setProperty('--background-focus', '#ecececff');
-            linkCSS.style.setProperty('--input-text-color', '#080808');
-            linkCSS.style.setProperty('--section-title-color', '#080808');
-            linkCSS.style.setProperty('--text-color', '#080808');
-            linkCSS.style.setProperty('--text-color-inverted', '#e0e0e0');
-            linkCSS.style.setProperty('--back-color', '#ebebeb');
-            linkCSS.style.setProperty('--color1', '#ddd');
-            linkCSS.style.setProperty('--color2', '#fff');
-            linkCSS.style.setProperty('--color3', '#f9f9f9');
-            linkCSS.style.setProperty('--color4', '#b7b7b7');
-            linkCSS.style.setProperty('--color5', '#f2f2f2');
-            linkCSS.style.setProperty('--card-color', '#ffffff');
-            linkCSS.style.setProperty('--icon-brightness', '0');
-        }
+        Object.entries(themeConfig.variables).forEach(([variableName, variableValue]) => {
+            linkCSS.style.setProperty(variableName, variableValue);
+        });
 
-        linkCSS.style.setProperty('--accent-color', state.accentColor);
-        elements.colorInput.jscolor.fromString(state.accentColor);
+        elements.colorInput.jscolor.fromString(themeConfig.accentColor);
 
         elements.zoomRangeValue.value = state.zoom;
         elements.zoomContainer.style.zoom = state.zoom;
@@ -956,7 +947,6 @@ ${captionText}
 
     elements.colorInput.addEventListener("change", () => {
         consoleLog("Selected color:", elements.colorInput.value);
-
 
         if (isHexColor(elements.colorInput.value)) {
             state.accentColor = elements.colorInput.value;
@@ -1399,6 +1389,8 @@ ${captionText}
         elements.loadingSection.classList.add('hidden');
 
         if (themeSelectChoices === null) {
+            populateThemeSelectOptions();
+
             themeSelectChoices = new Choices(elements.themeSelect, {
                 removeItemButton: false,
                 searchEnabled: false,

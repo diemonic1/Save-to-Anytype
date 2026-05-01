@@ -1,4 +1,8 @@
 :root {
+    --background: #1a1a1a;
+    --background-focus: #1a1a1a;
+    --input-text-color: #e0e0e0;
+    --section-title-color: #888888;
     --text-color: #080808;
     --text-color-inverted: #080808;
     --back-color: #ebebeb;
@@ -8,14 +12,13 @@
     --color4: #b7b7b7;
     --color5: #f2f2f2;
     --card-color: #ffffff;
+    --borders-color: #2a2a2a;
     --icon-brightness: 0;
-    --accent-color: #ff3030ff;
-    --background: #1a1a1a;
-    --background-focus: #1a1a1a;
-    --input-text-color: #e0e0e0;
-    --section-title-color: #888888;
+
     --btnSaveObject: #355d33;
     --btnSaveObjectHover: #264525;
+
+    --accent-color: #ff3030ff;
 }
 
 .jscolor-border {
@@ -325,7 +328,7 @@ h3 {
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 15px;
-  border: 1px solid #2a2a2a;
+  border: 1px solid var(--borders-color);
   transition: all 0.3s ease;
 }
 
@@ -366,7 +369,7 @@ h3 {
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 15px;
-  border: 1px solid #2a2a2a;
+  border: 1px solid var(--borders-color);
   text-align: center;
   font-size: 16px;
 }
@@ -376,7 +379,7 @@ h3 {
     border-radius: 12px;
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid #2a2a2a;
+    border: 1px solid var(--borders-color);
 }
 
 .column-flex-table {
@@ -406,7 +409,7 @@ select,
 textarea {
     width: 100%;
     padding: 10px 12px;
-    border: 1px solid #2a2a2a;
+    border: 1px solid var(--borders-color);
     border-radius: 8px;
     font-size: 14px;
     transition: all 0.3s ease;
@@ -506,7 +509,7 @@ button {
 .btn-secondary {
     background: var(--color3);
     color: var(--text-color);
-    border: 1px solid #2a2a2a;
+    border: 1px solid var(--borders-color);
 }
 
 .btn-secondary:hover {
@@ -516,7 +519,7 @@ button {
 .btn-danger {
     background: var(--color3);
     color: #ff6b6b;
-    border: 1px solid #ff6b6b;
+    border: 1px solid var(--borders-color);
 }
 
 .icon {
@@ -740,7 +743,7 @@ button {
 .collections-list {
     max-height: 150px;
     overflow-y: auto;
-    border: 1px solid #2a2a2a;
+    border: 1px solid var(--borders-color);
     border-radius: 8px;
     padding: 8px;
     margin-top: 10px;
