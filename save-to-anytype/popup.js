@@ -565,6 +565,20 @@ function GetPropertyIconSVG(property) {
             </svg>`
 }
 
+function getCheckboxElement(id) {
+    return `
+        <label for="` + id + `">
+            <svg class="checkbox-rect-icon" viewBox="1 3 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round">
+                </g>
+                <g> 
+                    <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    </path> 
+                </g>
+            </svg>
+        </label>`;
+}
+
 // Initialize
 
 if (document.readyState === "complete" || document.readyState === "interactive") {
@@ -643,6 +657,14 @@ async function localPopapInited() {
         widthRangeValue: document.getElementById('widthRangeValue'),
         widthCurrentRange: document.getElementById('widthCurrentRange')
     };
+
+    // Inject SVG into collapseInputSettings label (only once)
+    const collapseLabel = document.querySelector('label[for="collapseInputSettings"]');
+    if (collapseLabel && collapseLabel.innerHTML.trim() === '') {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = getCheckboxElement('collapseInputSettings');
+        collapseLabel.innerHTML = tempDiv.querySelector('label').innerHTML;
+    }
 
     const chromeTABS = await chrome.runtime.sendMessage({
         action: "GET_TABS"
@@ -1432,7 +1454,6 @@ ${captionText}
         languageSelectChoices.setChoiceByValue(state.language);
 
         elements.collapseInputSettings.checked = state.collapseOnOpenForm === "true";
-        //elements.collapseInputSettings.value = state.collapseOnOpenForm;
     }
 
     function authSection() {
@@ -2468,7 +2489,7 @@ ${captionText}
                                             placeholder="` + property.name + `" `
                             + (savedPropertyValueExist && !printTextarea ? (`value="` + value + `" `) : (` `)) + `
                                         >` + (printTextarea ? (savedPropertyValueExist ? (value + "</textarea>") : "</textarea>") : "") + `
-                                    ` + (property.format === "checkbox" ? '<label for="' + property.id + '_SO"></label>' : "") + `    
+                                    ` + (property.format === "checkbox" ? getCheckboxElement(property.id + "_SO") : "") + `    
                                     </div>
                                 `;
                     }

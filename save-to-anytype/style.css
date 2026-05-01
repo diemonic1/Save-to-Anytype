@@ -124,6 +124,15 @@ body {
 }
 
 /* checkbox-rect */
+.checkbox-rect-icon {
+  position: relative;
+  top: -22px;
+  stroke: var(--text-color-inverted);
+  display: none;
+}
+.checkbox-rect input[type="checkbox"]:checked + label .checkbox-rect-icon {
+  display: block;
+}
 .checkbox-rect {
   margin-bottom: 0px !important;
 }
@@ -139,6 +148,8 @@ body {
 .checkbox-rect input[type="checkbox"] + label:last-child {
   margin-bottom: 0;
   cursor: pointer;
+  height: 1px;
+  display: inline-grid;
 }
 .checkbox-rect input[type="checkbox"] + label:before {
   content: "";
