@@ -74,6 +74,7 @@ let WasSubscribeToggleCollapsedButton = false;
 
 let turndownService = undefined;
 
+// TODO: перенести в другой файл
 function GetPropertyIconSVG(property) {
     // text, url, multi_select, checkbox, select, collection, template, objects, email, phone, number, date - I added icons
 
