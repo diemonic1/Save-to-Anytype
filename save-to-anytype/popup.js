@@ -2212,10 +2212,6 @@ ${captionText}
                         useDeleteButtonInChoices = false;
                         searchEnabled = false;
 
-                        // TODO: нужно добавить свойство, определяющее, нужно ли у чойсеса спавнить кнопку удаления выбора, 
-                        // и для файлов эту кнопку запретить
-
-
                         // TODO: здесь добавляем предпоказ имени и картинки
                         propertyHTML.innerHTML = `
                             <div class="poperty-head">
