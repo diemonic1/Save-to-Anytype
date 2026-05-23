@@ -342,9 +342,58 @@ ${captionText}
         return Localize(key, state.language);
     }
 
+    //#region Files work
+
+    // TODO: в файле локализации добавить перевод на все языки
+
+    // TODO: тут описать, как добавлять новые типы файлов для сохранени
+    let filesPropierties = [
+        { id: "none_file", nameKey: "none_file", function: async () => null },
+        { id: "image_by_url", nameKey: "image_by_url", function: UploadImageFromUrl },
+        { id: "html_file", nameKey: "html_file", function: UploadHtmlPage },
+        { id: "screenshot", nameKey: "screenshot", function: UploadScreenshot },
+    ];
+
+    async function UploadImageFromUrl() {
+        const responce = await chrome.runtime.sendMessage({
+            action: "executeScript_UploadImageFromUrl",
+            uploadUrl: `${API_BASE_URL}/spaces/${selectedSpaceId}/files`,
+            imageUrl: GetPagePropiertie("page_image"),
+            token: state.apiKey,
+            apiVersion: API_VERSION
+        });
+        
+        return responce;
+    }
+
+    async function UploadHtmlPage() {
+        const responce = await chrome.runtime.sendMessage({
+            action: "executeScript_UploadHtmlFile",
+            uploadUrl: `${API_BASE_URL}/spaces/${selectedSpaceId}/files`,
+            pageUrl: GetPagePropiertie("page_url"),
+            token: state.apiKey,
+            apiVersion: API_VERSION
+        });
+
+        return responce;
+    }
+
+    async function UploadScreenshot() {
+        const responce = await chrome.runtime.sendMessage({
+            action: "executeScript_UploadScreenshot",
+            uploadUrl: `${API_BASE_URL}/spaces/${selectedSpaceId}/files`,
+            token: state.apiKey,
+            apiVersion: API_VERSION
+        });
+
+        return responce;
+    }
+
+    //#endregion
+
     //#region Work with WebPage
 
-    // To add a new page property, you need to add its object to the WebPagePropierties sheet and also add processing 
+    // To add a new page property, you need to add its object to the WebPagePropierties sheet and also add processing
     // in the method document.addEventListener('DOMContentLoaded', async () => {
 
     let WebPagePropierties = [
@@ -1619,7 +1668,6 @@ ${captionText}
                 allObjects = allObjects.data;
 
                 allObjects.forEach(element => {
-                    console.log("object: ", element);
                     if (element?.icon)
                         CreateImageReferenceForChoices(element?.icon?.file || element?.icon?.emoji, String(element?.id ?? ""));
                 });
@@ -1696,7 +1744,6 @@ ${captionText}
 
             for (const property of properties) {
 
-                if (property.format === "files") continue; // images will be added later
                 if (property.name === "Created by") continue; // we don't need this
                 if (property.name === "Creation date") continue; // we don't need this
 
@@ -1771,15 +1818,49 @@ ${captionText}
                                 </div>
                             `;
                 }
+                else if (property.format === "files") {
+                    propertyHTML.innerHTML = `
+                        <div class="file-selector-group">
+                            <div class="poperty-head">
+                                ` + GetPropertyIconSVG(property.format) + `
+                                <div class="section-title">` + property.name + `</div>
+                            </div>
+                            <div class="form-group">
+                                <select id="` + property.key + `">
+                                    ${filesPropierties.map(o => `
+                                        <option value="${o.id}">${Localize(o.nameKey, state.language) || o.id}</option>
+                                        `).join("")}
+                                </select>
+                            </div>
+                            <div class="poperty-head">
+                                ` + GetPropertyIconSVG("text") + `
+                                <div class="section-title">` + Localize("FileNameFormat", state.language) + `</div>
+                            </div>
+                            <div class="form-group">
+                                <input
+                                    type="text"
+                                    id="` + property.key + `_file_name_format"
+                                    name="` + property.key + `_file_name_format"
+                                    required
+                                    minlength="1"
+                                    maxlength="25"
+                                    size="10" />
+                            </div>
+                        </div>
+                    `;
+                }
 
                 if (property.format != "objects") {
                     elements.propertiesListHandler.appendChild(propertyHTML);
                     propertiesListSpawned.push(propertyHTML);
 
                     choice = new Choices(document.getElementById(property.key), {
-                        removeItemButton: true,
-                        searchEnabled: true,
-                        shouldSort: false,
+                        removeItemButton: 
+                            property.format === "files" ? false : true,
+                        searchEnabled: 
+                            (property.format === "select" || property.format === "multi_select") ? true : false,
+                        shouldSort: 
+                            false,
                     });
                 }
 
@@ -1788,7 +1869,14 @@ ${captionText}
                 );
 
                 if (property.id === "nameId") {
-                    choice.setChoiceByValue(property.id);
+                    choice.setChoiceByValue("tab_title");
+                }
+                else if (property.format === "url" || property.key.toLowerCase() === "url" || property.name.toLowerCase() === "url"
+                  || property.key.toLowerCase() === "page_url" || property.name.toLowerCase() === "page_url") {
+                    choice.setChoiceByValue("page_url");
+                }
+                else if (property.format === "files") {
+                    choice.setChoiceByValue("none_file");
                 }
                 else {
                     choice.removeActiveItems();
@@ -2019,7 +2107,6 @@ ${captionText}
 
                     consoleLog('Found saved property: ', savedProperty);
 
-                    if (property.format === "files") continue; // images will be added later
                     if (property.name === "Created by") continue; // we don't need this
                     if (property.name === "Creation date") continue; // we don't need this
 
@@ -2104,13 +2191,37 @@ ${captionText}
                                     </div>
                                 `;
                     }
+                    else if (property.format === "files") {
+                        needToCreateChoices = true;
+
+                        // TODO: здесь добавляем предпоказ имени и картинки
+                        propertyHTML.innerHTML = `
+                            <div class="poperty-head">
+                                ` + GetPropertyIconSVG(property.format) + `
+                                <div class="section-title">` + property.name + `</div>
+                            </div>
+                            <div class="form-group">
+                                <select id="` + property.id + `_SO">
+                                    ${filesPropierties.map(o => `
+                                        <option 
+                                            value="${o.id}"
+                                            ` + ((savedPropertyValueExist && savedProperty.SelectedValueByUser.includes(o.id)) ? "selected" : "") + `
+                                        >
+                                            ${Localize(o.nameKey, state.language) || o.id}
+                                        </option>
+                                        `).join("")
+                                    }
+                                </select>
+                            </div>
+                        `;
+                    }
 
                     if (property.format === "checkbox") {
                         propertyHTML.classList.add("poperty-head");
                         propertyHTML.classList.add("margin-bottom15");
                     }
 
-                    if (savedPropertyValueExist && property.id !== "nameId")
+                    if ((savedPropertyValueExist && property.id !== "nameId" && property.format !== "files") || (property.format === "files" && savedProperty.SelectedValueByUser !== "none_file"))
                         propertiesForPrintWithDefaultValue.push({ needToCreateChoices: needToCreateChoices, needToDisableChoice: !savedPropertyValueExist, propertyHTML: propertyHTML, propertyId: property.id, propertyKey: property.key, value_type: property.format });
                     else
                         propertiesForPrintWithoutDefaultValue.push({ needToCreateChoices: needToCreateChoices, needToDisableChoice: !savedPropertyValueExist, propertyHTML: propertyHTML, propertyId: property.id, propertyKey: property.key, value_type: property.format });
@@ -2255,7 +2366,7 @@ ${captionText}
 
     elements.saveObjectBtn.addEventListener('click', async () => {
         consoleLog("Start saving object");
-        consoleLog("properties List For Saving: " + propertiesListForSaving);
+        consoleLog("properties List For Saving: ", propertiesListForSaving);
 
         elements.saveObjectBtnText.innerHTML = '<span class="loading"></span> ' + Localize("Saving", state.language);
         elements.saveObjectBtn.disabled = true;
@@ -2274,6 +2385,7 @@ ${captionText}
                     && propiertyPrinted.KeyForAnytypeAPI !== "CollectionPrintedSaveToAnytype"
                     && propiertyPrinted.KeyForAnytypeAPI !== "TemplatePrintedSaveToAnytype"
                     && propiertyPrinted.KeyForAnytypeAPI !== "objectBodyKeySaveToAnytype"
+                    && propiertyPrinted.value_type !== "files"
                 ) {
                     let value = null;
 
@@ -2286,6 +2398,42 @@ ${captionText}
 
                     if (value !== null && value !== undefined && value !== "")
                         properties_final_list.push({ key: propiertyPrinted.KeyForAnytypeAPI, [propiertyPrinted.value_type]: value });
+                }
+                else if (propiertyPrinted.value_type === "files") {
+                    let selectedFileType = document.getElementById(propiertyPrinted.IdInHTML).value;
+
+                    if (selectedFileType != "none_file") {
+                        consoleLog("selected File Type: ", selectedFileType);
+
+                        // TODO: убрать это, когда адрес апи добавят
+                        const response = await fetch(`${API_BASE_URL}/spaces/${selectedSpaceId}/files`, {
+                            method: "POST",
+                            headers: {
+                                Authorization: `Bearer ${state.apiKey}`,
+                                'Content-Type': 'multipart/form-data',
+                                'Accept': 'application/json',
+                                'Anytype-Version': API_VERSION
+                            },
+                            body: "dfsf"
+                        });
+                        if (!response.ok) {
+
+                            const errorText =
+                                await response.text();
+
+                            throw new Error(
+                                `File upload failed: status: ${response.status}, errorText: ${errorText}`
+                            );
+                        }
+                        // TODO: убрать это, когда адрес апи добавят
+
+                        const selectedFilePropiertie = filesPropierties.find(p => p.id === selectedFileType);
+
+                        if (selectedFilePropiertie?.function) {
+                            const responce = await selectedFilePropiertie.function();
+                            consoleLog("file function responce: ", responce);
+                        }
+                    }
                 }
                 else if (propiertyPrinted.KeyForAnytypeAPI === "nameKeySaveToAnytype") {
                     objectName = document.getElementById(propiertyPrinted.IdInHTML).value;
@@ -2301,11 +2449,11 @@ ${captionText}
                 }
             }
 
-            consoleLog("properties_final_list: " + properties_final_list);
-            consoleLog("objectName: " + objectName);
-            consoleLog("objectBody: " + objectBody);
-            consoleLog("ObjectCollectionId: " + ObjectCollectionId);
-            consoleLog("ObjectTemplateId: " + ObjectTemplateId);
+            consoleLog("properties_final_list: ", properties_final_list);
+            consoleLog("objectName: ", objectName);
+            consoleLog("objectBody: ", objectBody);
+            consoleLog("ObjectCollectionId: ", ObjectCollectionId);
+            consoleLog("ObjectTemplateId: ", ObjectTemplateId);
 
             // Create object in Anytype
             let objectData = {

@@ -38,6 +38,7 @@ function toggleOverlay() {
     overlay.style.right = "10px";
     overlay.style.zIndex = "999999";
     overlay.style.width = "470px";
+    overlay.style.minWidth = "340px";
     overlay.style.height = "70%";
     overlay.style.border = "2px solid #000";
     overlay.style.borderRadius = "11px";

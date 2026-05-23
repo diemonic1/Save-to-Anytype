@@ -135,6 +135,13 @@ body {
   transform: translateY(-1px);
 }
 
+.file-selector-group {
+  padding: 9px;
+  border: 2px solid var(--borders-color);
+  border-radius: 20px;
+  margin-bottom: 15px;
+}
+
 .custom-tooltip {
   position: fixed;
   padding: 6px 10px;

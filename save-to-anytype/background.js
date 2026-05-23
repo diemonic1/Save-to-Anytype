@@ -14,6 +14,8 @@ let consoleError = function (messageText, ...argsL) {
 
 consoleLog('Background script loading...');
 
+//#region Work with page data
+
 function findLargestVisibleImage() {
     const imgs = Array.from(document.querySelectorAll("img"));
 
@@ -137,6 +139,130 @@ function extractPageText() {
         return "PAGE PARSE ERROR";
     }
 }
+
+async function uploadFile(uploadUrl, file, token, apiVersion) {
+
+    const formData = new FormData();
+
+    formData.append("file", file);
+
+    const response = await fetch(uploadUrl, {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+            'Accept': 'application/json',
+            'Anytype-Version': apiVersion
+        },
+        body: formData
+    });
+
+    if (!response.ok) {
+
+        const errorText =
+            await response.text();
+
+        throw new Error(
+            `File upload failed: status: ${response.status}, errorText: ${errorText}, uploadUrl: ${uploadUrl}`
+        );
+    }
+
+    return await response.json();
+}
+
+async function uploadImageFromUrl(uploadUrl, imageUrl, token, apiVersion) {
+    const response =
+        await fetch(imageUrl);
+
+    if (!response.ok) {
+        throw new Error(
+            "Failed to download image"
+        );
+    }
+
+    const blob =
+        await response.blob();
+
+    const extension =
+        blob.type.split("/")[1] || "png";
+
+    const file = new File(
+        [blob],
+        `image.${extension}`,
+        {
+            type: blob.type
+        }
+    );
+
+    return await uploadFile(
+        uploadUrl,
+        file,
+        token,
+        apiVersion
+    );
+}
+
+async function uploadHtmlPage(uploadUrl, pageUrl, token, apiVersion) {
+    const response =
+        await fetch(pageUrl);
+
+    if (!response.ok) {
+        throw new Error(
+            "Failed to download html page"
+        );
+    }
+
+    const html =
+        await response.text();
+
+    const file = new File(
+        [html],
+        "page.html",
+        {
+            type: "text/html"
+        }
+    );
+
+    return await uploadFile(
+        uploadUrl,
+        file,
+        token,
+        apiVersion
+    );
+}
+
+async function uploadScreenshot(uploadUrl, token, apiVersion) {
+    const dataUrl =
+        await chrome.tabs.captureVisibleTab(
+            null,
+            {
+                format: "png"
+            }
+        );
+
+    const response =
+        await fetch(dataUrl);
+
+    const blob =
+        await response.blob();
+
+    const file = new File(
+        [blob],
+        "screenshot.png",
+        {
+            type: "image/png"
+        }
+    );
+
+    return await uploadFile(
+        uploadUrl,
+        file,
+        token,
+        apiVersion
+    );
+}
+
+//#endregion
 
 // Utility function to get the appropriate browser API
 function getAPI() {
@@ -273,20 +399,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         return true; // Keep the message channel open for async response
     }
 
-    if (request.action === "saveToAnytype") {
-        consoleLog('Saving to Anytype...');
-        handleSaveToAnytype(request.data)
-            .then(function (response) {
-                consoleLog('Save successful');
-                sendResponse({ success: true, data: response });
-            })
-            .catch(function (error) {
-                consoleError('Save failed:', error);
-                sendResponse({ success: false, error: error.message });
-            });
-        return true;
-    }
-
     if (request.action === "CreateContextMenusButtons") {
         consoleLog('Saving to Anytype menu options ', request);
         CreateContextMenusButtons(request);
@@ -344,6 +456,62 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         );
         return true;
     }
+
+    if (request.action === "executeScript_UploadImageFromUrl") {
+        (async () => {
+            const result =
+                await uploadImageFromUrl(
+                    request.uploadUrl,
+                    request.imageUrl,
+                    request.token,
+                    request.apiVersion
+                );
+
+            sendResponse({
+                success: true,
+                data: result
+            });
+
+            return;
+        })();
+    }
+
+    if (request.action === "executeScript_UploadHtmlFile") {
+        (async () => {
+            const result =
+                await uploadHtmlPage(
+                    request.uploadUrl,
+                    request.pageUrl,
+                    request.token,
+                    request.apiVersion
+                );
+
+            sendResponse({
+                success: true,
+                data: result
+            });
+
+            return;
+        })();
+    }
+
+    if (request.action === "executeScript_UploadScreenshot") {
+        (async () => {
+            const result =
+                await uploadScreenshot(
+                    request.uploadUrl,
+                    request.token,
+                    request.apiVersion
+                );
+
+            sendResponse({
+                success: true,
+                data: result
+            });
+
+            return;
+        })();
+    }
 });
 
 chrome.action.onClicked.addListener(async (tab) => {
@@ -373,76 +541,6 @@ chrome.action.onClicked.addListener(async (tab) => {
         chrome.tabs.sendMessage(tab.id, { action: "TOGGLE_OVERLAY" });
     }
 });
-
-// Helper function to save to Anytype
-async function handleSaveToAnytype(data) {
-    consoleLog('handleSaveToAnytype called with:', data);
-
-    const apiKey = data.apiKey;
-    const spaceId = data.spaceId;
-    const collectionId = data.collectionId;
-    const title = data.title;
-    const url = data.url;
-    const description = data.description;
-
-    const API_BASE_URL = 'http://localhost:31009/v1';
-    const API_VERSION = '2025-05-20';
-
-    // Create object in Anytype
-    const objectData = {
-        name: title,
-        icon: {
-            emoji: "🔗",
-            format: "emoji"
-        },
-        body: '# ' + title + '\n\n[' + url + '](' + url + ')\n\n' + (description || ''),
-        type_key: "page"
-    };
-
-    consoleLog('Creating object with data:', objectData);
-
-    const response = await fetch(API_BASE_URL + '/spaces/' + spaceId + '/objects', {
-        method: 'POST',
-        headers: {
-            'Authorization': 'Bearer ' + apiKey,
-            'Content-Type': 'application/json',
-            'Anytype-Version': API_VERSION
-        },
-        body: JSON.stringify(objectData)
-    });
-
-    if (!response.ok) {
-        throw new Error('Failed to create object in Anytype');
-    }
-
-    const responseData = await response.json();
-    const createdObject = responseData.object;
-
-    consoleLog('Object created:', createdObject);
-
-    // If a collection is selected, add the object to it
-    if (collectionId && createdObject && createdObject.id) {
-        try {
-            consoleLog('Adding to collection:', collectionId);
-
-            await fetch(API_BASE_URL + '/spaces/' + spaceId + '/lists/' + collectionId + '/objects', {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + apiKey,
-                    'Content-Type': 'application/json',
-                    'Anytype-Version': API_VERSION
-                },
-                body: JSON.stringify({ objects: [createdObject.id] })
-            });
-
-            consoleLog('Added to collection successfully');
-        } catch (error) {
-            consoleLog('Could not add to collection:', error);
-        }
-    }
-
-    return createdObject;
-}
 
 // Keep service worker alive
 chrome.alarms.create('keep-alive', { periodInMinutes: 1 });
