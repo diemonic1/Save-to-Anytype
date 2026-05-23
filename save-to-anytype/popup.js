@@ -1901,6 +1901,11 @@ ${captionText}
         for (let index = 0; index < state.forms.length; index++) {
             const form = state.forms[index];
 
+            if (form == null || form == undefined || !form) {
+                showStatus(`Failed to load form with index ${index}`, "error");
+                continue;
+            }
+
             const formObj = document.createElement('div');
 
             const name = (form.formName) || ((form.type.icon.format === "emoji" ? (form.type.icon.emoji + " ") : "") + form.type.name);
@@ -1942,13 +1947,21 @@ ${captionText}
                         let formObjects = document.querySelectorAll(".formObject");
 
                         let newFormsOrder = [];
+                        const formsById = new Map(
+                            state.forms
+                                .filter(form => form && form.formId !== undefined && form.formId !== null)
+                                .map(form => [String(form.formId), form])
+                        );
 
                         for (let index = 0; index < formObjects.length; index++) {
                             const formObj = formObjects[index];
 
-                            const number = formObj.id.replace('formObject', '');
+                            const formId = formObj.id.replace('formObject', '');
+                            const form = formsById.get(String(formId));
 
-                            newFormsOrder.push(state.forms[number]);
+                            if (form) {
+                                newFormsOrder.push(form);
+                            }
                         }
 
                         state.forms = newFormsOrder;
