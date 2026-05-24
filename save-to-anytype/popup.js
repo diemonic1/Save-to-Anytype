@@ -5,26 +5,6 @@ const API_VERSION = '2025-11-08';
 // constants
 const DEFAULT_ACCENT_COLOR = '#ff3030ff';
 
-// Color normalization
-function normalizeColor(colorValue) {
-    if (!colorValue) return null;
-
-    const colorMap = {
-        'grey': '#414141',
-        'yellow': '#6c630f',
-        'orange': '#5c2a06',
-        'red': '#4a0a08',
-        'pink': '#4a0828',
-        'purple': '#3d0e68',
-        'blue': '#162060',
-        'ice': '#023a58',
-        'teal': '#0b4f4a',
-        'lime': '#1a3a0a'
-    };
-
-    return colorMap[colorValue.toLowerCase()] || colorValue;
-}
-
 // State
 let state = {
     apiKey: null,
@@ -74,22 +54,7 @@ let WasSubscribeToggleCollapsedButton = false;
 
 let turndownService = undefined;
 
-function getCheckboxElement(id) {
-    return `
-        <label for="` + id + `">
-            <svg class="checkbox-rect-icon" viewBox="1 3 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round">
-                </g>
-                <g> 
-                    <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    </path> 
-                </g>
-            </svg>
-        </label>`;
-}
-
-// Initialize
-
+// Running the extension's main method after loading the DOM
 if (document.readyState === "complete" || document.readyState === "interactive") {
     localPopapInited();
 } else {
@@ -97,7 +62,8 @@ if (document.readyState === "complete" || document.readyState === "interactive")
 }
 
 async function localPopapInited() {
-    // DOM Elements
+    //#region Elements on page
+
     const elements = {
         status: document.getElementById('status'),
         authSection: document.getElementById('authSection'),
@@ -167,6 +133,8 @@ async function localPopapInited() {
         widthCurrentRange: document.getElementById('widthCurrentRange')
     };
 
+    //#endregion
+
     // Inject SVG into collapseInputSettings label (only once)
     const collapseLabel = document.querySelector('label[for="collapseInputSettings"]');
     if (collapseLabel && collapseLabel.innerHTML.trim() === '') {
@@ -175,9 +143,62 @@ async function localPopapInited() {
         collapseLabel.innerHTML = tempDiv.querySelector('label').innerHTML;
     }
 
+    // Tab management
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            const tabName = tab.dataset.tab;
+
+            // Update active tab
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            // Show/hide tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${tabName}Tab`).classList.add('active');
+        });
+    });
+
+    //#region Helper Methods
+
     const chromeTABS = await chrome.runtime.sendMessage({
         action: "GET_TABS"
     });
+
+    // Color normalization
+    function normalizeColor(colorValue) {
+        if (!colorValue) return null;
+
+        const colorMap = {
+            'grey': '#414141',
+            'yellow': '#6c630f',
+            'orange': '#5c2a06',
+            'red': '#4a0a08',
+            'pink': '#4a0828',
+            'purple': '#3d0e68',
+            'blue': '#162060',
+            'ice': '#023a58',
+            'teal': '#0b4f4a',
+            'lime': '#1a3a0a'
+        };
+
+        return colorMap[colorValue.toLowerCase()] || colorValue;
+    }
+
+    function getCheckboxElement(id) {
+        return `
+            <label for="` + id + `">
+                <svg class="checkbox-rect-icon" viewBox="1 3 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round">
+                    </g>
+                    <g> 
+                        <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        </path> 
+                    </g>
+                </svg>
+            </label>`;
+    }
 
     function createTurndownService() {
         const service = new TurndownService({
@@ -213,23 +234,6 @@ ${captionText}
         return service;
     }
 
-    // Tab management
-    document.querySelectorAll('.tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            const tabName = tab.dataset.tab;
-
-            // Update active tab
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-
-            // Show/hide tab content
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            document.getElementById(`${tabName}Tab`).classList.add('active');
-        });
-    });
-
     function generateRandomId() {
         const now = new Date();
 
@@ -260,10 +264,12 @@ ${captionText}
         }
     }
 
+    // log message in console of service worker
     function consoleLog(messageText, ...argsL) {
         chrome.runtime.sendMessage({ message: messageText, type: "log", args: argsL });
     }
 
+    // log error in console of service worker
     function consoleError(messageText, ...argsL) {
         chrome.runtime.sendMessage({ message: messageText, type: "error", args: argsL });
     }
@@ -342,6 +348,8 @@ ${captionText}
         return Localize(key, state.language);
     }
 
+    //#endregion
+
     //#region Files work
 
     // TODO: в файле локализации добавить перевод на все языки
@@ -362,7 +370,7 @@ ${captionText}
             token: state.apiKey,
             apiVersion: API_VERSION
         });
-        
+
         return responce;
     }
 
@@ -1855,11 +1863,11 @@ ${captionText}
                     propertiesListSpawned.push(propertyHTML);
 
                     choice = new Choices(document.getElementById(property.key), {
-                        removeItemButton: 
+                        removeItemButton:
                             property.format === "files" ? false : true,
-                        searchEnabled: 
+                        searchEnabled:
                             (property.format === "select" || property.format === "multi_select") ? true : false,
-                        shouldSort: 
+                        shouldSort:
                             false,
                     });
                 }
@@ -1872,7 +1880,7 @@ ${captionText}
                     choice.setChoiceByValue("tab_title");
                 }
                 else if (property.format === "url" || property.key.toLowerCase() === "url" || property.name.toLowerCase() === "url"
-                  || property.key.toLowerCase() === "page_url" || property.name.toLowerCase() === "page_url") {
+                    || property.key.toLowerCase() === "page_url" || property.name.toLowerCase() === "page_url") {
                     choice.setChoiceByValue("page_url");
                 }
                 else if (property.format === "files") {
@@ -2015,7 +2023,7 @@ ${captionText}
             currentForm = form;
             propertiesListForSaving = [];
 
-            const initializeChoicesWithColor = (selectElement, needToDisableChoice, 
+            const initializeChoicesWithColor = (selectElement, needToDisableChoice,
                 useDeleteButtonInChoices = true, searchEnabled = true) => {
                 const choice = new Choices(selectElement, {
                     removeItemButton: useDeleteButtonInChoices,
@@ -2228,7 +2236,7 @@ ${captionText}
                                             ${Localize(o.nameKey, state.language) || o.id}
                                         </option>
                                         `).join("")
-                                    }
+                            }
                                 </select>
                             </div>
                         `;
@@ -2326,8 +2334,8 @@ ${captionText}
 
                     if (propertieForPrint.needToCreateChoices) {
                         initializeChoicesWithColor(
-                            document.getElementById(propertieForPrint.propertyId + "_SO"), 
-                            propertieForPrint.needToDisableChoice, 
+                            document.getElementById(propertieForPrint.propertyId + "_SO"),
+                            propertieForPrint.needToDisableChoice,
                             propertieForPrint.useDeleteButtonInChoices,
                             propertieForPrint.searchEnabled
                         );
@@ -2343,8 +2351,8 @@ ${captionText}
 
                     if (propertieForPrint.needToCreateChoices) {
                         initializeChoicesWithColor(
-                            document.getElementById(propertieForPrint.propertyId + "_SO"), 
-                            propertieForPrint.needToDisableChoice, 
+                            document.getElementById(propertieForPrint.propertyId + "_SO"),
+                            propertieForPrint.needToDisableChoice,
                             propertieForPrint.useDeleteButtonInChoices,
                             propertieForPrint.searchEnabled
                         );
