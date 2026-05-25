@@ -548,8 +548,6 @@ ${captionText}
 
     //#region Files work
 
-    // TODO: в файле локализации добавить перевод на все языки
-
     // TODO: тут описать, как добавлять новые типы файлов для сохранени
     let filesPropierties = [
         { id: "none_file", nameKey: "none_file", function: async () => null },
@@ -2468,7 +2466,6 @@ ${captionText}
                         useDeleteButtonInChoices = false;
                         searchEnabled = false;
 
-                        // TODO: здесь добавляем предпоказ картинки
                         propertyHTML.innerHTML = `
                             <div class="file-selector-group">
                                 <div class="poperty-head">
@@ -2734,6 +2731,8 @@ ${captionText}
                         if (selectedFilePropiertie?.function) {
                             const responce = await selectedFilePropiertie.function(fileName);
                             consoleLog("file function responce: ", responce);
+
+                            // TODO: ТУТ НАДО ЭТОТ ОТВЕТ ПРОКИНУТЬ В НУЖНОЕ СВОЙСТВО
                             console.error("ТУТ НАДО ЭТОТ ОТВЕТ ПРОКИНУТЬ В НУЖНОЕ СВОЙСТВО");
                             console.error(responce);
 

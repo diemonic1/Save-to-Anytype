@@ -88,7 +88,14 @@
       "HeightOfPopap": "Window height (%): ",
       "WidthOfPopap": "Window width (%): ",
       "FilledProperties": "Filled properties",
-      "FilledPropertiesSetting": "When opening the form, the filled properties are collapsed"
+      "FilledPropertiesSetting": "When opening the form, the filled properties are collapsed",
+      "none_file": "📎 Nothing 📎",
+      "image_by_url": "📎 Image from page 📎",
+      "html_file": "📎 Page as HTML file 📎",
+      "screenshot": "📎 Page screenshot 📎",
+      "FileNameFormat": "File name format",
+      "FileNameFormatPlaceholder": "For example: <date>-<tab_title>",
+      "FileNameTooltip": "The name that will be applied to the file. Special characters are not allowed.\n\nYou can use tags that will be replaced with real data when saving the object: \n\n<time> - current time\n<date> - current date in format 25-05-2026\n<date_alt> - current date in format 05-25-2026\n<random_id> - random ID\n<site_name> - site name\n<tab_title> - tab title"
     },
     {
       "languageName": "Русский",
@@ -275,7 +282,14 @@
       "HeightOfPopap": "Pencere yüksekliği (%): ",
       "WidthOfPopap": "Pencere genişliği (%): ",
       "FilledProperties": "Doldurulmuş özellikler",
-      "FilledPropertiesSetting": "Form açıldığında doldurulmuş özellikler daraltılsın"
+      "FilledPropertiesSetting": "Form açıldığında doldurulmuş özellikler daraltılsın",
+      "none_file": "📎 Hiçbiri 📎",
+      "image_by_url": "📎 Sayfadan görsel 📎",
+      "html_file": "📎 Sayfa HTML dosyası olarak 📎",
+      "screenshot": "📎 Sayfa ekran görüntüsü 📎",
+      "FileNameFormat": "Dosya adı biçimi",
+      "FileNameFormatPlaceholder": "Örneğin: <date>-<tab_title>",
+      "FileNameTooltip": "Dosyaya uygulanacak ad. Özel karakterler kullanılamaz.\n\nNesne kaydedilirken gerçek verilerle değiştirilecek etiketleri kullanabilirsiniz: \n\n<time> - geçerli saat\n<date> - 25-05-2026 biçiminde geçerli tarih\n<date_alt> - 05-25-2026 biçiminde geçerli tarih\n<random_id> - rastgele kimlik\n<site_name> - site adı\n<tab_title> - sekme başlığı"
     },
     {
       "languageName": "Deutsch",
@@ -365,7 +379,14 @@
       "HeightOfPopap": "Fensterhöhe (%): ",
       "WidthOfPopap": "Fensterbreite (%): ",
       "FilledProperties": "Ausgefüllte Eigenschaften",
-      "FilledPropertiesSetting": "Beim Öffnen des Formulars werden ausgefüllte Eigenschaften eingeklappt angezeigt"
+      "FilledPropertiesSetting": "Beim Öffnen des Formulars werden ausgefüllte Eigenschaften eingeklappt angezeigt",
+      "none_file": "📎 Nichts 📎",
+      "image_by_url": "📎 Bild von der Seite 📎",
+      "html_file": "📎 Seite als HTML-Datei 📎",
+      "screenshot": "📎 Screenshot der Seite 📎",
+      "FileNameFormat": "Dateinamenformat",
+      "FileNameFormatPlaceholder": "Zum Beispiel: <date>-<tab_title>",
+      "FileNameTooltip": "Der Name, der auf die Datei angewendet wird. Sonderzeichen sind nicht erlaubt.\n\nSie können Tags verwenden, die beim Speichern des Objekts durch echte Daten ersetzt werden: \n\n<time> - aktuelle Uhrzeit\n<date> - aktuelles Datum im Format 25-05-2026\n<date_alt> - aktuelles Datum im Format 05-25-2026\n<random_id> - zufällige ID\n<site_name> - Name der Website\n<tab_title> - Titel des Tabs"
     },
     {
       "languageName": "Français",
@@ -455,7 +476,14 @@
       "HeightOfPopap": "Hauteur de la fenêtre (%): ",
       "WidthOfPopap": "Largeur de la fenêtre (%): ",
       "FilledProperties": "Propriétés remplies",
-      "FilledPropertiesSetting": "Lors de l'ouverture du formulaire, les propriétés remplies s'affichent réduites"
+      "FilledPropertiesSetting": "Lors de l'ouverture du formulaire, les propriétés remplies s'affichent réduites",
+      "none_file": "📎 Rien 📎",
+      "image_by_url": "📎 Image depuis la page 📎",
+      "html_file": "📎 Page en fichier HTML 📎",
+      "screenshot": "📎 Capture d'écran de la page 📎",
+      "FileNameFormat": "Format du nom de fichier",
+      "FileNameFormatPlaceholder": "Par exemple : <date>-<tab_title>",
+      "FileNameTooltip": "Le nom qui sera appliqué au fichier. Les caractères spéciaux ne sont pas autorisés.\n\nVous pouvez utiliser des balises qui seront remplacées par des données réelles lors de l'enregistrement de l'objet : \n\n<time> - heure actuelle\n<date> - date actuelle au format 25-05-2026\n<date_alt> - date actuelle au format 05-25-2026\n<random_id> - ID aléatoire\n<site_name> - nom du site\n<tab_title> - titre de l'onglet"
     },
     {
       "languageName": "Español",
@@ -545,7 +573,14 @@
       "HeightOfPopap": "Altura de la ventana (%): ",
       "WidthOfPopap": "Ancho de la ventana (%): ",
       "FilledProperties": "Propiedades completadas",
-      "FilledPropertiesSetting": "Al abrir el formulario, las propiedades completadas se muestran plegadas"
+      "FilledPropertiesSetting": "Al abrir el formulario, las propiedades completadas se muestran plegadas",
+      "none_file": "📎 Nada 📎",
+      "image_by_url": "📎 Imagen de la página 📎",
+      "html_file": "📎 Página como archivo HTML 📎",
+      "screenshot": "📎 Captura de pantalla de la página 📎",
+      "FileNameFormat": "Formato del nombre de archivo",
+      "FileNameFormatPlaceholder": "Por ejemplo: <date>-<tab_title>",
+      "FileNameTooltip": "El nombre que se aplicará al archivo. No se permiten caracteres especiales.\n\nPuede usar etiquetas que se reemplazarán con datos reales al guardar el objeto: \n\n<time> - hora actual\n<date> - fecha actual en formato 25-05-2026\n<date_alt> - fecha actual en formato 05-25-2026\n<random_id> - ID aleatorio\n<site_name> - nombre del sitio\n<tab_title> - título de la pestaña"
     },
     {
       "languageName": "Italiano",
@@ -635,7 +670,14 @@
       "HeightOfPopap": "Altezza della finestra (%): ",
       "WidthOfPopap": "Larghezza della finestra (%): ",
       "FilledProperties": "Proprietà compilate",
-      "FilledPropertiesSetting": "All'apertura del modulo, le proprietà compilate vengono visualizzate ridotte"
+      "FilledPropertiesSetting": "All'apertura del modulo, le proprietà compilate vengono visualizzate ridotte",
+      "none_file": "📎 Nessuno 📎",
+      "image_by_url": "📎 Immagine dalla pagina 📎",
+      "html_file": "📎 Pagina come file HTML 📎",
+      "screenshot": "📎 Screenshot della pagina 📎",
+      "FileNameFormat": "Formato nome file",
+      "FileNameFormatPlaceholder": "Per esempio: <date>-<tab_title>",
+      "FileNameTooltip": "Il nome che verrà applicato al file. I caratteri speciali non sono consentiti.\n\nPuoi usare tag che verranno sostituiti con dati reali durante il salvataggio dell'oggetto: \n\n<time> - ora corrente\n<date> - data corrente nel formato 25-05-2026\n<date_alt> - data corrente nel formato 05-25-2026\n<random_id> - ID casuale\n<site_name> - nome del sito\n<tab_title> - titolo della scheda"
     },
     {
       "languageName": "中文",
@@ -725,7 +767,14 @@
       "HeightOfPopap": "窗口高度 (%): ",
       "WidthOfPopap": "窗口宽度 (%): ",
       "FilledProperties": "已填写的属性",
-      "FilledPropertiesSetting": "打开表单时，已填写的属性以折叠状态显示"
+      "FilledPropertiesSetting": "打开表单时，已填写的属性以折叠状态显示",
+      "none_file": "📎 无 📎",
+      "image_by_url": "📎 来自页面的图片 📎",
+      "html_file": "📎 页面保存为 HTML 文件 📎",
+      "screenshot": "📎 页面截图 📎",
+      "FileNameFormat": "文件名格式",
+      "FileNameFormatPlaceholder": "例如: <date>-<tab_title>",
+      "FileNameTooltip": "将应用到文件的名称。不能使用特殊字符。\n\n您可以使用在保存对象时会被替换为真实数据的标签： \n\n<time> - 当前时间\n<date> - 当前日期，格式为 25-05-2026\n<date_alt> - 当前日期，格式为 05-25-2026\n<random_id> - 随机 ID\n<site_name> - 网站名称\n<tab_title> - 标签页标题"
     },
     {
       "languageName": "Polski",
@@ -815,7 +864,14 @@
       "HeightOfPopap": "Wysokość okna (%): ",
       "WidthOfPopap": "Szerokość okna (%): ",
       "FilledProperties": "Wypełnione właściwości",
-      "FilledPropertiesSetting": "Po otwarciu formularza wypełnione właściwości są wyświetlane złożone"
+      "FilledPropertiesSetting": "Po otwarciu formularza wypełnione właściwości są wyświetlane złożone",
+      "none_file": "📎 Nic 📎",
+      "image_by_url": "📎 Obraz ze strony 📎",
+      "html_file": "📎 Strona jako plik HTML 📎",
+      "screenshot": "📎 Zrzut ekranu strony 📎",
+      "FileNameFormat": "Format nazwy pliku",
+      "FileNameFormatPlaceholder": "Na przykład: <date>-<tab_title>",
+      "FileNameTooltip": "Nazwa, która zostanie zastosowana do pliku. Znaki specjalne nie są dozwolone.\n\nMożesz używać tagów, które podczas zapisywania obiektu zostaną zastąpione rzeczywistymi danymi: \n\n<time> - bieżący czas\n<date> - bieżąca data w formacie 25-05-2026\n<date_alt> - bieżąca data w formacie 05-25-2026\n<random_id> - losowe ID\n<site_name> - nazwa strony\n<tab_title> - tytuł karty"
     },
     {
       "languageName": "러시아어",
@@ -905,7 +961,14 @@
       "HeightOfPopap": "창 높이 (%): ",
       "WidthOfPopap": "창 너비 (%): ",
       "FilledProperties": "채워진 속성",
-      "FilledPropertiesSetting": "양식을 열 때 채워진 속성이 접힌 상태로 열립니다"
+      "FilledPropertiesSetting": "양식을 열 때 채워진 속성이 접힌 상태로 열립니다",
+      "none_file": "📎 없음 📎",
+      "image_by_url": "📎 페이지의 이미지 📎",
+      "html_file": "📎 페이지를 HTML 파일로 저장 📎",
+      "screenshot": "📎 페이지 스크린샷 📎",
+      "FileNameFormat": "파일 이름 형식",
+      "FileNameFormatPlaceholder": "예: <date>-<tab_title>",
+      "FileNameTooltip": "파일에 적용될 이름입니다. 특수 문자는 사용할 수 없습니다.\n\n객체 저장 시 실제 데이터로 대체되는 태그를 사용할 수 있습니다: \n\n<time> - 현재 시간\n<date> - 현재 날짜(형식: 25-05-2026)\n<date_alt> - 현재 날짜(형식: 05-25-2026)\n<random_id> - 임의 ID\n<site_name> - 사이트 이름\n<tab_title> - 탭 제목"
     },
     {
       "languageName": "ロシア語",
@@ -995,7 +1058,14 @@
       "HeightOfPopap": "ウィンドウの高さ (%): ",
       "WidthOfPopap": "ウィンドウの幅 (%): ",
       "FilledProperties": "入力済みのプロパティ",
-      "FilledPropertiesSetting": "フォームを開くと、入力済みのプロパティが折りたたまれた状態で表示されます"
+      "FilledPropertiesSetting": "フォームを開くと、入力済みのプロパティが折りたたまれた状態で表示されます",
+      "none_file": "📎 なし 📎",
+      "image_by_url": "📎 ページの画像 📎",
+      "html_file": "📎 ページをHTMLファイルとして保存 📎",
+      "screenshot": "📎 ページのスクリーンショット 📎",
+      "FileNameFormat": "ファイル名の形式",
+      "FileNameFormatPlaceholder": "例: <date>-<tab_title>",
+      "FileNameTooltip": "ファイルに適用される名前です。特殊文字は使用できません。\n\nオブジェクト保存時に実際のデータへ置き換えられるタグを入力できます: \n\n<time> - 現在時刻\n<date> - 25-05-2026 形式の現在日付\n<date_alt> - 05-25-2026 形式の現在日付\n<random_id> - ランダムID\n<site_name> - サイト名\n<tab_title> - タブのタイトル"
     },
     {
       "languageName": "रूसी",
@@ -1085,7 +1155,14 @@
       "HeightOfPopap": "विंडो की ऊँचाई (%): ",
       "WidthOfPopap": "विंडो की चौड़ाई (%): ",
       "FilledProperties": "भरी हुई विशेषताएँ",
-      "FilledPropertiesSetting": "फ़ॉर्म खोलने पर भरी हुई विशेषताएँ संकुचित अवस्था में खुलती हैं"
+      "FilledPropertiesSetting": "फ़ॉर्म खोलने पर भरी हुई विशेषताएँ संकुचित अवस्था में खुलती हैं",
+      "none_file": "📎 कुछ नहीं 📎",
+      "image_by_url": "📎 पेज से इमेज 📎",
+      "html_file": "📎 पेज को HTML फ़ाइल के रूप में 📎",
+      "screenshot": "📎 पेज का स्क्रीनशॉट 📎",
+      "FileNameFormat": "फ़ाइल नाम प्रारूप",
+      "FileNameFormatPlaceholder": "उदाहरण: <date>-<tab_title>",
+      "FileNameTooltip": "फ़ाइल पर लागू होने वाला नाम। विशेष वर्णों की अनुमति नहीं है।\n\nआप ऐसे टैग उपयोग कर सकते हैं जिन्हें ऑब्जेक्ट सहेजते समय वास्तविक डेटा से बदला जाएगा: \n\n<time> - वर्तमान समय\n<date> - वर्तमान तारीख (प्रारूप 25-05-2026)\n<date_alt> - वर्तमान तारीख (प्रारूप 05-25-2026)\n<random_id> - यादृच्छिक ID\n<site_name> - साइट का नाम\n<tab_title> - टैब शीर्षक"
     },
     {
       "languageName": "Беларуская",
@@ -1175,7 +1252,14 @@
       "HeightOfPopap": "Вышыня акна (%): ",
       "WidthOfPopap": "Шырыня акна (%): ",
       "FilledProperties": "Запоўненыя ўласцівасці",
-      "FilledPropertiesSetting": "Пры адкрыцці формы запоўненыя ўласцівасці згортваюцца"
+      "FilledPropertiesSetting": "Пры адкрыцці формы запоўненыя ўласцівасці згортваюцца",
+      "none_file": "📎 Нічога 📎",
+      "image_by_url": "📎 Выява са старонкі 📎",
+      "html_file": "📎 Старонка як HTML-файл 📎",
+      "screenshot": "📎 Скрыншот старонкі 📎",
+      "FileNameFormat": "Фармат імя файла",
+      "FileNameFormatPlaceholder": "Напрыклад: <date>-<tab_title>",
+      "FileNameTooltip": "Імя, якое будзе прыменена да файла. Спецыяльныя сімвалы ўводзіць нельга.\n\nВы можаце выкарыстоўваць тэгі, якія пры захаванні аб'екта будуць заменены на рэальныя даныя: \n\n<time> - бягучы час\n<date> - бягучая дата ў фармаце 25-05-2026\n<date_alt> - бягучая дата ў фармаце 05-25-2026\n<random_id> - выпадковы ID\n<site_name> - назва сайта\n<tab_title> - загаловак укладкі"
     },
     {
       "languageName": "Čeština",
@@ -1265,7 +1349,14 @@
       "HeightOfPopap": "Výška okna (%): ",
       "WidthOfPopap": "Šířka okna (%): ",
       "FilledProperties": "Vyplněné vlastnosti",
-      "FilledPropertiesSetting": "Při otevření formuláře jsou vyplněné vlastnosti sbalené"
+      "FilledPropertiesSetting": "Při otevření formuláře jsou vyplněné vlastnosti sbalené",
+      "none_file": "📎 Nic 📎",
+      "image_by_url": "📎 Obrázek ze stránky 📎",
+      "html_file": "📎 Stránka jako HTML soubor 📎",
+      "screenshot": "📎 Snímek obrazovky stránky 📎",
+      "FileNameFormat": "Formát názvu souboru",
+      "FileNameFormatPlaceholder": "Například: <date>-<tab_title>",
+      "FileNameTooltip": "Název, který bude použit pro soubor. Speciální znaky nejsou povoleny.\n\nMůžete použít tagy, které budou při ukládání objektu nahrazeny skutečnými daty: \n\n<time> - aktuální čas\n<date> - aktuální datum ve formátu 25-05-2026\n<date_alt> - aktuální datum ve formátu 05-25-2026\n<random_id> - náhodné ID\n<site_name> - název webu\n<tab_title> - název karty"
     },
     {
       "languageName": "Dansk",
@@ -1355,7 +1446,14 @@
       "HeightOfPopap": "Vindueshøjde (%): ",
       "WidthOfPopap": "Vinduesbredde (%): ",
       "FilledProperties": "Udfyldte egenskaber",
-      "FilledPropertiesSetting": "Når formularen åbnes, er udfyldte egenskaber foldet sammen"
+      "FilledPropertiesSetting": "Når formularen åbnes, er udfyldte egenskaber foldet sammen",
+      "none_file": "📎 Intet 📎",
+      "image_by_url": "📎 Billede fra siden 📎",
+      "html_file": "📎 Side som HTML-fil 📎",
+      "screenshot": "📎 Skærmbillede af siden 📎",
+      "FileNameFormat": "Filnavnformat",
+      "FileNameFormatPlaceholder": "For eksempel: <date>-<tab_title>",
+      "FileNameTooltip": "Navnet, der anvendes på filen. Specialtegn er ikke tilladt.\n\nDu kan bruge tags, som bliver erstattet med rigtige data, når objektet gemmes: \n\n<time> - nuværende tid\n<date> - nuværende dato i formatet 25-05-2026\n<date_alt> - nuværende dato i formatet 05-25-2026\n<random_id> - tilfældigt ID\n<site_name> - webstedets navn\n<tab_title> - fanens titel"
     },
     {
       "languageName": "فارسی",
@@ -1445,7 +1543,14 @@
       "HeightOfPopap": "ارتفاع پنجره (%): ",
       "WidthOfPopap": "عرض پنجره (%): ",
       "FilledProperties": "ویژگی‌های پرشده",
-      "FilledPropertiesSetting": "هنگام باز شدن فرم، ویژگی‌های پرشده به‌صورت جمع‌شده نمایش داده می‌شوند"
+      "FilledPropertiesSetting": "هنگام باز شدن فرم، ویژگی‌های پرشده به‌صورت جمع‌شده نمایش داده می‌شوند",
+      "none_file": "📎 هیچ‌کدام 📎",
+      "image_by_url": "📎 تصویر از صفحه 📎",
+      "html_file": "📎 صفحه به‌صورت فایل HTML 📎",
+      "screenshot": "📎 اسکرین‌شات صفحه 📎",
+      "FileNameFormat": "فرمت نام فایل",
+      "FileNameFormatPlaceholder": "برای مثال: <date>-<tab_title>",
+      "FileNameTooltip": "نامی که روی فایل اعمال می‌شود. استفاده از کاراکترهای خاص مجاز نیست.\n\nمی‌توانید از تگ‌هایی استفاده کنید که هنگام ذخیره شیء با داده‌های واقعی جایگزین می‌شوند: \n\n<time> - زمان فعلی\n<date> - تاریخ فعلی با فرمت 25-05-2026\n<date_alt> - تاریخ فعلی با فرمت 05-25-2026\n<random_id> - شناسه تصادفی\n<site_name> - نام سایت\n<tab_title> - عنوان تب"
     },
     {
       "languageName": "Bahasa Indonesia",
@@ -1535,7 +1640,14 @@
       "HeightOfPopap": "Tinggi jendela (%): ",
       "WidthOfPopap": "Lebar jendela (%): ",
       "FilledProperties": "Properti terisi",
-      "FilledPropertiesSetting": "Saat membuka formulir, properti terisi ditampilkan dalam keadaan tertutup"
+      "FilledPropertiesSetting": "Saat membuka formulir, properti terisi ditampilkan dalam keadaan tertutup",
+      "none_file": "📎 Tidak ada 📎",
+      "image_by_url": "📎 Gambar dari halaman 📎",
+      "html_file": "📎 Halaman sebagai file HTML 📎",
+      "screenshot": "📎 Tangkapan layar halaman 📎",
+      "FileNameFormat": "Format nama file",
+      "FileNameFormatPlaceholder": "Contoh: <date>-<tab_title>",
+      "FileNameTooltip": "Nama yang akan diterapkan ke file. Karakter khusus tidak diperbolehkan.\n\nAnda dapat menggunakan tag yang akan diganti dengan data nyata saat menyimpan objek: \n\n<time> - waktu saat ini\n<date> - tanggal saat ini dengan format 25-05-2026\n<date_alt> - tanggal saat ini dengan format 05-25-2026\n<random_id> - ID acak\n<site_name> - nama situs\n<tab_title> - judul tab"
     },
     {
       "languageName": "Lietuvių",
@@ -1625,7 +1737,14 @@
       "HeightOfPopap": "Lango aukštis (%): ",
       "WidthOfPopap": "Lango plotis (%): ",
       "FilledProperties": "Užpildytos savybės",
-      "FilledPropertiesSetting": "Atidarant formą užpildytos savybės rodomos suskleistos"
+      "FilledPropertiesSetting": "Atidarant formą užpildytos savybės rodomos suskleistos",
+      "none_file": "📎 Nieko 📎",
+      "image_by_url": "📎 Vaizdas iš puslapio 📎",
+      "html_file": "📎 Puslapis kaip HTML failas 📎",
+      "screenshot": "📎 Puslapio ekrano nuotrauka 📎",
+      "FileNameFormat": "Failo pavadinimo formatas",
+      "FileNameFormatPlaceholder": "Pavyzdžiui: <date>-<tab_title>",
+      "FileNameTooltip": "Pavadinimas, kuris bus pritaikytas failui. Specialūs simboliai neleidžiami.\n\nGalite naudoti žymas, kurios išsaugant objektą bus pakeistos tikrais duomenimis: \n\n<time> - dabartinis laikas\n<date> - dabartinė data formatu 25-05-2026\n<date_alt> - dabartinė data formatu 05-25-2026\n<random_id> - atsitiktinis ID\n<site_name> - svetainės pavadinimas\n<tab_title> - kortelės pavadinimas"
     },
     {
       "languageName": "Nederlands",
@@ -1715,7 +1834,14 @@
       "HeightOfPopap": "Vensterhoogte (%): ",
       "WidthOfPopap": "Vensterbreedte (%): ",
       "FilledProperties": "Ingevulde eigenschappen",
-      "FilledPropertiesSetting": "Bij het openen van het formulier worden ingevulde eigenschappen ingeklapt weergegeven"
+      "FilledPropertiesSetting": "Bij het openen van het formulier worden ingevulde eigenschappen ingeklapt weergegeven",
+      "none_file": "📎 Niets 📎",
+      "image_by_url": "📎 Afbeelding van de pagina 📎",
+      "html_file": "📎 Pagina als HTML-bestand 📎",
+      "screenshot": "📎 Schermafbeelding van de pagina 📎",
+      "FileNameFormat": "Bestandsnaamindeling",
+      "FileNameFormatPlaceholder": "Bijvoorbeeld: <date>-<tab_title>",
+      "FileNameTooltip": "De naam die op het bestand wordt toegepast. Speciale tekens zijn niet toegestaan.\n\nJe kunt tags gebruiken die bij het opslaan van het object worden vervangen door echte gegevens: \n\n<time> - huidige tijd\n<date> - huidige datum in formaat 25-05-2026\n<date_alt> - huidige datum in formaat 05-25-2026\n<random_id> - willekeurige ID\n<site_name> - sitenaam\n<tab_title> - tabtitel"
     },
     {
       "languageName": "Norsk",
@@ -1805,7 +1931,14 @@
       "HeightOfPopap": "Vindushøyde (%): ",
       "WidthOfPopap": "Vindusbredde (%): ",
       "FilledProperties": "Utfylte egenskaper",
-      "FilledPropertiesSetting": "Når skjemaet åpnes, vises utfylte egenskaper sammenfoldet"
+      "FilledPropertiesSetting": "Når skjemaet åpnes, vises utfylte egenskaper sammenfoldet",
+      "none_file": "📎 Ingen 📎",
+      "image_by_url": "📎 Bilde fra siden 📎",
+      "html_file": "📎 Side som HTML-fil 📎",
+      "screenshot": "📎 Skjermbilde av siden 📎",
+      "FileNameFormat": "Filnavnformat",
+      "FileNameFormatPlaceholder": "For eksempel: <date>-<tab_title>",
+      "FileNameTooltip": "Navnet som skal brukes på filen. Spesialtegn er ikke tillatt.\n\nDu kan bruke tagger som erstattes med faktiske data når objektet lagres: \n\n<time> - nåværende tid\n<date> - nåværende dato i formatet 25-05-2026\n<date_alt> - nåværende dato i formatet 05-25-2026\n<random_id> - tilfeldig ID\n<site_name> - nettstedets navn\n<tab_title> - fanetittel"
     },
     {
       "languageName": "Português (Brasil)",
@@ -1895,7 +2028,14 @@
       "HeightOfPopap": "Altura da janela (%): ",
       "WidthOfPopap": "Largura da janela (%): ",
       "FilledProperties": "Propriedades preenchidas",
-      "FilledPropertiesSetting": "Ao abrir o formulário, as propriedades preenchidas ficam recolhidas"
+      "FilledPropertiesSetting": "Ao abrir o formulário, as propriedades preenchidas ficam recolhidas",
+      "none_file": "📎 Nada 📎",
+      "image_by_url": "📎 Imagem da página 📎",
+      "html_file": "📎 Página como arquivo HTML 📎",
+      "screenshot": "📎 Captura de tela da página 📎",
+      "FileNameFormat": "Formato do nome do arquivo",
+      "FileNameFormatPlaceholder": "Por exemplo: <date>-<tab_title>",
+      "FileNameTooltip": "O nome que será aplicado ao arquivo. Caracteres especiais não são permitidos.\n\nVocê pode usar tags que serão substituídas por dados reais ao salvar o objeto: \n\n<time> - hora atual\n<date> - data atual no formato 25-05-2026\n<date_alt> - data atual no formato 05-25-2026\n<random_id> - ID aleatório\n<site_name> - nome do site\n<tab_title> - título da aba"
     },
     {
       "languageName": "Română",
@@ -1985,7 +2125,14 @@
       "HeightOfPopap": "Înălțimea ferestrei (%): ",
       "WidthOfPopap": "Lățimea ferestrei (%): ",
       "FilledProperties": "Proprietăți completate",
-      "FilledPropertiesSetting": "La deschiderea formularului, proprietățile completate sunt restrânse"
+      "FilledPropertiesSetting": "La deschiderea formularului, proprietățile completate sunt restrânse",
+      "none_file": "📎 Nimic 📎",
+      "image_by_url": "📎 Imagine de pe pagină 📎",
+      "html_file": "📎 Pagină ca fișier HTML 📎",
+      "screenshot": "📎 Captură de ecran a paginii 📎",
+      "FileNameFormat": "Format nume fișier",
+      "FileNameFormatPlaceholder": "De exemplu: <date>-<tab_title>",
+      "FileNameTooltip": "Numele care va fi aplicat fișierului. Caracterele speciale nu sunt permise.\n\nPuteți folosi etichete care vor fi înlocuite cu date reale la salvarea obiectului: \n\n<time> - ora curentă\n<date> - data curentă în formatul 25-05-2026\n<date_alt> - data curentă în formatul 05-25-2026\n<random_id> - ID aleator\n<site_name> - numele site-ului\n<tab_title> - titlul filei"
     },
     {
       "languageName": "Українська",
@@ -2075,7 +2222,14 @@
       "HeightOfPopap": "Висота вікна (%): ",
       "WidthOfPopap": "Ширина вікна (%): ",
       "FilledProperties": "Заповнені властивості",
-      "FilledPropertiesSetting": "Під час відкриття форми заповнені властивості згортаються"
+      "FilledPropertiesSetting": "Під час відкриття форми заповнені властивості згортаються",
+      "none_file": "📎 Нічого 📎",
+      "image_by_url": "📎 Зображення зі сторінки 📎",
+      "html_file": "📎 Сторінка як HTML-файл 📎",
+      "screenshot": "📎 Знімок екрана сторінки 📎",
+      "FileNameFormat": "Формат імені файлу",
+      "FileNameFormatPlaceholder": "Наприклад: <date>-<tab_title>",
+      "FileNameTooltip": "Ім'я, яке буде застосовано до файлу. Спеціальні символи вводити не можна.\n\nВи можете використовувати теги, які під час збереження об'єкта будуть замінені на реальні дані: \n\n<time> - поточний час\n<date> - поточна дата у форматі 25-05-2026\n<date_alt> - поточна дата у форматі 05-25-2026\n<random_id> - випадковий ID\n<site_name> - назва сайту\n<tab_title> - заголовок вкладки"
     },
     {
       "languageName": "Tiếng Việt",
@@ -2165,7 +2319,14 @@
       "HeightOfPopap": "Chiều cao cửa sổ (%): ",
       "WidthOfPopap": "Chiều rộng cửa sổ (%): ",
       "FilledProperties": "Thuộc tính đã điền",
-      "FilledPropertiesSetting": "Khi mở biểu mẫu, các thuộc tính đã điền sẽ được thu gọn"
+      "FilledPropertiesSetting": "Khi mở biểu mẫu, các thuộc tính đã điền sẽ được thu gọn",
+      "none_file": "📎 Không có gì 📎",
+      "image_by_url": "📎 Hình ảnh từ trang 📎",
+      "html_file": "📎 Trang dưới dạng tệp HTML 📎",
+      "screenshot": "📎 Ảnh chụp màn hình trang 📎",
+      "FileNameFormat": "Định dạng tên tệp",
+      "FileNameFormatPlaceholder": "Ví dụ: <date>-<tab_title>",
+      "FileNameTooltip": "Tên sẽ được áp dụng cho tệp. Không được nhập ký tự đặc biệt.\n\nBạn có thể dùng các thẻ sẽ được thay bằng dữ liệu thực khi lưu đối tượng: \n\n<time> - thời gian hiện tại\n<date> - ngày hiện tại theo định dạng 25-05-2026\n<date_alt> - ngày hiện tại theo định dạng 05-25-2026\n<random_id> - ID ngẫu nhiên\n<site_name> - tên trang web\n<tab_title> - tiêu đề tab"
     }
   ]
 }
