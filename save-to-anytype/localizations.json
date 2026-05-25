@@ -874,7 +874,7 @@
       "FileNameTooltip": "Nazwa, która zostanie zastosowana do pliku. Znaki specjalne nie są dozwolone.\n\nMożesz używać tagów, które podczas zapisywania obiektu zostaną zastąpione rzeczywistymi danymi: \n\n<time> - bieżący czas\n<date> - bieżąca data w formacie 25-05-2026\n<date_alt> - bieżąca data w formacie 05-25-2026\n<random_id> - losowe ID\n<site_name> - nazwa strony\n<tab_title> - tytuł karty"
     },
     {
-      "languageName": "러시아어",
+      "languageName": "한국어",
       "languageCode": "ko",
       "countryCode": "KR",
       "SelectLanguage": "언어 선택",
@@ -971,7 +971,7 @@
       "FileNameTooltip": "파일에 적용될 이름입니다. 특수 문자는 사용할 수 없습니다.\n\n객체 저장 시 실제 데이터로 대체되는 태그를 사용할 수 있습니다: \n\n<time> - 현재 시간\n<date> - 현재 날짜(형식: 25-05-2026)\n<date_alt> - 현재 날짜(형식: 05-25-2026)\n<random_id> - 임의 ID\n<site_name> - 사이트 이름\n<tab_title> - 탭 제목"
     },
     {
-      "languageName": "ロシア語",
+      "languageName": "日本語",
       "languageCode": "ja",
       "countryCode": "JP",
       "SelectLanguage": "言語を選択",
@@ -1068,7 +1068,7 @@
       "FileNameTooltip": "ファイルに適用される名前です。特殊文字は使用できません。\n\nオブジェクト保存時に実際のデータへ置き換えられるタグを入力できます: \n\n<time> - 現在時刻\n<date> - 25-05-2026 形式の現在日付\n<date_alt> - 05-25-2026 形式の現在日付\n<random_id> - ランダムID\n<site_name> - サイト名\n<tab_title> - タブのタイトル"
     },
     {
-      "languageName": "रूसी",
+      "languageName": "हिन्दी",
       "languageCode": "hi",
       "countryCode": "IN",
       "SelectLanguage": "भाषा चुनें",
