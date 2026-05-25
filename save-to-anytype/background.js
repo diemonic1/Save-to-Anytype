@@ -179,8 +179,10 @@ async function uploadFile(uploadUrl, file, token, apiVersion) {
     formData.append("file", file);
 
     // You can test the files by simply downloading them
-    const testFileDownloading = true;
+    const testFileDownloading = false;
     if (testFileDownloading) {
+        const downloadFileName = file?.name || "save-to-anytype-test-file.bin";
+
         try {
             if (!chrome.downloads || typeof chrome.downloads.download !== "function") {
                 const currentPermissions = chrome?.runtime?.getManifest?.()?.permissions || [];
@@ -214,9 +216,18 @@ async function uploadFile(uploadUrl, file, token, apiVersion) {
             };
 
             const downloadUrl = await toDataUrl(file);
-            const downloadFileName = file?.name || "save-to-anytype-test-file.bin";
 
             console.log(`[TEST DOWNLOAD] Starting test download for file: ${downloadFileName}, size: ${file.size} bytes, type: ${file.type}`);
+
+            const listener = (item, suggest) => {
+                suggest({
+                    filename: downloadFileName
+                });
+
+                chrome.downloads.onDeterminingFilename.removeListener(listener);
+            };
+
+            chrome.downloads.onDeterminingFilename.addListener(listener);
 
             await chrome.downloads.download({
                 url: downloadUrl,
@@ -307,9 +318,9 @@ async function uploadHtmlPage(uploadUrl, pageUrl, token, apiVersion, fileName) {
 
     const file = new File(
         [html],
-        fileName + ".html" || "page.html",
+        (fileName || "page") + ".html",
         {
-            type: "text/html"
+            type: "application/octet-stream"
         }
     );
 

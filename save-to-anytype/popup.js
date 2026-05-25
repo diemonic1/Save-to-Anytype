@@ -603,14 +603,15 @@ ${captionText}
     // To add a new page property, you need to add its object to the WebPagePropierties sheet and also add processing
     // in the method document.addEventListener('DOMContentLoaded', async () => {
 
+    let page_screenshotUrl = undefined;
+
     let WebPagePropierties = [
         { id: "tab_title", nameKey: "tab_title", value: "null o_O" },
         { id: "page_url", nameKey: "page_url", value: "null o_O" },
         { id: "page_image", nameKey: "page_image", value: "null o_O" },
         { id: "page_description", nameKey: "page_description", value: "null o_O" },
         { id: "page_content", nameKey: "page_content", value: "" },
-        { id: "selected_text_page", nameKey: "selected_text_page", value: "" },
-        { id: "page_screenshotUrl", nameKey: "page_screenshotUrl", value: "" }
+        { id: "selected_text_page", nameKey: "selected_text_page", value: "" }
     ];
 
     try {
@@ -669,7 +670,7 @@ ${captionText}
                 action: "GET_screenshotUrl"
             });
 
-            WebPagePropierties.find(p => p.id == "page_screenshotUrl").value = resultScreenshotUrl || '';
+            page_screenshotUrl = resultScreenshotUrl || undefined;
         }
 
         elements.SaveToAnytypeVersion.innerText = chrome.runtime.getManifest().version;
@@ -691,9 +692,9 @@ ${captionText}
                 true
             );
         }
-        else if (filesPropierties[index].id === "screenshot") {
+        else if (filesPropierties[index].id === "screenshot" && page_screenshotUrl) {
             CreateImageReferenceForChoices(
-                GetPagePropiertie("page_screenshotUrl") || "",
+                page_screenshotUrl,
                 filesPropierties[index].id,
                 true
             );
@@ -2735,6 +2736,10 @@ ${captionText}
                             consoleLog("file function responce: ", responce);
                             console.error("ТУТ НАДО ЭТОТ ОТВЕТ ПРОКИНУТЬ В НУЖНОЕ СВОЙСТВО");
                             console.error(responce);
+
+                            if (responce?.data?.testDownload)
+                                continue;
+
                             /*
                             properties_final_list.push(
                                 { key: propiertyPrinted.KeyForAnytypeAPI, 
