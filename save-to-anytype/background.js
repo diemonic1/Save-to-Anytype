@@ -24,12 +24,13 @@ function findLargestVisibleImage() {
         const normalized = source.trim();
         if (!normalized) return false;
 
+        // Only allow regular network image URLs.
+        if (!/^https?:\/\//i.test(normalized)) return false;
+
         // Skip obvious non-image and unsupported image formats for this use case.
         if (normalized.startsWith("data:image/svg+xml") || /\.svg([?#].*)?$/i.test(normalized)) return false;
         if (/\.js([?#].*)?$/i.test(normalized)) return false;
 
-        // Accept data image urls and common raster sources.
-        if (normalized.startsWith("data:image/")) return true;
         return /\.(png|jpe?g|webp|gif|bmp|avif)([?#].*)?$/i.test(normalized) || /^https?:\/\//i.test(normalized);
     };
 
@@ -174,7 +175,7 @@ function extractPageText() {
 
 async function uploadFile(uploadUrl, file, token, apiVersion) {
 
-    const formData = new FormData();
+    let formData = new FormData();
 
     formData.append("file", file);
 
@@ -252,13 +253,13 @@ async function uploadFile(uploadUrl, file, token, apiVersion) {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data',
             'Accept': 'application/json',
-            'Anytype-Version': apiVersion
+            'Anytype-Version': apiVersion,
+            redirect: 'follow'
         },
         body: formData
     });
 
     if (!response.ok) {
-
         const errorText =
             await response.text();
 

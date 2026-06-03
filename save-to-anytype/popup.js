@@ -2750,6 +2750,16 @@ ${captionText}
                     if (selectedFileType != "none_file") {
                         consoleLog("selected File Type: ", selectedFileType);
 
+                        if (selectedFileType == "image_by_url"
+                            && (GetPagePropiertie("page_image") == null
+                                || GetPagePropiertie("page_image") == undefined
+                                || GetPagePropiertie("page_image") == ""
+                                || GetPagePropiertie("page_image") == "null"
+                                || GetPagePropiertie("page_image") == "null o_O")) {
+                            consoleLog("image_by_url selected but page_image property is empty, skipping file processing");
+                            continue;
+                        }
+
                         const fileName = ReplaceDataInFileName(document.getElementById(propiertyPrinted.KeyForAnytypeAPI + "_file_name_format_SO").value);
 
                         consoleLog("file name: ", fileName);
