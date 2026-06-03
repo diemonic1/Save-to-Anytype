@@ -118,7 +118,6 @@ function findDescription() {
 }
 
 // Web clipping
-// Web clipping
 
 function extractPageText() {
     try {
