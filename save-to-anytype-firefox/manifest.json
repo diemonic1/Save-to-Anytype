@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Save to Anytype",
-  "version": "0.1.8",
+  "version": "0.2.0",
   "description": "Save important web pages with your selected text in Markdown format to Anytype.",
   "permissions": [
     "scripting",
@@ -69,5 +69,6 @@
         "required": ["none"]
       }
     }
-  }
+  },
+  "default_locale": "en"
 }
