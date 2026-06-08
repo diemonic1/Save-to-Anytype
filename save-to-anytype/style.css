@@ -140,20 +140,20 @@ body {
 }
 
 .btn-file-name-top-tip {
-    position: relative;
-    width: 25px;
-    height: 25px;
-    top: -5px;
-    padding: 0px;
-    background: var(--background-focus);
-    border-radius: 25px;
-    font-size: 16px;
-    font-weight: 900;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: help;
-    margin-left: 5px;
+  position: relative;
+  width: 25px;
+  height: 25px;
+  top: -5px;
+  padding: 0px;
+  background: var(--background-focus);
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+  margin-left: 5px;
 }
 
 .btn-file-name-top-tip:hover {
@@ -537,6 +537,10 @@ textarea {
   transition: all 0.3s ease;
   color: var(--input-text-color);
   background: var(--background);
+}
+
+[id*="objectBodyId"] {
+  min-height: 400px;
 }
 
 input::placeholder,
