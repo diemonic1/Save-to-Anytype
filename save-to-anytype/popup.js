@@ -3,6 +3,9 @@ const API_VERSION = '2025-11-08';
 
 const DEFAULT_ACCENT_COLOR = '#ff3030ff';
 const FILLED_FIELDS_TOGGLE_SYMBOL = '^';
+const DEFAULT_TEXTAREA_HEIGHT_PX = 140;
+const MIN_TEXTAREA_HEIGHT_PX = 100;
+const MAX_TEXTAREA_HEIGHT_PX = 600;
 
 // State
 let state = {
@@ -16,7 +19,9 @@ let state = {
     zoom: null,
     height: null,
     width: null,
+    textAreaHeightPx: null,
     collapseOnOpenForm: null,
+    stringsRemovedFromTabTitle: null,
     forms: []
 };
 
@@ -124,7 +129,11 @@ async function localPopapInited() {
         heightRangeValue: document.getElementById('heightRangeValue'),
         heightCurrentRange: document.getElementById('heightCurrentRange'),
         widthRangeValue: document.getElementById('widthRangeValue'),
-        widthCurrentRange: document.getElementById('widthCurrentRange')
+        widthCurrentRange: document.getElementById('widthCurrentRange'),
+        textAreaHeightRangeValue: document.getElementById('textAreaHeightRangeValue'),
+        textAreaHeightCurrentRange: document.getElementById('textAreaHeightCurrentRange'),
+        stringsRemovedFromTabTitleInput: document.getElementById('stringsRemovedFromTabTitleInput'),
+        stringsRemovedFromTabTitleTipButton: document.getElementById('stringsRemovedFromTabTitleTipButton')
     };
 
     //#endregion
@@ -194,6 +203,16 @@ async function localPopapInited() {
             </label>`;
     }
 
+    function normalizeTextAreaHeightPx(value) {
+        const parsedValue = Number.parseInt(value, 10);
+
+        if (Number.isNaN(parsedValue)) {
+            return DEFAULT_TEXTAREA_HEIGHT_PX;
+        }
+
+        return Math.max(MIN_TEXTAREA_HEIGHT_PX, Math.min(MAX_TEXTAREA_HEIGHT_PX, parsedValue));
+    }
+
     function attachFileNameFormatInputGuard(inputOrId) {
         const input = typeof inputOrId === 'string'
             ? document.getElementById(inputOrId)
@@ -249,6 +268,31 @@ async function localPopapInited() {
         });
     }
 
+    function RemoveStringsFromTabTitle(tabTitle) {
+        if (!state.stringsRemovedFromTabTitle || state.stringsRemovedFromTabTitle.trim().length === 0) {
+            return tabTitle;
+        }
+
+        let result = tabTitle;
+
+        // Parse strings enclosed in quotes, separated by commas
+        // Regex explanation: matches quoted strings, handles escaped quotes if needed
+        const quotedStringsRegex = /"([^"\\]*(?:\\.[^"\\]*)*)"/g;
+        let match;
+        const stringsToRemove = [];
+
+        while ((match = quotedStringsRegex.exec(state.stringsRemovedFromTabTitle)) !== null) {
+            stringsToRemove.push(match[1]);
+        }
+
+        // Remove each string from the tab title
+        for (const stringToRemove of stringsToRemove) {
+            result = result.split(stringToRemove).join('');
+        }
+
+        return result;
+    }
+
     function ReplaceDataInFileName(rawFileName) {
         const sourceValue = String(rawFileName ?? '');
         const now = new Date();
@@ -259,7 +303,10 @@ async function localPopapInited() {
         const currentDateAlt = `${twoDigits(now.getMonth() + 1)}-${twoDigits(now.getDate())}-${now.getFullYear()}`;
 
         const pageUrl = GetPagePropiertie("page_url") || '';
-        const tabTitle = GetPagePropiertie("tab_title") || '';
+        let tabTitle = GetPagePropiertie("tab_title") || '';
+
+        // Remove strings from tab title based on user settings
+        tabTitle = RemoveStringsFromTabTitle(tabTitle);
 
         let siteName = '';
         try {
@@ -796,6 +843,10 @@ async function localPopapInited() {
 
         elements.widthRangeValue.value = state.width;
         elements.widthCurrentRange.textContent = state.width;
+
+        elements.textAreaHeightRangeValue.value = state.textAreaHeightPx;
+        elements.textAreaHeightCurrentRange.textContent = state.textAreaHeightPx;
+        linkCSS.style.setProperty('--object-body-min-height', `${state.textAreaHeightPx}px`);
     }
 
     elements.colorInput.addEventListener("change", () => {
@@ -828,7 +879,7 @@ async function localPopapInited() {
         const saved = await chrome.storage.local.get(
             ['apiKey', 'selectedSpaceId', 'theme', 'language', 'accentColor',
                 'whatDoOnStart', 'LastUsedForm', 'zoom', 'height', 'width',
-                'collapseOnOpenForm', 'forms']
+                'textAreaHeightPx', 'collapseOnOpenForm', 'stringsRemovedFromTabTitle', 'forms']
         );
 
         if (saved.apiKey) {
@@ -908,11 +959,20 @@ async function localPopapInited() {
             state.width = 24;
         }
 
+        state.textAreaHeightPx = normalizeTextAreaHeightPx(saved.textAreaHeightPx);
+
         if (saved.collapseOnOpenForm) {
             state.collapseOnOpenForm = saved.collapseOnOpenForm;
         }
         else {
             state.collapseOnOpenForm = "false";
+        }
+
+        if (saved.stringsRemovedFromTabTitle) {
+            state.stringsRemovedFromTabTitle = saved.stringsRemovedFromTabTitle;
+        }
+        else {
+            state.stringsRemovedFromTabTitle = "";
         }
 
         if (saved.forms) {
@@ -945,7 +1005,9 @@ async function localPopapInited() {
             zoom: state.zoom,
             height: state.height,
             width: state.width,
+            textAreaHeightPx: state.textAreaHeightPx,
             collapseOnOpenForm: state.collapseOnOpenForm,
+            stringsRemovedFromTabTitle: state.stringsRemovedFromTabTitle,
             forms: state.forms
         });
 
@@ -994,6 +1056,18 @@ async function localPopapInited() {
         ChangeTheme();
     });
 
+    elements.textAreaHeightRangeValue.addEventListener('input', () => {
+        const normalizedValue = normalizeTextAreaHeightPx(elements.textAreaHeightRangeValue.value);
+
+        state.textAreaHeightPx = normalizedValue;
+        elements.textAreaHeightRangeValue.value = normalizedValue;
+        elements.textAreaHeightCurrentRange.textContent = normalizedValue;
+
+        saveState();
+
+        ChangeTheme();
+    });
+
     elements.themeSelect.addEventListener('change', async (e) => {
         state.theme = themeSelectChoices.getValue(true);
 
@@ -1012,6 +1086,12 @@ async function localPopapInited() {
 
     elements.whatDoOnStartSelect.addEventListener('change', async (e) => {
         state.whatDoOnStart = whatDoOnStartSelectChoices.getValue(true);
+
+        saveState();
+    });
+
+    elements.stringsRemovedFromTabTitleInput.addEventListener('input', () => {
+        state.stringsRemovedFromTabTitle = elements.stringsRemovedFromTabTitleInput.value;
 
         saveState();
     });
@@ -1282,6 +1362,8 @@ async function localPopapInited() {
         languageSelectChoices.setChoiceByValue(state.language);
 
         elements.collapseInputSettings.checked = state.collapseOnOpenForm === "true";
+
+        elements.stringsRemovedFromTabTitleInput.value = state.stringsRemovedFromTabTitle || "";
     }
 
     function authSection() {
@@ -2408,6 +2490,11 @@ async function localPopapInited() {
 
                         if (savedPropertyValueExist) {
                             value = GetPagePropiertie(savedProperty.SelectedValueByUser);
+
+                            // Apply string removal for tab_title
+                            if (savedProperty.SelectedValueByUser === "tab_title") {
+                                value = RemoveStringsFromTabTitle(value);
+                            }
                         }
 
                         propertyHTML.innerHTML = `
@@ -2951,6 +3038,8 @@ async function localPopapInited() {
     }
 
     attachTooltip(elements.createFormTipButton, "CreateFormTip");
+
+    attachTooltip(elements.stringsRemovedFromTabTitleTipButton, "StringsRemovedFromTabTitleTooltip", 180);
 
     //#endregion
 

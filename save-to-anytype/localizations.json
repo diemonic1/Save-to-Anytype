@@ -95,7 +95,11 @@
       "screenshot": "📎 Page screenshot 📎",
       "FileNameFormat": "File name format",
       "FileNameFormatPlaceholder": "For example: <date> - <tab_title>",
-      "FileNameTooltip": "The name that will be applied to the file. Special characters are not allowed.\n\nYou can use tags that will be replaced with real data when saving the object: \n\n<time> - current time\n<date> - current date in format 25-05-2026\n<date_alt> - current date in format 05-25-2026\n<random_id> - random ID\n<site_name> - site name\n<tab_title> - tab title"
+      "FileNameTooltip": "The name that will be applied to the file. Special characters are not allowed.\n\nYou can use tags that will be replaced with real data when saving the object: \n\n<time> - current time\n<date> - current date in format 25-05-2026\n<date_alt> - current date in format 05-25-2026\n<random_id> - random ID\n<site_name> - site name\n<tab_title> - tab title",
+      "StringsRemovedFromTabTitle": "Strings removed from tab title",
+      "StringsRemovedFromTabTitlePlaceholder": "\"Download \", \"watch online\", \"free online\"",
+      "StringsRemovedFromTabTitleTooltip": "You can set strings here that will be removed from the tab title when adding it to an object. Strings are entered in quotes separated by commas, for example:\n\"Download \", \"watch online\", \"free online\"\n\nThese strings will be removed",
+      "TextAreaBlocksHeightPx": "Text input block height - in pixels:"
     },
     {
       "languageName": "Русский",
@@ -192,7 +196,11 @@
       "screenshot": "📎 Скриншот страницы 📎",
       "FileNameFormat": "Формат имени файла",
       "FileNameFormatPlaceholder": "Например: <date>-<tab_title>",
-      "FileNameTooltip": "Имя, которое применится к файлу. Нельзя вписывать специальные символы.\n\nВы можете вписывать теги, которые при сохранении объекта будут заменяться на реальные данные: \n\n<time> - текущее время\n<date> - текущая дата в формате 25-05-2026\n<date_alt> - текущая дата в формате 05-25-2026\n<random_id> - случайный ID\n<site_name> - название сайта\n<tab_title> - заголовок вкладки"
+      "FileNameTooltip": "Имя, которое применится к файлу. Нельзя вписывать специальные символы.\n\nВы можете вписывать теги, которые при сохранении объекта будут заменяться на реальные данные: \n\n<time> - текущее время\n<date> - текущая дата в формате 25-05-2026\n<date_alt> - текущая дата в формате 05-25-2026\n<random_id> - случайный ID\n<site_name> - название сайта\n<tab_title> - заголовок вкладки",
+      "StringsRemovedFromTabTitle": "Строки, удаляемые из названия вкладки",
+      "StringsRemovedFromTabTitlePlaceholder": "\"Скачать \", \"смотреть онлайн\", \"онлайн бесплатно\"",
+      "StringsRemovedFromTabTitleTooltip": "Вы можете задать здесь строки, которые будут удаляться из названия вкладки при его добавлении в объект. Строки вводятся в кавычках через запятую, например, так:\n\"Скачать \", \"смотреть онлайн\", \"онлайн бесплатно\"\n\nЭти строки будут удалены",
+      "TextAreaBlocksHeightPx": "Высота блоков для ввода текста - в пикселях:"
     },
     {
       "languageName": "Türkçe",
@@ -289,7 +297,11 @@
       "screenshot": "📎 Sayfa ekran görüntüsü 📎",
       "FileNameFormat": "Dosya adı biçimi",
       "FileNameFormatPlaceholder": "Örneğin: <date> - <tab_title>",
-      "FileNameTooltip": "Dosyaya uygulanacak isimlendir. Özel karakter kullanılamaz.\n\nNesne kaydedilirken gerçek verilerle değiştirilecek etiketleri kullanabilirsiniz: \n\n<time> - geçerli saat\n<date> - 25-05-2026 biçiminde geçerli tarih\n<date_alt> - 05-25-2026 biçiminde geçerli tarih\n<random_id> - rastgele kimlik\n<site_name> - site adı\n<tab_title> - sekme başlığı"
+      "FileNameTooltip": "Dosyaya uygulanacak isimlendir. Özel karakter kullanılamaz.\n\nNesne kaydedilirken gerçek verilerle değiştirilecek etiketleri kullanabilirsiniz: \n\n<time> - geçerli saat\n<date> - 25-05-2026 biçiminde geçerli tarih\n<date_alt> - 05-25-2026 biçiminde geçerli tarih\n<random_id> - rastgele kimlik\n<site_name> - site adı\n<tab_title> - sekme başlığı",
+      "StringsRemovedFromTabTitle": "Sekme başlığından kaldırılan yazılar",
+      "StringsRemovedFromTabTitlePlaceholder": "\"İndir \", \"çevrimiçi izle\", \"ücretsiz çevrimiçi\"",
+      "StringsRemovedFromTabTitleTooltip": "Nesneye eklenirken sekme başlığından kaldırılacak yazıları burada belirleyebilirsiniz. Yazılar tırnak işaretleri içinde virgülle ayrılarak girilir, örneğin:\n\"İndir \", \"çevrimiçi izle\", \"ücretsiz çevrimiçi\"\n\nBu yazılar silinecek",
+      "TextAreaBlocksHeightPx": "Metin giriş bloklarının yüksekliği - piksel cinsinden:"
     },
     {
       "languageName": "Deutsch",
@@ -386,7 +398,11 @@
       "screenshot": "📎 Screenshot der Seite 📎",
       "FileNameFormat": "Dateinamenformat",
       "FileNameFormatPlaceholder": "Zum Beispiel: <date>-<tab_title>",
-      "FileNameTooltip": "Der Name, der auf die Datei angewendet wird. Sonderzeichen sind nicht erlaubt.\n\nSie können Tags verwenden, die beim Speichern des Objekts durch echte Daten ersetzt werden: \n\n<time> - aktuelle Uhrzeit\n<date> - aktuelles Datum im Format 25-05-2026\n<date_alt> - aktuelles Datum im Format 05-25-2026\n<random_id> - zufällige ID\n<site_name> - Name der Website\n<tab_title> - Titel des Tabs"
+      "FileNameTooltip": "Der Name, der auf die Datei angewendet wird. Sonderzeichen sind nicht erlaubt.\n\nSie können Tags verwenden, die beim Speichern des Objekts durch echte Daten ersetzt werden: \n\n<time> - aktuelle Uhrzeit\n<date> - aktuelles Datum im Format 25-05-2026\n<date_alt> - aktuelles Datum im Format 05-25-2026\n<random_id> - zufällige ID\n<site_name> - Name der Website\n<tab_title> - Titel des Tabs",
+      "StringsRemovedFromTabTitle": "Aus Registerkartentitel entfernte Zeichenketten",
+      "StringsRemovedFromTabTitlePlaceholder": "\"Download \", \"online ansehen\", \"kostenlos online\"",
+      "StringsRemovedFromTabTitleTooltip": "Sie können hier die Zeichenketten angeben, die beim Hinzufügen zum Objekt aus dem Registerkartentitel entfernt werden. Die Zeichenketten werden in Anführungszeichen eingegeben und durch Kommas getrennt, zum Beispiel:\n\"Download \", \"online ansehen\", \"kostenlos online\"\n\nDiese Zeichenketten werden entfernt",
+      "TextAreaBlocksHeightPx": "Höhe der Texteingabeblöcke - in Pixeln:"
     },
     {
       "languageName": "Français",
@@ -483,7 +499,11 @@
       "screenshot": "📎 Capture d'écran de la page 📎",
       "FileNameFormat": "Format du nom de fichier",
       "FileNameFormatPlaceholder": "Par exemple : <date>-<tab_title>",
-      "FileNameTooltip": "Le nom qui sera appliqué au fichier. Les caractères spéciaux ne sont pas autorisés.\n\nVous pouvez utiliser des balises qui seront remplacées par des données réelles lors de l'enregistrement de l'objet : \n\n<time> - heure actuelle\n<date> - date actuelle au format 25-05-2026\n<date_alt> - date actuelle au format 05-25-2026\n<random_id> - ID aléatoire\n<site_name> - nom du site\n<tab_title> - titre de l'onglet"
+      "FileNameTooltip": "Le nom qui sera appliqué au fichier. Les caractères spéciaux ne sont pas autorisés.\n\nVous pouvez utiliser des balises qui seront remplacées par des données réelles lors de l'enregistrement de l'objet : \n\n<time> - heure actuelle\n<date> - date actuelle au format 25-05-2026\n<date_alt> - date actuelle au format 05-25-2026\n<random_id> - ID aléatoire\n<site_name> - nom du site\n<tab_title> - titre de l'onglet",
+      "StringsRemovedFromTabTitle": "Chaînes supprimées du titre de l'onglet",
+      "StringsRemovedFromTabTitlePlaceholder": "\"Télécharger \", \"regarder en ligne\", \"gratuit en ligne\"",
+      "StringsRemovedFromTabTitleTooltip": "Vous pouvez spécifier ici les chaînes qui seront supprimées du titre de l'onglet lors de son ajout à l'objet. Les chaînes sont entrées entre guillemets séparées par des virgules, par exemple:\n\"Télécharger \", \"regarder en ligne\", \"gratuit en ligne\"\n\nCes chaînes seront supprimées",
+      "TextAreaBlocksHeightPx": "Hauteur des blocs de saisie de texte - en pixels:"
     },
     {
       "languageName": "Español",
@@ -580,7 +600,11 @@
       "screenshot": "📎 Captura de pantalla de la página 📎",
       "FileNameFormat": "Formato del nombre de archivo",
       "FileNameFormatPlaceholder": "Por ejemplo: <date>-<tab_title>",
-      "FileNameTooltip": "El nombre que se aplicará al archivo. No se permiten caracteres especiales.\n\nPuede usar etiquetas que se reemplazarán con datos reales al guardar el objeto: \n\n<time> - hora actual\n<date> - fecha actual en formato 25-05-2026\n<date_alt> - fecha actual en formato 05-25-2026\n<random_id> - ID aleatorio\n<site_name> - nombre del sitio\n<tab_title> - título de la pestaña"
+      "FileNameTooltip": "El nombre que se aplicará al archivo. No se permiten caracteres especiales.\n\nPuede usar etiquetas que se reemplazarán con datos reales al guardar el objeto: \n\n<time> - hora actual\n<date> - fecha actual en formato 25-05-2026\n<date_alt> - fecha actual en formato 05-25-2026\n<random_id> - ID aleatorio\n<site_name> - nombre del sitio\n<tab_title> - título de la pestaña",
+      "StringsRemovedFromTabTitle": "Cadenas eliminadas del título de la pestaña",
+      "StringsRemovedFromTabTitlePlaceholder": "\"Descargar \", \"ver en línea\", \"gratis en línea\"",
+      "StringsRemovedFromTabTitleTooltip": "Puede especificar aquí las cadenas que se eliminarán del título de la pestaña al agregarlo al objeto. Las cadenas se ingresan entre comillas separadas por comas, por ejemplo:\n\"Descargar \", \"ver en línea\", \"gratis en línea\"\n\nEstas cadenas serán eliminadas",
+      "TextAreaBlocksHeightPx": "Altura de los bloques de entrada de texto - en píxeles:"
     },
     {
       "languageName": "Italiano",
@@ -677,7 +701,11 @@
       "screenshot": "📎 Screenshot della pagina 📎",
       "FileNameFormat": "Formato nome file",
       "FileNameFormatPlaceholder": "Per esempio: <date>-<tab_title>",
-      "FileNameTooltip": "Il nome che verrà applicato al file. I caratteri speciali non sono consentiti.\n\nPuoi usare tag che verranno sostituiti con dati reali durante il salvataggio dell'oggetto: \n\n<time> - ora corrente\n<date> - data corrente nel formato 25-05-2026\n<date_alt> - data corrente nel formato 05-25-2026\n<random_id> - ID casuale\n<site_name> - nome del sito\n<tab_title> - titolo della scheda"
+      "FileNameTooltip": "Il nome che verrà applicato al file. I caratteri speciali non sono consentiti.\n\nPuoi usare tag che verranno sostituiti con dati reali durante il salvataggio dell'oggetto: \n\n<time> - ora corrente\n<date> - data corrente nel formato 25-05-2026\n<date_alt> - data corrente nel formato 05-25-2026\n<random_id> - ID casuale\n<site_name> - nome del sito\n<tab_title> - titolo della scheda",
+      "StringsRemovedFromTabTitle": "Stringhe rimosse dal titolo della scheda",
+      "StringsRemovedFromTabTitlePlaceholder": "\"Scarica \", \"guarda online\", \"gratis online\"",
+      "StringsRemovedFromTabTitleTooltip": "È possibile specificare qui le stringhe che verranno rimosse dal titolo della scheda quando viene aggiunto all'oggetto. Le stringhe vengono immesse tra virgolette separate da virgole, ad esempio:\n\"Scarica \", \"guarda online\", \"gratis online\"\n\nQueste stringhe verranno rimosse",
+      "TextAreaBlocksHeightPx": "Altezza dei blocchi di input testo - in pixel:"
     },
     {
       "languageName": "中文",
@@ -774,7 +802,11 @@
       "screenshot": "📎 页面截图 📎",
       "FileNameFormat": "文件名格式",
       "FileNameFormatPlaceholder": "例如: <date>-<tab_title>",
-      "FileNameTooltip": "将应用到文件的名称。不能使用特殊字符。\n\n您可以使用在保存对象时会被替换为真实数据的标签： \n\n<time> - 当前时间\n<date> - 当前日期，格式为 25-05-2026\n<date_alt> - 当前日期，格式为 05-25-2026\n<random_id> - 随机 ID\n<site_name> - 网站名称\n<tab_title> - 标签页标题"
+      "FileNameTooltip": "将应用到文件的名称。不能使用特殊字符。\n\n您可以使用在保存对象时会被替换为真实数据的标签： \n\n<time> - 当前时间\n<date> - 当前日期，格式为 25-05-2026\n<date_alt> - 当前日期，格式为 05-25-2026\n<random_id> - 随机 ID\n<site_name> - 网站名称\n<tab_title> - 标签页标题",
+      "StringsRemovedFromTabTitle": "从标签页标题中删除的字符串",
+      "StringsRemovedFromTabTitlePlaceholder": "\"下载 \", \"在线观看\", \"免费在线\"",
+      "StringsRemovedFromTabTitleTooltip": "您可以在此处指定将在添加到对象时从标签页标题中删除的字符串。字符串以引号形式输入，由逗号分隔，例如：\n\"下载 \", \"在线观看\", \"免费在线\"\n\n这些字符串将被删除",
+      "TextAreaBlocksHeightPx": "文本输入块高度 - 以像素为单位:"
     },
     {
       "languageName": "Polski",
@@ -871,7 +903,11 @@
       "screenshot": "📎 Zrzut ekranu strony 📎",
       "FileNameFormat": "Format nazwy pliku",
       "FileNameFormatPlaceholder": "Na przykład: <date>-<tab_title>",
-      "FileNameTooltip": "Nazwa, która zostanie zastosowana do pliku. Znaki specjalne nie są dozwolone.\n\nMożesz używać tagów, które podczas zapisywania obiektu zostaną zastąpione rzeczywistymi danymi: \n\n<time> - bieżący czas\n<date> - bieżąca data w formacie 25-05-2026\n<date_alt> - bieżąca data w formacie 05-25-2026\n<random_id> - losowe ID\n<site_name> - nazwa strony\n<tab_title> - tytuł karty"
+      "FileNameTooltip": "Nazwa, która zostanie zastosowana do pliku. Znaki specjalne nie są dozwolone.\n\nMożesz używać tagów, które podczas zapisywania obiektu zostaną zastąpione rzeczywistymi danymi: \n\n<time> - bieżący czas\n<date> - bieżąca data w formacie 25-05-2026\n<date_alt> - bieżąca data w formacie 05-25-2026\n<random_id> - losowe ID\n<site_name> - nazwa strony\n<tab_title> - tytuł karty",
+      "StringsRemovedFromTabTitle": "Ciągi znaków usuwane z tytułu karty",
+      "StringsRemovedFromTabTitlePlaceholder": "\"Pobierz \", \"obejrzyj online\", \"bezpłatnie online\"",
+      "StringsRemovedFromTabTitleTooltip": "Możesz tutaj określić ciągi znaków, które zostaną usunięte z tytułu karty po dodaniu do obiektu. Ciągi znaków są wprowadzane w cudzysłowiach oddzielone przecinkami, na przykład:\n\"Pobierz \", \"obejrzyj online\", \"bezpłatnie online\"\n\nTe ciągi znaków zostaną usunięte",
+      "TextAreaBlocksHeightPx": "Wysokość bloków wprowadzania tekstu - w pikselach:"
     },
     {
       "languageName": "한국어",
@@ -968,7 +1004,11 @@
       "screenshot": "📎 페이지 스크린샷 📎",
       "FileNameFormat": "파일 이름 형식",
       "FileNameFormatPlaceholder": "예: <date>-<tab_title>",
-      "FileNameTooltip": "파일에 적용될 이름입니다. 특수 문자는 사용할 수 없습니다.\n\n객체 저장 시 실제 데이터로 대체되는 태그를 사용할 수 있습니다: \n\n<time> - 현재 시간\n<date> - 현재 날짜(형식: 25-05-2026)\n<date_alt> - 현재 날짜(형식: 05-25-2026)\n<random_id> - 임의 ID\n<site_name> - 사이트 이름\n<tab_title> - 탭 제목"
+      "FileNameTooltip": "파일에 적용될 이름입니다. 특수 문자는 사용할 수 없습니다.\n\n객체 저장 시 실제 데이터로 대체되는 태그를 사용할 수 있습니다: \n\n<time> - 현재 시간\n<date> - 현재 날짜(형식: 25-05-2026)\n<date_alt> - 현재 날짜(형식: 05-25-2026)\n<random_id> - 임의 ID\n<site_name> - 사이트 이름\n<tab_title> - 탭 제목",
+      "StringsRemovedFromTabTitle": "탭 제목에서 제거할 문자열",
+      "StringsRemovedFromTabTitlePlaceholder": "\"다운로드 \", \"온라인으로 보기\", \"무료 온라인\"",
+      "StringsRemovedFromTabTitleTooltip": "여기서 객체에 추가할 때 탭 제목에서 제거할 문자열을 지정할 수 있습니다. 문자열은 따옴표로 입력되고 쉼표로 구분됩니다. 예:\n\"다운로드 \", \"온라인으로 보기\", \"무료 온라인\"\n\n이 문자열들이 제거됩니다",
+      "TextAreaBlocksHeightPx": "텍스트 입력 블록 높이 - 픽셀 단위:"
     },
     {
       "languageName": "日本語",
@@ -1065,7 +1105,11 @@
       "screenshot": "📎 ページのスクリーンショット 📎",
       "FileNameFormat": "ファイル名の形式",
       "FileNameFormatPlaceholder": "例: <date>-<tab_title>",
-      "FileNameTooltip": "ファイルに適用される名前です。特殊文字は使用できません。\n\nオブジェクト保存時に実際のデータへ置き換えられるタグを入力できます: \n\n<time> - 現在時刻\n<date> - 25-05-2026 形式の現在日付\n<date_alt> - 05-25-2026 形式の現在日付\n<random_id> - ランダムID\n<site_name> - サイト名\n<tab_title> - タブのタイトル"
+      "FileNameTooltip": "ファイルに適用される名前です。特殊文字は使用できません。\n\nオブジェクト保存時に実際のデータへ置き換えられるタグを入力できます: \n\n<time> - 現在時刻\n<date> - 25-05-2026 形式の現在日付\n<date_alt> - 05-25-2026 形式の現在日付\n<random_id> - ランダムID\n<site_name> - サイト名\n<tab_title> - タブのタイトル",
+      "StringsRemovedFromTabTitle": "タブのタイトルから削除される文字列",
+      "StringsRemovedFromTabTitlePlaceholder": "\"ダウンロード \", \"オンラインで視聴\", \"無料オンライン\"",
+      "StringsRemovedFromTabTitleTooltip": "オブジェクトに追加する際にタブのタイトルから削除される文字列をここで指定できます。文字列は引用符で囲まれ、カンマで区切られます。例:\n\"ダウンロード \", \"オンラインで視聴\", \"無料オンライン\"\n\nこれらの文字列が削除されます",
+      "TextAreaBlocksHeightPx": "テキスト入力ブロックの高さ - ピクセル:"
     },
     {
       "languageName": "हिन्दी",
@@ -1162,7 +1206,11 @@
       "screenshot": "📎 पेज का स्क्रीनशॉट 📎",
       "FileNameFormat": "फ़ाइल नाम प्रारूप",
       "FileNameFormatPlaceholder": "उदाहरण: <date>-<tab_title>",
-      "FileNameTooltip": "फ़ाइल पर लागू होने वाला नाम। विशेष वर्णों की अनुमति नहीं है।\n\nआप ऐसे टैग उपयोग कर सकते हैं जिन्हें ऑब्जेक्ट सहेजते समय वास्तविक डेटा से बदला जाएगा: \n\n<time> - वर्तमान समय\n<date> - वर्तमान तारीख (प्रारूप 25-05-2026)\n<date_alt> - वर्तमान तारीख (प्रारूप 05-25-2026)\n<random_id> - यादृच्छिक ID\n<site_name> - साइट का नाम\n<tab_title> - टैब शीर्षक"
+      "FileNameTooltip": "फ़ाइल पर लागू होने वाला नाम। विशेष वर्णों की अनुमति नहीं है।\n\nआप ऐसे टैग उपयोग कर सकते हैं जिन्हें ऑब्जेक्ट सहेजते समय वास्तविक डेटा से बदला जाएगा: \n\n<time> - वर्तमान समय\n<date> - वर्तमान तारीख (प्रारूप 25-05-2026)\n<date_alt> - वर्तमान तारीख (प्रारूप 05-25-2026)\n<random_id> - यादृच्छिक ID\n<site_name> - साइट का नाम\n<tab_title> - टैब शीर्षक",
+      "StringsRemovedFromTabTitle": "टैब शीर्षक से हटाई गई स्ट्रिंग्स",
+      "StringsRemovedFromTabTitlePlaceholder": "\"डाउनलोड \", \"ऑनलाइन देखें\", \"मुफ्त ऑनलाइन\"",
+      "StringsRemovedFromTabTitleTooltip": "आप यहां स्ट्रिंग्स निर्दिष्ट कर सकते हैं जो ऑब्जेक्ट में जोड़ते समय टैब शीर्षक से हटाई जाएंगी। स्ट्रिंग्स उद्धरण चिन्हों में दर्ज की जाती हैं और अल्पविराम से अलग की जाती हैं, उदाहरण के लिए:\n\"डाउनलोड \", \"ऑनलाइन देखें\", \"मुफ्त ऑनलाइन\"\n\nये स्ट्रिंग्स हटाई जाएंगी",
+      "TextAreaBlocksHeightPx": "टेक्स्ट इनपुट ब्लॉकों की ऊंचाई - पिक्सेल में:"
     },
     {
       "languageName": "Беларуская",
@@ -1259,7 +1307,11 @@
       "screenshot": "📎 Скрыншот старонкі 📎",
       "FileNameFormat": "Фармат імя файла",
       "FileNameFormatPlaceholder": "Напрыклад: <date>-<tab_title>",
-      "FileNameTooltip": "Імя, якое будзе прыменена да файла. Спецыяльныя сімвалы ўводзіць нельга.\n\nВы можаце выкарыстоўваць тэгі, якія пры захаванні аб'екта будуць заменены на рэальныя даныя: \n\n<time> - бягучы час\n<date> - бягучая дата ў фармаце 25-05-2026\n<date_alt> - бягучая дата ў фармаце 05-25-2026\n<random_id> - выпадковы ID\n<site_name> - назва сайта\n<tab_title> - загаловак укладкі"
+      "FileNameTooltip": "Імя, якое будзе прыменена да файла. Спецыяльныя сімвалы ўводзіць нельга.\n\nВы можаце выкарыстоўваць тэгі, якія пры захаванні аб'екта будуць заменены на рэальныя даныя: \n\n<time> - бягучы час\n<date> - бягучая дата ў фармаце 25-05-2026\n<date_alt> - бягучая дата ў фармаце 05-25-2026\n<random_id> - выпадковы ID\n<site_name> - назва сайта\n<tab_title> - загаловак укладкі",
+      "StringsRemovedFromTabTitle": "Радкі, удаленыя з загалоўка ўкладкі",
+      "StringsRemovedFromTabTitlePlaceholder": "\"Сцягнуць \", \"глядзець онлайн\", \"бясплатна онлайн\"",
+      "StringsRemovedFromTabTitleTooltip": "Вы можаце вказаць тут радкі, якія будуць удаленыя з загалоўка ўкладкі пры дабаванні да объекта. Радкі ўводзяцца ў двойных цытатах, раздзеленыя коскамі, напрыклад:\n\"Сцягнуць \", \"глядзець онлайн\", \"бясплатна онлайн\"\n\nЭтыя радкі будуць удаленыя",
+      "TextAreaBlocksHeightPx": "Вышыня блокаў уводу тэксту - у пікселях:"
     },
     {
       "languageName": "Čeština",
@@ -1356,7 +1408,11 @@
       "screenshot": "📎 Snímek obrazovky stránky 📎",
       "FileNameFormat": "Formát názvu souboru",
       "FileNameFormatPlaceholder": "Například: <date>-<tab_title>",
-      "FileNameTooltip": "Název, který bude použit pro soubor. Speciální znaky nejsou povoleny.\n\nMůžete použít tagy, které budou při ukládání objektu nahrazeny skutečnými daty: \n\n<time> - aktuální čas\n<date> - aktuální datum ve formátu 25-05-2026\n<date_alt> - aktuální datum ve formátu 05-25-2026\n<random_id> - náhodné ID\n<site_name> - název webu\n<tab_title> - název karty"
+      "FileNameTooltip": "Název, který bude použit pro soubor. Speciální znaky nejsou povoleny.\n\nMůžete použít tagy, které budou při ukládání objektu nahrazeny skutečnými daty: \n\n<time> - aktuální čas\n<date> - aktuální datum ve formátu 25-05-2026\n<date_alt> - aktuální datum ve formátu 05-25-2026\n<random_id> - náhodné ID\n<site_name> - název webu\n<tab_title> - název karty",
+      "StringsRemovedFromTabTitle": "Řetězce odstraněné z názvu karty",
+      "StringsRemovedFromTabTitlePlaceholder": "\"Stáhnout \", \"sledovat online\", \"zdarma online\"",
+      "StringsRemovedFromTabTitleTooltip": "Zde můžete určit řetězce, které budou odstraněny z názvu karty při přidání do objektu. Řetězce se zadávají v uvozovkách oddělené čárkami, například:\n\"Stáhnout \", \"sledovat online\", \"zdarma online\"\n\nTyto řetězce budou odstraněny",
+      "TextAreaBlocksHeightPx": "Výška bloků pro zadávání textu - v pixelech:"
     },
     {
       "languageName": "Dansk",
@@ -1453,7 +1509,11 @@
       "screenshot": "📎 Skærmbillede af siden 📎",
       "FileNameFormat": "Filnavnformat",
       "FileNameFormatPlaceholder": "For eksempel: <date>-<tab_title>",
-      "FileNameTooltip": "Navnet, der anvendes på filen. Specialtegn er ikke tilladt.\n\nDu kan bruge tags, som bliver erstattet med rigtige data, når objektet gemmes: \n\n<time> - nuværende tid\n<date> - nuværende dato i formatet 25-05-2026\n<date_alt> - nuværende dato i formatet 05-25-2026\n<random_id> - tilfældigt ID\n<site_name> - webstedets navn\n<tab_title> - fanens titel"
+      "FileNameTooltip": "Navnet, der anvendes på filen. Specialtegn er ikke tilladt.\n\nDu kan bruge tags, som bliver erstattet med rigtige data, når objektet gemmes: \n\n<time> - nuværende tid\n<date> - nuværende dato i formatet 25-05-2026\n<date_alt> - nuværende dato i formatet 05-25-2026\n<random_id> - tilfældigt ID\n<site_name> - webstedets navn\n<tab_title> - fanens titel",
+      "StringsRemovedFromTabTitle": "Strenge fjernet fra fanetitel",
+      "StringsRemovedFromTabTitlePlaceholder": "\"Download \", \"se online\", \"gratis online\"",
+      "StringsRemovedFromTabTitleTooltip": "Her kan du angive strenge, der skal fjernes fra fanetitlen, når den tilføjes til objektet. Strengene indtastes i anførselstegn adskilt af kommaer, for eksempel:\n\"Download \", \"se online\", \"gratis online\"\n\nDisse strenge fjernes",
+      "TextAreaBlocksHeightPx": "Højden på tekstinputblokke - i pixels:"
     },
     {
       "languageName": "فارسی",
@@ -1550,7 +1610,11 @@
       "screenshot": "📎 اسکرین‌شات صفحه 📎",
       "FileNameFormat": "فرمت نام فایل",
       "FileNameFormatPlaceholder": "برای مثال: <date>-<tab_title>",
-      "FileNameTooltip": "نامی که روی فایل اعمال می‌شود. استفاده از کاراکترهای خاص مجاز نیست.\n\nمی‌توانید از تگ‌هایی استفاده کنید که هنگام ذخیره شیء با داده‌های واقعی جایگزین می‌شوند: \n\n<time> - زمان فعلی\n<date> - تاریخ فعلی با فرمت 25-05-2026\n<date_alt> - تاریخ فعلی با فرمت 05-25-2026\n<random_id> - شناسه تصادفی\n<site_name> - نام سایت\n<tab_title> - عنوان تب"
+      "FileNameTooltip": "نامی که روی فایل اعمال می‌شود. استفاده از کاراکترهای خاص مجاز نیست.\n\nمی‌توانید از تگ‌هایی استفاده کنید که هنگام ذخیره شیء با داده‌های واقعی جایگزین می‌شوند: \n\n<time> - زمان فعلی\n<date> - تاریخ فعلی با فرمت 25-05-2026\n<date_alt> - تاریخ فعلی با فرمت 05-25-2026\n<random_id> - شناسه تصادفی\n<site_name> - نام سایت\n<tab_title> - عنوان تب",
+      "StringsRemovedFromTabTitle": "رشته‌هایی که از عنوان تب حذف می‌شوند",
+      "StringsRemovedFromTabTitlePlaceholder": "\"دانلود \", \"تماشای آنلاین\", \"رایگان آنلاین\"",
+      "StringsRemovedFromTabTitleTooltip": "می‌توانید در اینجا رشته‌هایی را مشخص کنید که هنگام افزودن به شیء از عنوان تب حذف شوند. رشته‌ها درون علائم نقل‌قول وارد شده و با کاما جدا می‌شوند، برای مثال:\n\"دانلود \", \"تماشای آنلاین\", \"رایگان آنلاین\"\n\nاین رشته‌ها حذف خواهند شد",
+      "TextAreaBlocksHeightPx": "ارتفاع بلوک های ورودی متن - بر حسب پیکسل:"
     },
     {
       "languageName": "Bahasa Indonesia",
@@ -1647,7 +1711,11 @@
       "screenshot": "📎 Tangkapan layar halaman 📎",
       "FileNameFormat": "Format nama file",
       "FileNameFormatPlaceholder": "Contoh: <date>-<tab_title>",
-      "FileNameTooltip": "Nama yang akan diterapkan ke file. Karakter khusus tidak diperbolehkan.\n\nAnda dapat menggunakan tag yang akan diganti dengan data nyata saat menyimpan objek: \n\n<time> - waktu saat ini\n<date> - tanggal saat ini dengan format 25-05-2026\n<date_alt> - tanggal saat ini dengan format 05-25-2026\n<random_id> - ID acak\n<site_name> - nama situs\n<tab_title> - judul tab"
+      "FileNameTooltip": "Nama yang akan diterapkan ke file. Karakter khusus tidak diperbolehkan.\n\nAnda dapat menggunakan tag yang akan diganti dengan data nyata saat menyimpan objek: \n\n<time> - waktu saat ini\n<date> - tanggal saat ini dengan format 25-05-2026\n<date_alt> - tanggal saat ini dengan format 05-25-2026\n<random_id> - ID acak\n<site_name> - nama situs\n<tab_title> - judul tab",
+      "StringsRemovedFromTabTitle": "String yang dihapus dari judul tab",
+      "StringsRemovedFromTabTitlePlaceholder": "\"Unduh \", \"tonton online\", \"gratis online\"",
+      "StringsRemovedFromTabTitleTooltip": "Anda dapat menentukan string di sini yang akan dihapus dari judul tab saat menambahkannya ke objek. String dimasukkan dalam tanda kutip dipisahkan dengan koma, misalnya:\n\"Unduh \", \"tonton online\", \"gratis online\"\n\nString ini akan dihapus",
+      "TextAreaBlocksHeightPx": "Tinggi blok input teks - dalam piksel:"
     },
     {
       "languageName": "Lietuvių",
@@ -1744,7 +1812,11 @@
       "screenshot": "📎 Puslapio ekrano nuotrauka 📎",
       "FileNameFormat": "Failo pavadinimo formatas",
       "FileNameFormatPlaceholder": "Pavyzdžiui: <date>-<tab_title>",
-      "FileNameTooltip": "Pavadinimas, kuris bus pritaikytas failui. Specialūs simboliai neleidžiami.\n\nGalite naudoti žymas, kurios išsaugant objektą bus pakeistos tikrais duomenimis: \n\n<time> - dabartinis laikas\n<date> - dabartinė data formatu 25-05-2026\n<date_alt> - dabartinė data formatu 05-25-2026\n<random_id> - atsitiktinis ID\n<site_name> - svetainės pavadinimas\n<tab_title> - kortelės pavadinimas"
+      "FileNameTooltip": "Pavadinimas, kuris bus pritaikytas failui. Specialūs simboliai neleidžiami.\n\nGalite naudoti žymas, kurios išsaugant objektą bus pakeistos tikrais duomenimis: \n\n<time> - dabartinis laikas\n<date> - dabartinė data formatu 25-05-2026\n<date_alt> - dabartinė data formatu 05-25-2026\n<random_id> - atsitiktinis ID\n<site_name> - svetainės pavadinimas\n<tab_title> - kortelės pavadinimas",
+      "StringsRemovedFromTabTitle": "Eilutės pašalintos iš skirtuko pavadinimo",
+      "StringsRemovedFromTabTitlePlaceholder": "\"Atsisiųsti \", \"žiūrėti internete\", \"nemokamai internete\"",
+      "StringsRemovedFromTabTitleTooltip": "Čia galite nurodyti eilutes, kurios bus pašalintos iš skirtuko pavadinimo, kai jis įtraukiamas į objektą. Eilutės įvedamos skliausteliais ir atskiriamos kableliais, pavyzdžiui:\n\"Atsisiųsti \", \"žiūrėti internete\", \"nemokamai internete\"\n\nŠios eilutės bus pašalintos",
+      "TextAreaBlocksHeightPx": "Teksto įvesties blokų aukštis - pikseliais:"
     },
     {
       "languageName": "Nederlands",
@@ -1841,7 +1913,11 @@
       "screenshot": "📎 Schermafbeelding van de pagina 📎",
       "FileNameFormat": "Bestandsnaamindeling",
       "FileNameFormatPlaceholder": "Bijvoorbeeld: <date>-<tab_title>",
-      "FileNameTooltip": "De naam die op het bestand wordt toegepast. Speciale tekens zijn niet toegestaan.\n\nJe kunt tags gebruiken die bij het opslaan van het object worden vervangen door echte gegevens: \n\n<time> - huidige tijd\n<date> - huidige datum in formaat 25-05-2026\n<date_alt> - huidige datum in formaat 05-25-2026\n<random_id> - willekeurige ID\n<site_name> - sitenaam\n<tab_title> - tabtitel"
+      "FileNameTooltip": "De naam die op het bestand wordt toegepast. Speciale tekens zijn niet toegestaan.\n\nJe kunt tags gebruiken die bij het opslaan van het object worden vervangen door echte gegevens: \n\n<time> - huidige tijd\n<date> - huidige datum in formaat 25-05-2026\n<date_alt> - huidige datum in formaat 05-25-2026\n<random_id> - willekeurige ID\n<site_name> - sitenaam\n<tab_title> - tabtitel",
+      "StringsRemovedFromTabTitle": "Tekenreeksen verwijderd uit titelwerkblad",
+      "StringsRemovedFromTabTitlePlaceholder": "\"Download \", \"online kijken\", \"gratis online\"",
+      "StringsRemovedFromTabTitleTooltip": "U kunt hier tekenreeksen opgeven die uit de tabbladtitel worden verwijderd wanneer deze aan het object wordt toegevoegd. Tekenreeksen worden tussen aanhalingstekens ingevoerd gescheiden door komma's, bijvoorbeeld:\n\"Download \", \"online kijken\", \"gratis online\"\n\nDeze tekenreeksen worden verwijderd",
+      "TextAreaBlocksHeightPx": "Hoogte van tekstinvoerblokken - in pixels:"
     },
     {
       "languageName": "Norsk",
@@ -1938,7 +2014,11 @@
       "screenshot": "📎 Skjermbilde av siden 📎",
       "FileNameFormat": "Filnavnformat",
       "FileNameFormatPlaceholder": "For eksempel: <date>-<tab_title>",
-      "FileNameTooltip": "Navnet som skal brukes på filen. Spesialtegn er ikke tillatt.\n\nDu kan bruke tagger som erstattes med faktiske data når objektet lagres: \n\n<time> - nåværende tid\n<date> - nåværende dato i formatet 25-05-2026\n<date_alt> - nåværende dato i formatet 05-25-2026\n<random_id> - tilfeldig ID\n<site_name> - nettstedets navn\n<tab_title> - fanetittel"
+      "FileNameTooltip": "Navnet som skal brukes på filen. Spesialtegn er ikke tillatt.\n\nDu kan bruke tagger som erstattes med faktiske data når objektet lagres: \n\n<time> - nåværende tid\n<date> - nåværende dato i formatet 25-05-2026\n<date_alt> - nåværende dato i formatet 05-25-2026\n<random_id> - tilfeldig ID\n<site_name> - nettstedets navn\n<tab_title> - fanetittel",
+      "StringsRemovedFromTabTitle": "Strenger fjernet fra fananavn",
+      "StringsRemovedFromTabTitlePlaceholder": "\"Last ned \", \"se online\", \"gratis online\"",
+      "StringsRemovedFromTabTitleTooltip": "Du kan angi strenger her som skal fjernes fra fanetittelen når den legges til objektet. Strenger angis i anførselstegn atskilt med kommaer, for eksempel:\n\"Last ned \", \"se online\", \"gratis online\"\n\nDisse strengene fjernes",
+      "TextAreaBlocksHeightPx": "Høyde på tekstinnskrivingsblokker - i piksler:"
     },
     {
       "languageName": "Português (Brasil)",
@@ -2035,7 +2115,11 @@
       "screenshot": "📎 Captura de tela da página 📎",
       "FileNameFormat": "Formato do nome do arquivo",
       "FileNameFormatPlaceholder": "Por exemplo: <date>-<tab_title>",
-      "FileNameTooltip": "O nome que será aplicado ao arquivo. Caracteres especiais não são permitidos.\n\nVocê pode usar tags que serão substituídas por dados reais ao salvar o objeto: \n\n<time> - hora atual\n<date> - data atual no formato 25-05-2026\n<date_alt> - data atual no formato 05-25-2026\n<random_id> - ID aleatório\n<site_name> - nome do site\n<tab_title> - título da aba"
+      "FileNameTooltip": "O nome que será aplicado ao arquivo. Caracteres especiais não são permitidos.\n\nVocê pode usar tags que serão substituídas por dados reais ao salvar o objeto: \n\n<time> - hora atual\n<date> - data atual no formato 25-05-2026\n<date_alt> - data atual no formato 05-25-2026\n<random_id> - ID aleatório\n<site_name> - nome do site\n<tab_title> - título da aba",
+      "StringsRemovedFromTabTitle": "Strings removidas do título da aba",
+      "StringsRemovedFromTabTitlePlaceholder": "\"Baixar \", \"assistir online\", \"grátis online\"",
+      "StringsRemovedFromTabTitleTooltip": "Você pode especificar aqui as strings que serão removidas do título da aba ao adicioná-la ao objeto. As strings são inseridas entre aspas separadas por vírgulas, por exemplo:\n\"Baixar \", \"assistir online\", \"grátis online\"\n\nEstas strings serão removidas",
+      "TextAreaBlocksHeightPx": "Altura dos blocos de entrada de texto - em pixels:"
     },
     {
       "languageName": "Română",
@@ -2132,7 +2216,11 @@
       "screenshot": "📎 Captură de ecran a paginii 📎",
       "FileNameFormat": "Format nume fișier",
       "FileNameFormatPlaceholder": "De exemplu: <date>-<tab_title>",
-      "FileNameTooltip": "Numele care va fi aplicat fișierului. Caracterele speciale nu sunt permise.\n\nPuteți folosi etichete care vor fi înlocuite cu date reale la salvarea obiectului: \n\n<time> - ora curentă\n<date> - data curentă în formatul 25-05-2026\n<date_alt> - data curentă în formatul 05-25-2026\n<random_id> - ID aleator\n<site_name> - numele site-ului\n<tab_title> - titlul filei"
+      "FileNameTooltip": "Numele care va fi aplicat fișierului. Caracterele speciale nu sunt permise.\n\nPuteți folosi etichete care vor fi înlocuite cu date reale la salvarea obiectului: \n\n<time> - ora curentă\n<date> - data curentă în formatul 25-05-2026\n<date_alt> - data curentă în formatul 05-25-2026\n<random_id> - ID aleator\n<site_name> - numele site-ului\n<tab_title> - titlul filei",
+      "StringsRemovedFromTabTitle": "Șiruri eliminate din titlul filei",
+      "StringsRemovedFromTabTitlePlaceholder": "\"Descărcați \", \"vizionați online\", \"gratuit online\"",
+      "StringsRemovedFromTabTitleTooltip": "Puteți specifica aici șirurile care vor fi eliminate din titlul filei atunci când este adăugat la obiect. Șirurile se introduc între ghilimele, separate prin virgulă, de exemplu:\n\"Descărcați \", \"vizionați online\", \"gratuit online\"\n\nAceste șiruri vor fi eliminate",
+      "TextAreaBlocksHeightPx": "Înălțimea blocurilor de introducere a textului - în pixeli:"
     },
     {
       "languageName": "Українська",
@@ -2229,7 +2317,11 @@
       "screenshot": "📎 Знімок екрана сторінки 📎",
       "FileNameFormat": "Формат імені файлу",
       "FileNameFormatPlaceholder": "Наприклад: <date>-<tab_title>",
-      "FileNameTooltip": "Ім'я, яке буде застосовано до файлу. Спеціальні символи вводити не можна.\n\nВи можете використовувати теги, які під час збереження об'єкта будуть замінені на реальні дані: \n\n<time> - поточний час\n<date> - поточна дата у форматі 25-05-2026\n<date_alt> - поточна дата у форматі 05-25-2026\n<random_id> - випадковий ID\n<site_name> - назва сайту\n<tab_title> - заголовок вкладки"
+      "FileNameTooltip": "Ім'я, яке буде застосовано до файлу. Спеціальні символи вводити не можна.\n\nВи можете використовувати теги, які під час збереження об'єкта будуть замінені на реальні дані: \n\n<time> - поточний час\n<date> - поточна дата у форматі 25-05-2026\n<date_alt> - поточна дата у форматі 05-25-2026\n<random_id> - випадковий ID\n<site_name> - назва сайту\n<tab_title> - заголовок вкладки",
+      "StringsRemovedFromTabTitle": "Рядки, що видаляються із заголовка вкладки",
+      "StringsRemovedFromTabTitlePlaceholder": "\"Завантажити \", \"дивитися онлайн\", \"безкоштовно онлайн\"",
+      "StringsRemovedFromTabTitleTooltip": "Тут можна вказати рядки, які будуть видалятися із заголовка вкладки під час додавання в об'єкт. Рядки вводяться в лапках через кому, наприклад:\n\"Завантажити \", \"дивитися онлайн\", \"безкоштовно онлайн\"\n\nЦі рядки буде видалено",
+      "TextAreaBlocksHeightPx": "Висота блоків для введення тексту - у пікселях:"
     },
     {
       "languageName": "Tiếng Việt",
@@ -2326,7 +2418,11 @@
       "screenshot": "📎 Ảnh chụp màn hình trang 📎",
       "FileNameFormat": "Định dạng tên tệp",
       "FileNameFormatPlaceholder": "Ví dụ: <date>-<tab_title>",
-      "FileNameTooltip": "Tên sẽ được áp dụng cho tệp. Không được nhập ký tự đặc biệt.\n\nBạn có thể dùng các thẻ sẽ được thay bằng dữ liệu thực khi lưu đối tượng: \n\n<time> - thời gian hiện tại\n<date> - ngày hiện tại theo định dạng 25-05-2026\n<date_alt> - ngày hiện tại theo định dạng 05-25-2026\n<random_id> - ID ngẫu nhiên\n<site_name> - tên trang web\n<tab_title> - tiêu đề tab"
+      "FileNameTooltip": "Tên sẽ được áp dụng cho tệp. Không được nhập ký tự đặc biệt.\n\nBạn có thể dùng các thẻ sẽ được thay bằng dữ liệu thực khi lưu đối tượng: \n\n<time> - thời gian hiện tại\n<date> - ngày hiện tại theo định dạng 25-05-2026\n<date_alt> - ngày hiện tại theo định dạng 05-25-2026\n<random_id> - ID ngẫu nhiên\n<site_name> - tên trang web\n<tab_title> - tiêu đề tab",
+      "StringsRemovedFromTabTitle": "Chuỗi bị xóa khỏi tiêu đề tab",
+      "StringsRemovedFromTabTitlePlaceholder": "\"Tải xuống \", \"xem trực tuyến\", \"miễn phí trực tuyến\"",
+      "StringsRemovedFromTabTitleTooltip": "Bạn có thể đặt tại đây các chuỗi sẽ bị xóa khỏi tiêu đề tab khi thêm vào đối tượng. Các chuỗi được nhập trong dấu ngoặc kép và phân tách bằng dấu phẩy, ví dụ:\n\"Tải xuống \", \"xem trực tuyến\", \"miễn phí trực tuyến\"\n\nCác chuỗi này sẽ bị xóa",
+      "TextAreaBlocksHeightPx": "Chiều cao các khối nhập văn bản - tính bằng pixel:"
     }
   ]
 }
