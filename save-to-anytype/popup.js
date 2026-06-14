@@ -766,10 +766,7 @@ async function localPopapInited() {
             return WebPagePropierties.find(p => p.id == propiertie_key).value;
         }
         else {
-            const className = propiertie_key.replace("page_selector|", "");
-            if (!className || className === "no-class") {
-                return "";
-            }
+            const classNameAndDom = propiertie_key.replace("page_selector|", "");
 
             const [tab] = chromeTABS || [];
 
@@ -782,7 +779,7 @@ async function localPopapInited() {
                 const response = await chrome.runtime.sendMessage({
                     action: "executeScript_GetElementByClassName",
                     target: { tabId: tab.id },
-                    className
+                    classNameAndDom
                 });
 
                 if (response?.success) {
@@ -1512,11 +1509,14 @@ async function localPopapInited() {
                 }
 
                 if (isPageSelector) {
+                    const selectedElementData = window.pageElementSelectorState?.selectedElementByInputFieldKey?.[obj?.AnytypeProperty.key] || {};
                     // For page_selector, store the actual selected element class instead of page property ID
                     propertiesList.push(
                         {
                             AnytypeProperty: obj?.AnytypeProperty,
-                            SelectedValueByUser: "page_selector|" + document.getElementById("pageSelector_" + obj?.AnytypeProperty.key + "_selected_class_value").innerText,
+                            SelectedValueByUser: ("page_selector|"
+                                + (selectedElementData.elementClass || "no-class")
+                                + "|" + (selectedElementData.elementDOM || "")),
                             ...(needToAddFileNameFormat ? { FileNameFormat: fileNameFormatObj.value } : {})
                         }
                     );
@@ -2254,10 +2254,14 @@ async function localPopapInited() {
                             false,
                     });
 
-                    // Add handler for page_selector selection in text properties
-                    if (property.format === "text") {
+                    if (property.format === "text" || property.format === "email"
+                        || property.format === "number" || property.format === "url"
+                        || property.format === "date" || property.format === "checkbox" || property.key === "description"
+                        || property.format === "phone") {
+
                         const selectElement = document.getElementById(property.key);
                         selectElement.addEventListener("change", function (e) {
+
                             const selectedValue = this.value;
                             const poperty_head = propertyHTML.querySelector(".poperty-head");
                             const form_group = propertyHTML.querySelector(".form-group");
@@ -2272,11 +2276,14 @@ async function localPopapInited() {
                             const existingPageSelectorTooltip = poperty_head.querySelector("#pageSelector_tooltip");
                             if (existingPageSelectorTooltip) existingPageSelectorTooltip.remove();
 
+                            const existingSelectedTextPageTooltip = poperty_head.querySelector("#selected_text_page_tooltip");
+                            if (existingSelectedTextPageTooltip) existingSelectedTextPageTooltip.remove();
+
                             // Add button if page_selector is selected
                             if (selectedValue === "page_selector") {
                                 const btn = document.createElement("button");
                                 btn.className = "btn-page-selector";
-                                btn.title = "Select element on page";
+                                btn.title = Localize("Select-element-on-page", state.language);
                                 btn.textContent = "👆";
                                 btn.addEventListener("click", function (e) {
                                     e.preventDefault();
@@ -2310,6 +2317,15 @@ async function localPopapInited() {
                                 `;
 
                                 form_group.appendChild(selectedClassDIV);
+                            }
+                            else if (selectedValue === "selected_text_page") {
+                                const tipDiv = document.createElement("div");
+                                tipDiv.className = "btn-file-name-top-tip";
+                                tipDiv.id = "selected_text_page_tooltip";
+                                tipDiv.innerText = "?";
+                                poperty_head.appendChild(tipDiv);
+
+                                attachTooltip(tipDiv, "SelectedTextPageTooltip", 180);
                             }
                         });
                     }
@@ -2604,6 +2620,11 @@ async function localPopapInited() {
                             // Apply string removal for tab_title
                             if (savedProperty.SelectedValueByUser === "tab_title") {
                                 value = RemoveStringsFromTabTitle(value);
+                            }
+
+                            if (property.format === "number") {
+                                // Keep only digits so browser number input parses value consistently.
+                                value = String(value ?? "").replace(/\D+/g, "");
                             }
                         }
 
@@ -3118,7 +3139,8 @@ async function localPopapInited() {
         // Store the current input field key for later use
         window.pageElementSelectorState = {
             inputFieldKey: inputFieldKey,
-            selectedElementClass: ""
+            selectedElementClass: "",
+            selectedElementByInputFieldKey: window.pageElementSelectorState?.selectedElementByInputFieldKey || {}
         };
 
         // Send message to content.js to start element selection mode
@@ -3144,9 +3166,6 @@ async function localPopapInited() {
                 });
             }
         });
-
-        // Show status
-        showStatus("Click on an element to select it, ESC to cancel", "info");
     }
 
     // Listen for messages from content.js
@@ -3155,6 +3174,13 @@ async function localPopapInited() {
             const inputFieldKey = window.pageElementSelectorState?.inputFieldKey;
             const selectedClass = document.getElementById("pageSelector_" + inputFieldKey + "_selected_class");
             const selectedClassValue = document.getElementById("pageSelector_" + inputFieldKey + "_selected_class_value");
+            if (!window.pageElementSelectorState?.selectedElementByInputFieldKey) {
+                window.pageElementSelectorState = {
+                    ...(window.pageElementSelectorState || {}),
+                    selectedElementByInputFieldKey: {}
+                };
+            }
+            window.pageElementSelectorState.selectedElementByInputFieldKey[inputFieldKey] = request;
             if (selectedClass && selectedClassValue) {
                 selectedClass.style.display = "block";
                 selectedClassValue.textContent = request.elementClass;

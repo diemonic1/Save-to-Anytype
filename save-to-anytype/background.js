@@ -552,7 +552,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             tabId,
             {
                 action: "GET_ELEMENT_BY_CLASS_NAME",
-                className: request.className
+                classNameAndDom: request.classNameAndDom
             },
             (result) => {
                 if (chrome.runtime.lastError) {

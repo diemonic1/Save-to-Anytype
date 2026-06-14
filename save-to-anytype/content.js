@@ -38,7 +38,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
     else if (request.action === "GET_ELEMENT_BY_CLASS_NAME") {
         try {
-            const html = GetElementByClassName(request.className);
+            const html = GetElementByClassNameAndDOM(request.classNameAndDom);
             sendResponse({ success: true, data: html });
         } catch (error) {
             sendResponse({ success: false, error: String(error?.message || error) });
@@ -212,14 +212,16 @@ function handleElementClick(e) {
         e.stopImmediatePropagation();
 
         const element = e.target;
-        const elementClass = element.className.replace(" page-element-selector-highlight", "") || "no-class";
+        const elementClass = element?.className?.replace(" page-element-selector-highlight", "").replace("page-element-selector-highlight", "") || "no-class";
         const elementText = element.textContent.substring(0, 100).trim();
+        const elementDOMPath = getElementDomPath(element);
 
         // Send selected element class to popup
         chrome.runtime.sendMessage({
             action: "ELEMENT_SELECTED",
             elementClass: elementClass,
-            elementText: elementText
+            elementText: elementText,
+            elementDOM: elementDOMPath
         }, function (response) {
             if (chrome.runtime.lastError) {
                 console.error("Error sending element selection:", chrome.runtime.lastError);
@@ -236,34 +238,138 @@ function handleElementClick(e) {
     return false;
 }
 
-function GetElementByClassName(className) {
-    const rawClassName = String(className || "").trim();
-
-    if (!rawClassName || rawClassName === "no-class") {
+function GetElementByClassNameAndDOM(classNameAndDom) {
+    const rawClassNameAndDom = String(classNameAndDom || "").trim();
+    if (!rawClassNameAndDom) {
         return "";
     }
 
-    const classList = rawClassName.split(/\s+/).filter(Boolean);
-    if (classList.length === 0) {
-        return "";
-    }
+    const firstSeparatorIndex = rawClassNameAndDom.indexOf("|");
+    const rawClassName = firstSeparatorIndex === -1
+        ? rawClassNameAndDom
+        : rawClassNameAndDom.slice(0, firstSeparatorIndex);
+    const rawDomPath = firstSeparatorIndex === -1
+        ? ""
+        : rawClassNameAndDom.slice(firstSeparatorIndex + 1).trim();
 
-    const escapedClasses = classList.map((name) => {
-        if (typeof CSS !== "undefined" && typeof CSS.escape === "function") {
-            return CSS.escape(name);
+    let foundElement = null;
+
+    if (rawDomPath) {
+        try {
+            foundElement = document.querySelector(rawDomPath);
         }
-        return name.replace(/[^a-zA-Z0-9_-]/g, "\\$&");
-    });
+        catch (err) {
+            foundElement = null;
+        }
+    }
 
-    // For multi-class values build a compound selector: .class1.class2
-    const selector = "." + escapedClasses.join(".");
-    const element = document.querySelector(selector);
+    if (!foundElement) {
+        foundElement = findElementByClassList(rawClassName);
+    }
 
-    if (!element) {
+    if (!foundElement) {
         return "";
     }
 
-    return element.innerHTML || "";
+    return String(foundElement.innerText || "").trim();
+}
+
+function findElementByClassList(rawClassName) {
+    const cleaned = String(rawClassName || "")
+        .replace(" page-element-selector-highlight", "")
+        .replace("page-element-selector-highlight", "")
+        .trim();
+
+    if (!cleaned || cleaned === "no-class") {
+        return null;
+    }
+
+    const classTokens = cleaned
+        .split(/\s+/)
+        .map(c => c.trim())
+        .filter(Boolean);
+
+    if (!classTokens.length) {
+        return null;
+    }
+
+    const escapedTokens = classTokens.map(token => cssEscape(token));
+
+    try {
+        const strictSelector = "." + escapedTokens.join(".");
+        const strictMatch = document.querySelector(strictSelector);
+        if (strictMatch) {
+            return strictMatch;
+        }
+    }
+    catch (err) {
+        // Ignore invalid selector and continue with less strict lookup.
+    }
+
+    for (const token of escapedTokens) {
+        try {
+            const bySingleClass = document.querySelector("." + token);
+            if (bySingleClass) {
+                return bySingleClass;
+            }
+        }
+        catch (err) {
+            continue;
+        }
+    }
+
+    return null;
+}
+
+function getElementDomPath(element) {
+    if (!element || !(element instanceof Element)) {
+        return "";
+    }
+
+    if (element.id) {
+        return "#" + cssEscape(element.id);
+    }
+
+    const path = [];
+    let current = element;
+
+    while (current && current.nodeType === Node.ELEMENT_NODE) {
+        const tagName = current.nodeName.toLowerCase();
+        if (tagName === "html") {
+            path.unshift("html");
+            break;
+        }
+
+        if (current.id) {
+            path.unshift("#" + cssEscape(current.id));
+            break;
+        }
+
+        let selectorPart = tagName;
+        const parent = current.parentElement;
+
+        if (parent) {
+            const sameTagSiblings = Array.from(parent.children)
+                .filter(child => child.nodeName.toLowerCase() === tagName);
+            if (sameTagSiblings.length > 1) {
+                const index = sameTagSiblings.indexOf(current) + 1;
+                selectorPart += `:nth-of-type(${index})`;
+            }
+        }
+
+        path.unshift(selectorPart);
+        current = parent;
+    }
+
+    return path.join(" > ");
+}
+
+function cssEscape(value) {
+    if (typeof CSS !== "undefined" && typeof CSS.escape === "function") {
+        return CSS.escape(value);
+    }
+
+    return String(value).replace(/[^a-zA-Z0-9_-]/g, "\\$&");
 }
 
 function handleElementSelectorKeyDown(e) {
@@ -308,7 +414,7 @@ function showElementSelectorTooltip(event, element) {
     `;
 
     try {
-        const elementClass = element?.className?.replace(" page-element-selector-highlight", "") || "no-class";
+        const elementClass = element?.className?.replace(" page-element-selector-highlight", "").replace("page-element-selector-highlight", "") || "no-class";
         const elementText = element?.textContent?.substring(0, 50).trim().replace(/\n/g, " ");
         const classLabel = window.__elementSelectorLocalization?.class || "Selected class:";
         const textLabel = window.__elementSelectorLocalization?.text || "Text";
