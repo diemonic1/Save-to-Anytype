@@ -3141,30 +3141,22 @@ async function localPopapInited() {
             selectedElementByInputFieldKey: window.pageElementSelectorState?.selectedElementByInputFieldKey || {}
         };
 
-        // Send message to content.js to start element selection mode
-        const tabs = await chrome.runtime.sendMessage({
-            action: "GET_TABS"
-        });
-
-        if (tabs?.[0]) {
-            chrome.runtime.sendMessage(tabs[0].id, {
+        // Send message to background.js to forward to content.js
+        try {
+            await chrome.runtime.sendMessage({
                 action: "SET_ELEMENT_SELECTOR_LOCALIZATION",
                 localization: {
                     class: Localize("element_selector_class", state.language),
                     text: Localize("element_selector_text", state.language)
                 }
-            }, function (response) {
-                // Localization sent
             });
 
-            chrome.runtime.sendMessage(tabs[0].id, {
+            await chrome.runtime.sendMessage({
                 action: "START_PAGE_ELEMENT_SELECTION"
-            }, function (response) {
-                if (chrome.runtime.lastError) {
-                    console.error("Error sending message:", chrome.runtime.lastError);
-                    showStatus("Could not start element selector. Refresh the page.", "error");
-                }
             });
+        } catch (error) {
+            console.error("Error sending message:", error);
+            showStatus("Could not start element selector. Refresh the page.", "error");
         }
     }
 
