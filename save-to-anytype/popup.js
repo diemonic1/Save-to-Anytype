@@ -1987,9 +1987,12 @@ async function localPopapInited() {
 
                     let templatesForObject = []
 
+                    const commonTypes = ['page', 'note', 'task', 'bookmark'];
                     templatesForObject = templatesForObject.concat(typesTemplates.sort((a, b) => {
                         const aKey = a.key || a.type_key || '';
                         const bKey = b.key || b.type_key || '';
+                        const aIndex = commonTypes.indexOf(aKey);
+                        const bIndex = commonTypes.indexOf(bKey);
 
                         if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
                         if (aIndex !== -1) return -1;
