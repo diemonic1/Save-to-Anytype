@@ -663,6 +663,7 @@ async function localPopapInited() {
     // in the method document.addEventListener('DOMContentLoaded', async () => {
 
     let page_screenshotUrl = undefined;
+    const isFirefox = typeof browser !== 'undefined' || /firefox/i.test(navigator.userAgent);
 
     let WebPagePropierties = [
         { id: "tab_title", nameKey: "tab_title", value: "null o_O" },
@@ -670,9 +671,12 @@ async function localPopapInited() {
         { id: "page_image", nameKey: "page_image", value: "null o_O" },
         { id: "page_description", nameKey: "page_description", value: "null o_O" },
         { id: "page_content", nameKey: "page_content", value: "" },
-        { id: "selected_text_page", nameKey: "selected_text_page", value: "" },
-        { id: "page_selector", nameKey: "page_selector", value: "null o_O" }
+        { id: "selected_text_page", nameKey: "selected_text_page", value: "" }
     ];
+
+    if (!isFirefox) {
+        WebPagePropierties.push({ id: "page_selector", nameKey: "page_selector", value: "null o_O" });
+    }
 
     try {
         await loadState();
