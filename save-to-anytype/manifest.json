@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Save to Anytype",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Save important web pages with your selected text in Markdown format to Anytype.",
   "permissions": [
     "scripting",
@@ -10,9 +10,19 @@
     "tabs",
     "contextMenus",
     "alarms",
-    "sidePanel"
+    "sidePanel",
+    "declarativeNetRequest"
   ],
   "host_permissions": ["<all_urls>"],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "strip_origin_rules",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
   "background": {
     "service_worker": "background.js",
     "type": "module"
