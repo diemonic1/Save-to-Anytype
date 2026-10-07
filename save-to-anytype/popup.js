@@ -2123,6 +2123,10 @@ async function localPopapInited() {
             if (response.ok) {
                 let result = await response.json();
                 result = result.data;
+
+                // API returns tags unordered (Anytype's own order isn't exposed), keep them stable by name
+                result.sort((a, b) => String(a.name ?? "").localeCompare(String(b.name ?? ""), undefined, { numeric: true, sensitivity: "base" }));
+
                 return result;
             }
             else {
