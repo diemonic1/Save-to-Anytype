@@ -498,13 +498,46 @@ async function localPopapInited() {
         });
     }
 
+    // Anytype API file urls need the Authorization header, which css/img can't send - load them via fetch into blob urls
+    const authorizedImageCache = new Map();
+
+    function GetAuthorizedImageUrl(url) {
+        if (!authorizedImageCache.has(url)) {
+            const requestUrl = new URL(url);
+            if (!requestUrl.searchParams.has('width'))
+                requestUrl.searchParams.set('width', '320');
+
+            authorizedImageCache.set(url, fetch(requestUrl.toString(), {
+                headers: {
+                    'Authorization': `Bearer ${state.apiKey}`,
+                    'Anytype-Version': API_VERSION
+                }
+            })
+                .then(response => response.ok ? response.blob() : null)
+                .then(blob => blob ? URL.createObjectURL(blob) : null)
+                .catch(() => null));
+        }
+
+        return authorizedImageCache.get(url);
+    }
+
     function CreateImageReferenceForChoices(img, value, createPopapOnHover) {
+        const isAnytypeFileUrl = /^https?:\/\/(localhost|127\.0\.0\.1):31009\/v\d+\/spaces\/[^/]+\/files\//.test(String(img ?? ''));
+
+        if (isAnytypeFileUrl) {
+            GetAuthorizedImageUrl(img).then(blobUrl => {
+                if (blobUrl)
+                    CreateImageReferenceForChoices(blobUrl, value, createPopapOnHover);
+            });
+            return;
+        }
+
         const rawValue = String(value ?? '');
         const escapedValue = (typeof CSS !== 'undefined' && CSS.escape)
             ? CSS.escape(rawValue)
             : rawValue.replace(/"/g, '\\"');
 
-        const isImageUrl = /^(https?:)?\/\//.test(img) || img.startsWith('data:');
+        const isImageUrl = /^(https?:)?\/\//.test(img) || img.startsWith('data:') || img.startsWith('blob:');
 
         const getPreviewSource = () => {
             if (isImageUrl) return img;
@@ -1853,78 +1886,53 @@ async function localPopapInited() {
 
             elements.collectionsList.innerHTML = '';
 
-            // Primary method: Try lists endpoint
+            // API has no endpoint listing collections - search for objects of collection-layout types instead
             try {
-                const response = await fetch(`${API_BASE_URL}/spaces/${selectedSpaceId}/lists`, {
+                let collectionTypeKeys = [];
+
+                const typesResponse = await fetch(`${API_BASE_URL}/spaces/${selectedSpaceId}/types?limit=1000`, {
                     headers: {
                         'Authorization': `Bearer ${state.apiKey}`,
                         'Anytype-Version': API_VERSION
                     }
                 });
 
+                if (typesResponse.ok) {
+                    const typesData = await typesResponse.json();
+                    collectionTypeKeys = (typesData.data || [])
+                        .filter(type => type.layout === "collection" && !type.archived)
+                        .map(type => type.key);
+                }
+
+                if (collectionTypeKeys.length === 0)
+                    collectionTypeKeys = ["collection"];
+
+                const response = await fetch(`${API_BASE_URL}/spaces/${selectedSpaceId}/search?limit=1000`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${state.apiKey}`,
+                        'Content-Type': 'application/json',
+                        'Anytype-Version': API_VERSION
+                    },
+                    body: JSON.stringify({
+                        types: collectionTypeKeys,
+                        sort: { property_key: "name", direction: "asc" }
+                    })
+                });
+
                 if (response.ok) {
                     const data = await response.json();
-                    consoleLog('Lists endpoint response:', data);
-                    collections = data.data || data.lists || (Array.isArray(data) ? data : []);
-
-                    if (collections.length > 0) {
-                        consoleLog('Found lists/sets:', collections.map(c => ({ id: c.id, name: c.name })));
-                    }
+                    collections = data.data || [];
+                    consoleLog('Found collections:', collections.map(c => ({ id: c.id, name: c.name })));
+                }
+                else {
+                    consoleError('Collections search error:', response.status);
                 }
             } catch (e) {
-                consoleLog('Lists endpoint error:', e);
+                consoleLog('Collections search error:', e);
             }
 
-            // If no lists found, try getting all objects and filter for sets
-            if (collections.length === 0) {
-                try {
-                    const response = await fetch(`${API_BASE_URL}/spaces/${selectedSpaceId}/objects`, {
-                        headers: {
-                            'Authorization': `Bearer ${state.apiKey}`,
-                            'Anytype-Version': API_VERSION
-                        }
-                    });
-
-                    if (response.ok) {
-                        const data = await response.json();
-                        const objects = data.data || data.objects || (Array.isArray(data) ? data : []);
-
-                        const uniqueTypes = [...new Set(objects.map(o => o.type || o.type_key || 'unknown'))];
-                        consoleLog('Unique object types in space:', uniqueTypes);
-
-                        collections = objects.filter(obj => {
-                            const isSet =
-                                obj.type === 'set' ||
-                                obj.type === 'collection' ||
-                                obj.type_key === 'set' ||
-                                obj.type_key === 'collection' ||
-                                obj.layout === 'set' ||
-                                obj.layout === 'collection' ||
-                                obj.layout === 'gallery' ||
-                                obj.layout === 'grid' ||
-                                obj.layout === 'list' ||
-                                obj.layout === 'kanban' ||
-                                (obj.view && obj.view.type) ||
-                                (obj.name && obj.name.toLowerCase().includes('set'));
-
-                            if (isSet) {
-                                consoleLog('Identified as set/collection:', obj.name, {
-                                    id: obj.id,
-                                    type: obj.type,
-                                    type_key: obj.type_key,
-                                    layout: obj.layout
-                                });
-                            }
-
-                            return isSet;
-                        });
-
-                        allCollections = collections;
-                    }
-                } catch (e) {
-                    consoleLog('Objects endpoint error:', e);
-                }
-            }
+            allCollections = collections;
 
             if (collectionSelectChoices !== null)
                 collectionSelectChoices.destroy();
