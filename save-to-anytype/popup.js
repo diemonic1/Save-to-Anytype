@@ -82,6 +82,8 @@ async function localPopapInited() {
         propertiesListHandler: document.getElementById('propertiesListHandler'),
         connectBtn: document.getElementById('connectBtn'),
         disconnectBtn: document.getElementById('disconnectBtn'),
+        loadingDisconnectGroup: document.getElementById('loadingDisconnectGroup'),
+        loadingDisconnectBtn: document.getElementById('loadingDisconnectBtn'),
         spaceSelect: document.getElementById('spaceSelect'),
         collectionSection: document.getElementById('collectionSection'),
         typeSection: document.getElementById('typeSection'),
@@ -1260,7 +1262,7 @@ async function localPopapInited() {
     });
 
     // Disconnect
-    elements.disconnectBtn.addEventListener('click', async () => {
+    async function disconnectAnytype() {
         state.apiKey = null;
         selectedSpaceId = null;
         await chrome.storage.local.remove(['apiKey', 'selectedSpaceId']);
@@ -1271,7 +1273,10 @@ async function localPopapInited() {
         elements.codeSection.classList.add('hidden');
 
         showStatus(Localize('ConnectionLost', state.language), 'info');
-    });
+    }
+
+    elements.disconnectBtn.addEventListener('click', disconnectAnytype);
+    elements.loadingDisconnectBtn.addEventListener('click', disconnectAnytype);
 
     //#endregion
 
@@ -1323,6 +1328,7 @@ async function localPopapInited() {
         elements.confirmDeleteFormSection.classList.add('hidden');
         elements.saveObjectSection.classList.add('hidden');
         elements.loadingSection.classList.remove('hidden');
+        elements.loadingDisconnectGroup.classList.add('hidden');
     }
 
     function showCreateFormSection() {
@@ -1692,6 +1698,22 @@ async function localPopapInited() {
                     const errorText = await response.text();
                     console.error('Space load error:', response.status + " ," + errorText);
                     consoleError('Space load error:', response.status + " ," + errorText);
+
+                    let errorCode = null;
+                    try {
+                        errorCode = JSON.parse(errorText)?.code;
+                    } catch (e) { }
+
+                    // Key approved for selected spaces only, /v1 rejects such keys - drop it so the user can connect again
+                    if (errorCode === "v1_not_available_for_scoped_keys") {
+                        await disconnectAnytype();
+                        showStatus(Localize('ScopedKeyNotSupported', state.language), 'error');
+                        return;
+                    }
+
+                    // Saved key doesn't work (revoked, invalid...) - let the user disconnect right from the loading screen
+                    elements.loadingDisconnectGroup.classList.remove('hidden');
+
                     showStatus(Localize('SpaceListCouldntBeLoaded', state.language) + response.status, 'error');
                 }
             } catch (error) {
@@ -2038,7 +2060,7 @@ async function localPopapInited() {
     async function loadAllObjects() {
         try {
             consoleLog("loading all objects");
-            const response = await fetch(`${API_BASE_URL}/spaces/${selectedSpaceId}/objects?limit=300' `, {
+            const response = await fetch(`${API_BASE_URL}/spaces/${selectedSpaceId}/objects?limit=1000`, {
                 headers: {
                     'Authorization': `Bearer ${state.apiKey}`,
                     'Anytype-Version': API_VERSION
@@ -2063,6 +2085,29 @@ async function localPopapInited() {
         } catch (error) {
             console.error(error);
             consoleError('loadAllObjects could not be loaded:', error.messsage);
+        }
+    }
+
+    async function loadObjectById(objectId) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/spaces/${selectedSpaceId}/objects/${objectId}`, {
+                headers: {
+                    'Authorization': `Bearer ${state.apiKey}`,
+                    'Anytype-Version': API_VERSION
+                }
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                return result?.object ?? null;
+            }
+
+            return null;
+
+        } catch (error) {
+            console.error(error);
+            consoleError('loadObjectById could not be loaded:', error.messsage);
+            return null;
         }
     }
 
@@ -2153,7 +2198,8 @@ async function localPopapInited() {
                 else if (property.format === "objects") {
                     await loadAllObjects();
 
-                    const choicesData = allObjects.map(o => {
+                    // Empty first choice, otherwise the first (last edited) object is selected by default
+                    const choicesData = [{ value: "", label: property.name, placeholder: true, selected: true }].concat(allObjects.map(o => {
                         return {
                             value: o.id,
                             label: o.name || o.title || o.id,
@@ -2161,7 +2207,7 @@ async function localPopapInited() {
                                 img: o?.icon?.file || o?.icon?.emoji
                             }
                         };
-                    });
+                    }));
 
                     propertyHTML.innerHTML = `
                                 <div class="poperty-head">
@@ -2486,6 +2532,7 @@ async function localPopapInited() {
 
             currentForm = form;
             propertiesListForSaving = [];
+            selectedSpaceId = form.spaceId;
 
             const initializeChoicesWithColor = (selectElement, needToDisableChoice,
                 useDeleteButtonInChoices = true, searchEnabled = true) => {
@@ -2575,8 +2622,6 @@ async function localPopapInited() {
                     }
                 }
 
-                selectedSpaceId = form.spaceId;
-
                 const name = (form.formName) || ((form.type.icon.format === "emoji" ? (form.type.icon.emoji + " ") : "") + form.type.name);
                 elements.objectNameToSave.innerText = name;
 
@@ -2650,6 +2695,16 @@ async function localPopapInited() {
 
                         await loadAllObjects();
 
+                        let objectsForSelect = allObjects;
+
+                        // The saved object may be missing from the list (it is limited and sorted by last modification),
+                        // without it the native select silently falls back to the first (last edited) object
+                        if (savedPropertyValueExist && !objectsForSelect.some(o => o.id == savedProperty.SelectedValueByUser)) {
+                            const savedObject = await loadObjectById(savedProperty.SelectedValueByUser);
+                            if (savedObject)
+                                objectsForSelect = [savedObject].concat(objectsForSelect);
+                        }
+
                         propertyHTML.innerHTML = `
                                     <div class="poperty-head">
                                         ` + GetPropertyIconSVG(property.format) + `
@@ -2657,7 +2712,8 @@ async function localPopapInited() {
                                     </div>
                                     <div class="form-group">
                                         <select id="` + property.id + `_SO">
-                                            ${allObjects.map(o => `
+                                            <option value="">${property.name}</option>
+                                            ${objectsForSelect.map(o => `
                                                 <option 
                                                     value="${o.id}" 
                                                     ` + ((savedPropertyValueExist && savedProperty.SelectedValueByUser == o.id) ? "selected" : "") + `
@@ -2960,11 +3016,11 @@ async function localPopapInited() {
                     if (propiertyPrinted.value_type === "checkbox")
                         value = document.getElementById(propiertyPrinted.IdInHTML).checked;
                     else if (propiertyPrinted.value_type === "multi_select" || propiertyPrinted.value_type === "objects")
-                        value = Array.from(document.getElementById(propiertyPrinted.IdInHTML).options).filter(opt => opt.selected).map(opt => opt.value);
+                        value = Array.from(document.getElementById(propiertyPrinted.IdInHTML).options).filter(opt => opt.selected && opt.value !== "").map(opt => opt.value);
                     else
                         value = document.getElementById(propiertyPrinted.IdInHTML).value;
 
-                    if (value !== null && value !== undefined && value !== "")
+                    if (value !== null && value !== undefined && value !== "" && !(Array.isArray(value) && value.length === 0))
                         properties_final_list.push({ key: propiertyPrinted.KeyForAnytypeAPI, [propiertyPrinted.value_type]: value });
                 }
                 else if (propiertyPrinted.value_type === "files") {
