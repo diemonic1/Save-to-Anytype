@@ -24,9 +24,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
     else if (request.action === "TOGGLE_OVERLAY") {
         toggleOverlay();
+        sendResponse({ success: true });
     }
     else if (request.action === "OPEN_OVERLAY") {
         openOverlay();
+        sendResponse({ success: true });
     }
     else if (request.action === "START_PAGE_ELEMENT_SELECTION") {
         startElementSelection();
@@ -44,7 +46,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             sendResponse({ success: false, error: String(error?.message || error) });
         }
     }
-    return true;
+    // All responses above are synchronous, so the message channel doesn't need to stay open
 });
 
 function openOverlay() {

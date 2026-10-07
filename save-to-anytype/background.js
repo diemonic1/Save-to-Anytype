@@ -460,6 +460,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                     url: tabs[0].url
                 });
             }
+            else {
+                sendResponse(null);
+            }
         });
         return true; // Keep the message channel open for async response
     }
@@ -467,7 +470,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.action === "CreateContextMenusButtons") {
         consoleLog('Saving to Anytype menu options ', request);
         CreateContextMenusButtons(request);
-        return true;
+        sendResponse({ success: true });
+        return;
     }
 
     if (request.action === "GET_TABS") {

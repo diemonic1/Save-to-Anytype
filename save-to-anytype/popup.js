@@ -625,7 +625,7 @@ async function localPopapInited() {
                 action: "CreateContextMenusButtons",
                 menuOption1: Localize("SaveToAnytypemenuOption1", state.language),
                 menuOption2: Localize("SaveSelectedTextAnytypeOption2", state.language)
-            });
+            }).catch(() => { });
         });
     }
 
@@ -2252,7 +2252,7 @@ async function localPopapInited() {
                                 <div class="form-group">
                                     <select id="` + property.key + `" ` + (property.format === "multi_select" ? `multiple` : ``) + `>
                                         ${tags.map(o => `
-                                            <option value="${o.id}">${o.name || o.id}</option>
+                                            <option value="${o.id}" prefered-color="${o.color || ''}">${o.name || o.id}</option>
                                             `).join("")}
                                     </select>
                                 </div>
@@ -2304,14 +2304,19 @@ async function localPopapInited() {
                         attachFileNameFormatInputGuard(property.key + "_file_name_format");
                     }
 
-                    choice = new Choices(document.getElementById(property.key), {
-                        removeItemButton:
-                            property.format === "files" ? false : true,
-                        searchEnabled:
-                            (property.format === "select" || property.format === "multi_select") ? true : false,
-                        shouldSort:
-                            false,
-                    });
+                    if (property.format === "select" || property.format === "multi_select") {
+                        choice = initializeChoicesWithColor(document.getElementById(property.key), false, true, true);
+                    }
+                    else {
+                        choice = new Choices(document.getElementById(property.key), {
+                            removeItemButton:
+                                property.format === "files" ? false : true,
+                            searchEnabled:
+                                false,
+                            shouldSort:
+                                false,
+                        });
+                    }
 
                     if (property.format === "text" || property.format === "email"
                         || property.format === "number" || property.format === "url"
@@ -2535,6 +2540,55 @@ async function localPopapInited() {
 
     //#region Save object to Anytype
 
+    // Choices with the Anytype tag color: a dot in the dropdown list, a background for selected items
+    function initializeChoicesWithColor(selectElement, needToDisableChoice,
+        useDeleteButtonInChoices = true, searchEnabled = true) {
+
+        const choice = new Choices(selectElement, {
+            removeItemButton: useDeleteButtonInChoices,
+            searchEnabled: searchEnabled,
+            shouldSort: false,
+        });
+
+        const applyColorToChoices = () => {
+            const items = selectElement.parentElement.parentElement.querySelectorAll('.choices__item');
+            items.forEach(item => {
+                const value = item.getAttribute('data-value');
+                const option = selectElement.querySelector(`option[value="${value}"]`);
+                if (option) {
+                    const color = normalizeColor(option.getAttribute('prefered-color'));
+                    if (color) {
+                        if (item.hasAttribute('data-choice')) {
+                            let colorDot = item.querySelector('.choice-color-dot');
+                            if (!colorDot) {
+                                colorDot = document.createElement('span');
+                                colorDot.className = 'choice-color-dot';
+                                item.insertBefore(colorDot, item.firstChild);
+                            }
+                            colorDot.style.backgroundColor = color;
+                        }
+                        else {
+                            item.style.backgroundColor = color;
+                        }
+                    }
+                }
+            });
+        };
+
+        applyColorToChoices();
+
+        const observer = new MutationObserver(applyColorToChoices);
+        observer.observe(selectElement.parentElement, {
+            childList: true,
+            subtree: true
+        });
+
+        if (needToDisableChoice)
+            choice.removeActiveItems();
+
+        return choice;
+    }
+
     async function loadObjectTypeToSave(form) {
         try {
             consoleLog('Loading type object for save in space: ' + form.spaceId + ' , type.id: ' + form.type.id);
@@ -2545,54 +2599,6 @@ async function localPopapInited() {
             currentForm = form;
             propertiesListForSaving = [];
             selectedSpaceId = form.spaceId;
-
-            const initializeChoicesWithColor = (selectElement, needToDisableChoice,
-                useDeleteButtonInChoices = true, searchEnabled = true) => {
-
-                const choice = new Choices(selectElement, {
-                    removeItemButton: useDeleteButtonInChoices,
-                    searchEnabled: searchEnabled,
-                    shouldSort: false,
-                });
-
-                const applyColorToChoices = () => {
-                    const items = selectElement.parentElement.parentElement.querySelectorAll('.choices__item');
-                    items.forEach(item => {
-                        const value = item.getAttribute('data-value');
-                        const option = selectElement.querySelector(`option[value="${value}"]`);
-                        if (option) {
-                            const color = normalizeColor(option.getAttribute('prefered-color'));
-                            if (color) {
-                                if (item.hasAttribute('data-choice')) {
-                                    let colorDot = item.querySelector('.choice-color-dot');
-                                    if (!colorDot) {
-                                        colorDot = document.createElement('span');
-                                        colorDot.className = 'choice-color-dot';
-                                        item.insertBefore(colorDot, item.firstChild);
-                                    }
-                                    colorDot.style.backgroundColor = color;
-                                }
-                                else {
-                                    item.style.backgroundColor = color;
-                                }
-                            }
-                        }
-                    });
-                };
-
-                applyColorToChoices();
-
-                const observer = new MutationObserver(applyColorToChoices);
-                observer.observe(selectElement.parentElement, {
-                    childList: true,
-                    subtree: true
-                });
-
-                if (needToDisableChoice)
-                    choice.removeActiveItems();
-
-                return choice;
-            };
 
             const typesResponse = await fetch(`${API_BASE_URL}/spaces/${form.spaceId}/types/${form.type.id}`, {
                 headers: {
