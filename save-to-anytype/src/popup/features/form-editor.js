@@ -8,7 +8,7 @@ import { anytypeApi, isConnectionError } from '../api/anytype-api.js';
 import { showSection, showBlockedSection, SECTIONS } from '../ui/sections.js';
 import { showStatus } from '../ui/status.js';
 import { attachTooltip, attachTooltipsIn, createTooltipButton } from '../ui/tooltip.js';
-import { createChoices, createChoicesWithIcons, createColoredChoices, destroyChoices, getChoicesValue, getIconSource } from '../ui/choices.js';
+import { createChoices, createChoicesWithIcons, createColoredChoices, destroyChoices, getChoicesValue, getIconSource, registerItemIcons } from '../ui/choices.js';
 import { selectFieldHtml, fileFieldHtml } from '../ui/property-fields.js';
 import { PAGE_PROPERTIES, PAGE_SELECTOR, makePageSelectorValue } from '../page/page-data.js';
 import { FILE_SOURCES, NO_FILE } from '../page/file-sources.js';
@@ -154,6 +154,7 @@ async function renderCollections(generation) {
         `<option value="${escapeHtml(collection.id)}">${escapeHtml(collection.name || collection.id)}</option>`).join('')}
     </select>`;
 
+    registerItemIcons(collections);
     collectionChoices = createChoices(document.getElementById("collectionSelect"), { removeItemButton: true, searchEnabled: true });
     collectionChoices.removeActiveItems();
 
@@ -220,6 +221,7 @@ async function renderTemplates(generation) {
     elements.objectTemplateSectionSelect.innerHTML = templates.map(template =>
         `<option value="${escapeHtml(template.id)}">${escapeHtml(template.name || template.id)}</option>`).join('');
 
+    registerItemIcons(templates);
     templateChoices = createChoices(elements.objectTemplateSectionSelect, { removeItemButton: true, searchEnabled: true });
     templateChoices.removeActiveItems();
 
@@ -346,8 +348,11 @@ function addPageValueExtras(element, property, select) {
             const selectedValue = document.createElement("div");
             selectedInfo.append(selectedLabel, selectedValue);
 
+            // Elements without a class are shown by their text
             const showSelectedElement = (selectedElement) => {
-                selectedValue.textContent = selectedElement.elementClass;
+                const hasClass = selectedElement.elementClass && selectedElement.elementClass !== "no-class";
+                selectedLabel.textContent = (hasClass ? t("element_selector_class") : t("element_selector_text") + ":") + " ";
+                selectedValue.textContent = hasClass ? selectedElement.elementClass : (selectedElement.elementText || "").slice(0, 60);
                 selectedInfo.style.display = "block";
             };
 

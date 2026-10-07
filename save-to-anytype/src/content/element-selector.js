@@ -196,26 +196,31 @@
         const className = separatorIndex === -1 ? raw : raw.slice(0, separatorIndex);
         const domPath = separatorIndex === -1 ? "" : raw.slice(separatorIndex + 1).trim();
 
-        let foundElement = null;
+        const classNames = String(className || "")
+            .split(/\s+/)
+            .filter(token => token && token !== HIGHLIGHT_CLASS && token !== "no-class");
 
+        let elementByPath = null;
         if (domPath) {
             try {
-                foundElement = document.querySelector(domPath);
+                elementByPath = document.querySelector(domPath);
             } catch {
-                foundElement = null;
+                elementByPath = null;
             }
         }
 
-        foundElement ??= findElementByClassList(className);
+        // The same place in the DOM with the same classes - exactly the selected element.
+        // Otherwise the page layout differs (another page of the site): search by class, then take the element at the path
+        const pathMatchesClasses = elementByPath && classNames.every(name => elementByPath.classList.contains(name));
+        const foundElement = pathMatchesClasses
+            ? elementByPath
+            : findElementByClassList(classNames) ?? elementByPath;
 
         return foundElement ? String(foundElement.innerText || "").trim() : "";
     }
 
-    function findElementByClassList(rawClassName) {
-        const classTokens = String(rawClassName || "")
-            .split(/\s+/)
-            .filter(token => token && token !== HIGHLIGHT_CLASS && token !== "no-class")
-            .map(token => CSS.escape(token));
+    function findElementByClassList(classNames) {
+        const classTokens = classNames.map(token => CSS.escape(token));
 
         if (!classTokens.length) return null;
 

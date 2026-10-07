@@ -2,7 +2,6 @@
 import { NAME_PROPERTY, BODY_PROPERTY, DESCRIPTION_PROPERTY, READ_ONLY_PROPERTY_KEYS, PAGE_VALUE_FORMATS } from '../core/constants.js';
 import { t } from '../core/i18n.js';
 import { anytypeApi } from '../api/anytype-api.js';
-import { registerChoiceIcon, getIconSource } from '../ui/choices.js';
 import { consoleError } from '../core/logger.js';
 
 // Older versions skipped these by their (english) names
@@ -64,13 +63,7 @@ export function createObjectsLoader(spaceId) {
     let objectsPromise = null;
 
     return () => {
-        objectsPromise ??= anytypeApi.listObjects(spaceId)
-            .then(objects => {
-                for (const object of objects) {
-                    registerChoiceIcon(getIconSource(object), String(object.id ?? ""));
-                }
-                return objects;
-            });
+        objectsPromise ??= anytypeApi.listObjects(spaceId);
 
         return objectsPromise;
     };

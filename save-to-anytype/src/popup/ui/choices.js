@@ -69,6 +69,14 @@ export function createChoicesWithIcons(selectElement, choicesData, options = {})
     return choicesInstance;
 }
 
+// Icons of Anytype objects (spaces, types, collections, templates...) shown in Choices items with their ids
+export function registerItemIcons(items) {
+    for (const item of items) {
+        const icon = getIconSource(item);
+        if (icon) registerChoiceIcon(icon, String(item.id ?? ""));
+    }
+}
+
 // Shows an image or emoji after every Choices item with this value (with a css rule)
 export function registerChoiceIcon(img, value, withHoverPreview = false) {
     if (!img) return;

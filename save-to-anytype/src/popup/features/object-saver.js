@@ -8,9 +8,10 @@ import { anytypeApi } from '../api/anytype-api.js';
 import { showSection, SECTIONS } from '../ui/sections.js';
 import { showStatus } from '../ui/status.js';
 import { attachTooltipsIn } from '../ui/tooltip.js';
-import { createChoices, createColoredChoices } from '../ui/choices.js';
+import { createChoices, createColoredChoices, registerItemIcons } from '../ui/choices.js';
 import { propertyTitleHtml, propertyHeadHtml, selectFieldHtml, fileFieldHtml, checkboxLabelHtml, savedValueIncludes } from '../ui/property-fields.js';
 import { getPageProperty } from '../page/page-data.js';
+import { parsePageValue, parseNumber } from '../page/value-parsers.js';
 import { FILE_SOURCES, NO_FILE, uploadFileFromSource } from '../page/file-sources.js';
 import { attachFileNameFormatInputGuard, buildFileName, removeStringsFromTabTitle } from '../page/file-name.js';
 import { buildFormProperties, isPageValueProperty, getFormDisplayName, hasSavedValue, createObjectsLoader, loadSpaceCollections } from './form-properties.js';
@@ -140,6 +141,8 @@ async function createPropertyField(form, property, loadObjects) {
             if (savedObject) objects = [savedObject, ...objects];
         }
 
+        registerItemIcons(objects);
+
         const options = [{ value: "", label: property.name }].concat(objects.map(object => ({
             value: object.id,
             label: object.name || object.id,
@@ -196,10 +199,7 @@ async function getPageValue(pageProperty, format) {
     if (pageProperty === "tab_title")
         value = removeStringsFromTabTitle(value);
 
-    if (format === "number") return parseNumber(value) ?? '';
-    if (format === "date") return toDateInputValue(value);
-
-    return value;
+    return parsePageValue(format, value);
 }
 
 function pageValueFieldHtml(id, property, value) {
@@ -241,6 +241,7 @@ function createListField(fieldInfo, iconFormat, title, items, savedId) {
     if (items.length === 0) return null;
 
     const hasSavedId = savedId !== null && savedId !== undefined && savedId !== '';
+    registerItemIcons(items);
     const options = items.map(item => ({ value: item.id, label: item.name || item.id, selected: hasSavedId && item.id === savedId }));
 
     const field = { kind: fieldInfo === COLLECTION_FIELD ? 'collection' : 'template', property: fieldInfo, filled: true };
@@ -270,28 +271,6 @@ function updateToggleSign() {
 
 //#region Values
 
-// "1 234,5 USD" -> 1234.5
-function parseNumber(value) {
-    const match = String(value ?? '').replace(/\s+/g, '').match(/-?\d+(?:[.,]\d+)?/);
-    if (!match) return null;
-
-    const number = Number(match[0].replace(',', '.'));
-    return Number.isFinite(number) ? number : null;
-}
-
-// Values of a date input are yyyy-mm-dd
-function toDateInputValue(value) {
-    const text = String(value ?? '').trim();
-    if (!text) return '';
-    if (/^\d{4}-\d{2}-\d{2}$/.test(text)) return text;
-
-    const date = new Date(text);
-    if (Number.isNaN(date.getTime())) return '';
-
-    const twoDigits = (number) => String(number).padStart(2, '0');
-    return `${date.getFullYear()}-${twoDigits(date.getMonth() + 1)}-${twoDigits(date.getDate())}`;
-}
-
 function getSelectedOptions(select) {
     return Array.from(select.selectedOptions).map(option => option.value).filter(value => value !== "");
 }
@@ -309,9 +288,9 @@ function readFieldValue(field) {
             return values.length > 0 ? values : null;
         }
         case "number":
-            return input.value === '' ? null : parseNumber(input.value);
+            return parseNumber(input.value);
         default:
-            return input.value === '' ? null : input.value;
+            return input.value.trim() === '' ? null : input.value.trim();
     }
 }
 
